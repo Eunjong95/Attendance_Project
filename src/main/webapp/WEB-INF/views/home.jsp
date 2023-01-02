@@ -3,7 +3,7 @@
 
 <!DOCTYPE html>
 <html>
-d
+
 <head>
 
     <meta charset="utf-8">
