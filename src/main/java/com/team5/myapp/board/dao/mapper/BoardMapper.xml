@@ -1,32 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.myapp.board.dao.IBoardRepository">
-	<insert id="insertArticle" parameterType="com.team5.myapp.board.model.Board">
-		<![CDATA[
-			INSERT INTO BOARD (BOARD_ID, BOARD_TITLE, BOARD_CONTENT, BOARD_DATE, USER_ID, BOARD_CATEGORY_ID)
-			VALUES
-				(#{boardId}, #{boardTitle}, #{boardContent}, #{boardDate}, #{userId}, #{boardCategoryId})
-		]]>
-	</insert>
 	
-	<insert id="insertFileData" parameterType="com.team5.myapp.board.model.BoardFile">
-		<![CDATA[
-			INSERT INTO BOARD_FILE (B_FILE_ID, B_FILE_NAME, B_FILE_SIZE, B_FILE_CONTENT_TYPE, B_FILE_DATA, BOARD_ID)
-			VALUES(#{bFileId}, #{bFileName}, #{bFileSize}, #{bFileContentType}, #{bFileData}, #{boardId})
-		]]>
-	</insert>
-	
-	<select id="getFile" parameterType="int" resultType="com.team5.myapp.board.model.BoardFile">
-		<![CDATA[
-			SELECT
-				FILE_ID AS "fileId",
-				BOARD_ID AS "boardId",
-				FILE_NAME AS "fileName",
-				FILE_SIZE AS "fileSize",
-				FILE_CONTENT_TYPE AS "fileContentType",
-				FILE_DATA AS "fileData"
-			FROM BOARD_UPLOAD_FILE
-			WHERE FILE_ID=#{fileId}
-		]]>
-	</select>
 </mapper>
