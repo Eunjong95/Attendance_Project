@@ -1,19 +1,18 @@
 package com.team5.myapp.board.model;
 
-import java.util.Arrays;
-
 public class BoardFile {
-	private int fileId;
+	private int bFileId;
 	private int boardId;
-	private String fileName;
-	private long fileSize;
-	private String fileContentType;
-	private byte[] fileData;
-	public int getFileId() {
-		return fileId;
+	private String bFileName;
+	private long bFileSize;
+	private String bFileContentType;
+	private byte[] bFileData;
+	
+	public int getbFileId() {
+		return bFileId;
 	}
-	public void setFileId(int fileId) {
-		this.fileId = fileId;
+	public void setbFileId(int bFileId) {
+		this.bFileId = bFileId;
 	}
 	public int getBoardId() {
 		return boardId;
@@ -21,36 +20,35 @@ public class BoardFile {
 	public void setBoardId(int boardId) {
 		this.boardId = boardId;
 	}
-	public String getFileName() {
-		return fileName;
+	public String getbFileName() {
+		return bFileName;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setbFileName(String bFileName) {
+		this.bFileName = bFileName;
 	}
-	public long getFileSize() {
-		return fileSize;
+	public long getbFileSize() {
+		return bFileSize;
 	}
-	public void setFileSize(long fileSize) {
-		this.fileSize = fileSize;
+	public void setbFileSize(long bFileSize) {
+		this.bFileSize = bFileSize;
 	}
-	public String getFileContentType() {
-		return fileContentType;
+	public String getbFileContentType() {
+		return bFileContentType;
 	}
-	public void setFileContentType(String fileContentType) {
-		this.fileContentType = fileContentType;
+	public void setbFileContentType(String bFileContentType) {
+		this.bFileContentType = bFileContentType;
 	}
-	public byte[] getFileData() {
-		return fileData;
+	public byte[] getbFileData() {
+		return bFileData;
 	}
-	public void setFileData(byte[] fileData) {
-		this.fileData = fileData;
+	public void setbFileData(byte[] bFileData) {
+		this.bFileData = bFileData;
 	}
+	
 	@Override
 	public String toString() {
-		return "BoardFile [fileId=" + fileId + ", boardId=" + boardId + ", fileName=" + fileName + ", fileSize="
-				+ fileSize + ", fileContentType=" + fileContentType + "]";
+		return "BoardFile [bFileId=" + bFileId + ", boardId=" + boardId + ", bFileName=" + bFileName + ", bFileSize="
+				+ bFileSize + ", bFileContentType=" + bFileContentType + "]";
 	}
 	
-	
-
 }
