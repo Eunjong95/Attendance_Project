@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.myapp.board.dao.IBoardRepository">
+	<update id="updateBoard" parameterType="com.team5.myapp.board.model.Board">
+		<![CDATA[
+			UPDATE BOARD
+			SET
+				BOARD_TITLE=#{boardTitle},
+				BOARD_CONTENT=#{boardContent},
+				BOARD_DATE=SYSDATE
+			WHERE BOARD_ID=#{boardId}
+		]]>
+	</update>
+	<update id="updateFileData" parameterType="com.team5.myapp.board.model.BoardFile">
+		<![CDATA[
+			UPDATE BOARD_FILE
+			SET
+				B_FILE_NAME=#{bFileName},
+				B_FILE_SIZE=#{bFileSize},
+				B_FILE_CONTENT_TYPE=#{bFileContentType},
+				B_FILE_DATA=#{bFileData}
+			WHERE B_FILE_ID=#{bFileId}
+		]]>
+		
+	</update>
+	
+	<insert id="insertFileData" parameterType="com.team5.myapp.board.model.BoardFile">
+      <![CDATA[
+         INSERT INTO 
+         board_file 
+            (b_file_id, board_id, b_file_name, b_file_size, b_file_content_type, b_file_data) 
+         VALUES 
+            (seq_board_file_id.nextval, #{boardId}, #{bFileName}, #{bFileSize}, #{bFileContentType}, #{bFileData})
+      ]]>
+   </insert>
 	
 </mapper>

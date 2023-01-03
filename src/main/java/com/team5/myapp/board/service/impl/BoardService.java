@@ -2,13 +2,18 @@ package com.team5.myapp.board.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.team5.myapp.board.dao.IBoardRepository;
 import com.team5.myapp.board.model.Board;
 import com.team5.myapp.board.model.BoardFile;
 import com.team5.myapp.board.model.Comments;
 import com.team5.myapp.board.service.IBoardService;
-
+@Service
 public class BoardService implements IBoardService {
-
+	@Autowired
+	IBoardRepository boardRepository;
 	@Override
 	public void insertBoard(Board board) {
 		// TODO Auto-generated method stub
@@ -23,14 +28,20 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public void updateBoard(Board board) {
-		// TODO Auto-generated method stub
-		
+		boardRepository.updateBoard(board);
 	}
 
 	@Override
 	public void updateBoard(Board board, BoardFile file) {
-		// TODO Auto-generated method stub
-		
+		boardRepository.updateBoard(board);
+		if(file!=null&&file.getbFileName()!=null&&!file.getbFileName().equals("")) {
+			if(file.getbFileId()>0) {
+				boardRepository.updateFileData(file);
+			}else {
+				
+				boardRepository.insertFileData(file);
+			}
+		}
 	}
 
 	@Override
