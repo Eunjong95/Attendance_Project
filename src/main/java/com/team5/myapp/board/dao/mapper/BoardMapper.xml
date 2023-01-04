@@ -23,7 +23,13 @@
 		]]>
 		
 	</update>
-	
+
+	<delete id="deleteBoard" parameterType="int">
+		<![CDATA[
+			DELETE FROM BOARD
+			WHERE BOARD_ID=#{boardId}
+		]]>
+	</delete>
 	<insert id="insertFileData" parameterType="com.team5.myapp.board.model.BoardFile">
       <![CDATA[
          INSERT INTO 
@@ -33,5 +39,6 @@
             (seq_board_file_id.nextval, #{boardId}, #{bFileName}, #{bFileSize}, #{bFileContentType}, #{bFileData})
       ]]>
    </insert>
+	
 	
 </mapper>

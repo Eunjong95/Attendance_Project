@@ -29,15 +29,15 @@ public class BoardController {
 	IBoardService boardService;
 	@RequestMapping(value="/board/update/{boardId}",method=RequestMethod.GET)
 	public String updateBoard(@PathVariable int boardId, Model model) {
-		//Board board = boardService.selectBoard(boardId);
-		Board board=new Board();
+		Board board = boardService.selectBoard(boardId);
+		/*Board board=new Board();
 		board.setBoardId(boardId);
 		board.setBoardTitle("게시판제목2");
 		board.setBoardContent("게시판내용2");
 		board.setBoardCategoryId(2);
 		board.setUserId("user1");
-		
-		System.out.println(board);
+		*/
+		//System.out.println(board);
 		model.addAttribute("board",board);
 		return "board/update";
 	}
@@ -50,7 +50,7 @@ public class BoardController {
 			MultipartFile mfile= board.getFile();
 			if(mfile!=null&& !mfile.isEmpty()) {
 				BoardFile file=new BoardFile();
-				file.setbFileName(mfile.getName());
+				file.setbFileName(mfile.getOriginalFilename());
 				file.setbFileSize(mfile.getSize());
 				file.setbFileContentType(mfile.getContentType());
 				file.setbFileData(mfile.getBytes());
@@ -64,12 +64,18 @@ public class BoardController {
 		}
 		return "redirect:/board/view/"+board.getBoardId();
 	}
-	@RequestMapping(value="/board/delete/{boardId}",method=RequestMethod.GET)
+	/*RequestMapping(value="/board/delete/{boardId}",method=RequestMethod.GET)
 	public String deleteBoard(@PathVariable int boardId, Model model) {
 		return "board/delete";
-	}
+	}*/
 	@RequestMapping(value="/board/delete",method=RequestMethod.POST)
 	public String deleteBoard(Board board, BindingResult result,HttpSession session, RedirectAttributes redirectAttrs) {
+		try {
+			//board.setBoardId(4);//테스트용 
+			boardService.deleteBoard(board.getBoardId());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return "redirect:/board/cat/"+board.getBoardCategoryId()+"/"+(Integer)session.getAttribute("page");
 	}
 	

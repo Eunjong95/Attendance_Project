@@ -46,8 +46,7 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public void deleteBoard(int boardId) {
-		// TODO Auto-generated method stub
-		
+		boardRepository.deleteBoard(boardId);
 	}
 
 	@Override
@@ -104,8 +103,21 @@ public class BoardService implements IBoardService {
 		return 0;
 	}
 
+	
 	@Override
-	public List<Board> searchListByContentKeyword(String keyword) {
+	public int selectTotalCommentsPageByCommentId(int commentId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Comments> selectCommentsListByCommentId(int commentId, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Board> searchListByContentKeyword(String keyword, int page) {
 		// TODO Auto-generated method stub
 		return null;
 	}

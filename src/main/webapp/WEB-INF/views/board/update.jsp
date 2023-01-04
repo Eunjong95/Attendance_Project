@@ -166,8 +166,8 @@
 									</div>
 									<div class="row mx-2 bottonbox d-flex justify-content-left mt-3">
 										<div>
-											<input type="hidden" name="fileId" value="${board.bFileId}">
-        									<input type="file" id="i_file" name="file">${board.bFileName}<br/>
+											<input type="hidden" name="bFileId" value="${board.bFileId}">
+        									<input type="file" id="i_file" name="bFileName">${board.bFileName}<br/>
 						    				<span id="droparea" class="help-block">파일 용량은 50MB 이하로만 업로드 가능합니다.</span>
 										</div>
 									</div>
@@ -180,6 +180,13 @@
 							    	<button type="submit" class="btn btn-primary" form="updateBoard">작성 완료</button>
 						    	</div>
 						    </div>
+						   <%--  <form action="<c:url value='/board/delete'/>" method="POST">
+							    <input type="hidden" name="boardId" value="${board.boardId}">
+							    <input type="hidden" name="boardCategoryId" value="${board.boardCategoryId}">
+							    
+							    <button type="submit" class="btn btn-primary" >삭제</button>
+						    	
+						    </form> --%>
 						</div>
 					
 					</div><!-- End of page Content -->

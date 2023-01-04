@@ -33,7 +33,12 @@ public interface IBoardService {
 	void updateComment(Comments comment);
 	void deleteComment(int commentId);
 	
-	//검색
-	int selectTotalBoardPageByKeyword(String keyword);
-	List<Board> searchListByContentKeyword(String keyword);
+    //댓글 목록 조회
+    int selectTotalCommentsPageByCommentId(int commentId);
+    List<Comments> selectCommentsListByCommentId(int commentId, int page);
+   
+    //검색
+    int selectTotalBoardPageByKeyword(String keyword);
+    List<Board> searchListByContentKeyword(String keyword, int page);
+	
 }
