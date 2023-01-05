@@ -30,9 +30,10 @@ public class MemberController {
 	@RequestMapping(value="/member/login", method=RequestMethod.POST)
 	public String login(String userId , String password, HttpSession session, Model model) {
 		Member member = memberService.selectMember(userId);
+		System.out.println(member);
 		if(member != null) {
 			String dbPassword = member.getPassword();
-			
+			System.out.println("password: " + dbPassword);
 			if(dbPassword == null) { //아이디가 없음
 				System.out.println("아이디 없음.");
 				//model.addAttribute("message", "NOT_VALID_USER");
@@ -41,7 +42,11 @@ public class MemberController {
 					session.setAttribute("userId",  userId);
 					session.setAttribute("userName", member.getUserName());
 					session.setAttribute("email", member.getEmail());
-					return "home";
+					
+					System.out.println(userId + " " + member.getUserName());
+					
+					session.setAttribute("member", member);
+					return "redirect:/";
 				} else { // 비밀번호 불일치
 					System.out.println("비밀번호 불일치");
 					//model.addAttribute("message", "WRONG_PASSWORD");
@@ -58,7 +63,7 @@ public class MemberController {
 	@RequestMapping(value="/member/logout", method=RequestMethod.GET)
 	public String logout(HttpSession session, Model model) {
 		session.invalidate();
-		return "home";
+		return "redirect:/";
 	}
 		
 }
