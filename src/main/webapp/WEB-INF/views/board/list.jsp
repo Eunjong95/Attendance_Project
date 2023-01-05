@@ -72,7 +72,7 @@
                                 			<div class="col-sm-12 col-md-6">
                                 				<div class="d-flex justify-content-end">
 	                                				<div id="dataTable_filter" class="dataTables_filter mt-3">
-	                                					<button class="btn btn-primary">글작성</button>
+	                                					<button class="btn btn-primary" onClick="location.href='<c:url value='/board/write/${boardCategoryId}'/>'">글작성</button>
 	                                				</div>
                                 				</div>
                                 			</div>
