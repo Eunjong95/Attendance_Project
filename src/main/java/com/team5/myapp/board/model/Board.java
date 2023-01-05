@@ -1,6 +1,7 @@
 package com.team5.myapp.board.model;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,13 +11,15 @@ public class Board {
 	private String userId;
 	private String boardTitle;
 	private String boardContent;
-	private Timestamp boardDate;
+	private Date boardDate;
 	private int readCount;
+	private List<Comments> commentList;
 	
 	private int page;
 	private MultipartFile file;
 	
 	private int bFileId;
+
 	private String bFileName;
 	private long bFileSize;
 	private String bFileContentType;
@@ -52,10 +55,10 @@ public class Board {
 	public void setBoardContent(String boardContent) {
 		this.boardContent = boardContent;
 	}
-	public Timestamp getBoardDate() {
+	public Date getBoardDate() {
 		return boardDate;
 	}
-	public void setBoardDate(Timestamp boardDate) {
+	public void setBoardDate(Date boardDate) {
 		this.boardDate = boardDate;
 	}
 	public int getReadCount() {
@@ -105,6 +108,13 @@ public class Board {
 	}
 	public void setbFileData(byte[] bFileData) {
 		this.bFileData = bFileData;
+	}
+	
+	public List<Comments> getCommentList() {
+		return commentList;
+	}
+	public void setCommentList(List<Comments> commentList) {
+		this.commentList = commentList;
 	}
 	
 	@Override
