@@ -87,8 +87,7 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public void updateComment(Comments comment) {
-		// TODO Auto-generated method stub
-		
+		boardRepository.updateComment(comment);
 	}
 
 	@Override

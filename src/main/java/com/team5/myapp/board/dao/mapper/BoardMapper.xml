@@ -32,13 +32,21 @@
 	</delete>
 	<insert id="insertFileData" parameterType="com.team5.myapp.board.model.BoardFile">
       <![CDATA[
-         INSERT INTO 
-         board_file 
-            (b_file_id, board_id, b_file_name, b_file_size, b_file_content_type, b_file_data) 
-         VALUES 
-            (seq_board_file_id.nextval, #{boardId}, #{bFileName}, #{bFileSize}, #{bFileContentType}, #{bFileData})
+         	INSERT INTO 
+         	board_file 
+            	(b_file_id, board_id, b_file_name, b_file_size, b_file_content_type, b_file_data) 
+         	VALUES 
+            	(seq_board_file_id.nextval, #{boardId}, #{bFileName}, #{bFileSize}, #{bFileContentType}, #{bFileData})
       ]]>
    </insert>
 	
-	
+	<update id="updateComment" parameterType="com.team5.myapp.board.model.Comments">
+		<![CDATA[
+			UPDATE COMMENTS
+			SET 
+				COMMENT_DATE=SYSDATE,
+				COMMENT_CONTEN=#{commentContent}
+			WHERE COMMENT_ID=#{commentId}
+		]]>
+	</update>
 </mapper>

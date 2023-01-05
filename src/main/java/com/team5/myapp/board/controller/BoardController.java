@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.team5.myapp.board.model.Board;
 import com.team5.myapp.board.model.BoardFile;
+import com.team5.myapp.board.model.Comments;
 import com.team5.myapp.board.service.IBoardService;
 
 @Controller
@@ -77,6 +78,17 @@ public class BoardController {
 			e.printStackTrace();
 		}
 		return "redirect:/board/cat/"+board.getBoardCategoryId()+"/"+(Integer)session.getAttribute("page");
+	}
+	@RequestMapping(value="/board/comment/update" ,method=RequestMethod.POST)
+	public String updateComment(Comments comment,Model model, BindingResult result, HttpSession session, RedirectAttributes redirectAttrs) {
+		try {
+			boardService.updateComment(comment);
+			model.addAttribute("comment",comment);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "board/comment/update";
 	}
 	
 }
