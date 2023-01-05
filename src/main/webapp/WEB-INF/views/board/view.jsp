@@ -67,14 +67,17 @@
 						</div>
 						<div class="card-body">
 							<div class="row pl-4">
-								<div class="col-1">
-									<h6>No.${board.boardId}</h6>
-								</div>
-								<div class="col-11">
-									<h6>${board.boardTitle}"</h6>
-								</div>
-							</div>
-							<hr />
+		                        <div class="col-1">
+		                           <h6>No.${board.boardId}</h6>
+		                        </div>
+		                        <div class="col-10">
+		                           <h6>${board.boardTitle}"</h6>
+		                        </div>
+		                        <div class="col-1">
+		                           <h6>조회수 ${board.readCount}</h6>
+		                        </div>
+		                    </div>
+							<hr/>
 							<div class="row pl-4 pb-4">
 								<div class="col-6 d-flex">
 									<h6>${board.userId}</h6>
