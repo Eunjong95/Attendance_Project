@@ -4,9 +4,15 @@
 
 	<select id="selectMember" resultType="com.team5.myapp.member.model.Member">
 		<![CDATA[
-			SELECT user_id, user_name, password, phone, email
+			SELECT user_id as "userId", 
+				   user_name as "userName", 
+				   password as "password", 
+				   phone as "phone", 
+				   email as "email",
+				   lecture_id as "lectureId",
+				   role as "role"
 			FROM members
-			WHERE user_id=#{user_id}
+			WHERE user_id=#{userId}
 		]]>
 	</select>
 	
@@ -14,7 +20,7 @@
 		<![CDATA[
 			SELECT password
 			FROM members
-			WHERE user_id=#{user_id}
+			WHERE user_id=#{userId}
 		]]>
 	</select>
 

@@ -1,107 +1,71 @@
 package com.team5.myapp.board.model;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
 public class Board {
 	private int boardId;
-	private int categoryId;
-	private String writer;
-	private String email;
-	private String password;
-	private String title;
-	private String content;
-	private Timestamp writeDate;
-	private int masterId;
+	private int boardCategoryId;
+	private String userId;
+	private String boardTitle;
+	private String boardContent;
+	private Date boardDate;
 	private int readCount;
-	private int replyNumber;
-	private int replyStep;
-	private int seq;
+	private List<Comments> commentList;
+	
 	private int page;
 	private MultipartFile file;
 	
-	private int fileId;
-	private String fileName;
-	private long fileSize;
-	private String fileContentType;
+	private int bFileId;
+
+	private String bFileName;
+	private long bFileSize;
+	private String bFileContentType;
+	private byte[] bFileData;
+	
 	public int getBoardId() {
 		return boardId;
 	}
 	public void setBoardId(int boardId) {
 		this.boardId = boardId;
 	}
-	public int getCategoryId() {
-		return categoryId;
+	public int getBoardCategoryId() {
+		return boardCategoryId;
 	}
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public void setBoardCategoryId(int boardCategoryId) {
+		this.boardCategoryId = boardCategoryId;
 	}
-	public String getWriter() {
-		return writer;
+	public String getUserId() {
+		return userId;
 	}
-	public void setWriter(String writer) {
-		this.writer = writer;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public String getEmail() {
-		return email;
+	public String getBoardTitle() {
+		return boardTitle;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
 	}
-	public String getPassword() {
-		return password;
+	public String getBoardContent() {
+		return boardContent;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setBoardContent(String boardContent) {
+		this.boardContent = boardContent;
 	}
-	public String getTitle() {
-		return title;
+	public Date getBoardDate() {
+		return boardDate;
 	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public Timestamp getWriteDate() {
-		return writeDate;
-	}
-	public void setWriteDate(Timestamp writeDate) {
-		this.writeDate = writeDate;
-	}
-	public int getMasterId() {
-		return masterId;
-	}
-	public void setMasterId(int masterId) {
-		this.masterId = masterId;
+	public void setBoardDate(Date boardDate) {
+		this.boardDate = boardDate;
 	}
 	public int getReadCount() {
 		return readCount;
 	}
 	public void setReadCount(int readCount) {
 		this.readCount = readCount;
-	}
-	public int getReplyNumber() {
-		return replyNumber;
-	}
-	public void setReplyNumber(int replyNumber) {
-		this.replyNumber = replyNumber;
-	}
-	public int getReplyStep() {
-		return replyStep;
-	}
-	public void setReplyStep(int replyStep) {
-		this.replyStep = replyStep;
-	}
-	public int getSeq() {
-		return seq;
-	}
-	public void setSeq(int seq) {
-		this.seq = seq;
 	}
 	public int getPage() {
 		return page;
@@ -115,39 +79,50 @@ public class Board {
 	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
-	public int getFileId() {
-		return fileId;
+	public int getbFileId() {
+		return bFileId;
 	}
-	public void setFileId(int fileId) {
-		this.fileId = fileId;
+	public void setbFileId(int bFileId) {
+		this.bFileId = bFileId;
 	}
-	public String getFileName() {
-		return fileName;
+	public String getbFileName() {
+		return bFileName;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setbFileName(String bFileName) {
+		this.bFileName = bFileName;
 	}
-	public long getFileSize() {
-		return fileSize;
+	public long getbFileSize() {
+		return bFileSize;
 	}
-	public void setFileSize(long fileSize) {
-		this.fileSize = fileSize;
+	public void setbFileSize(long bFileSize) {
+		this.bFileSize = bFileSize;
 	}
-	public String getFileContentType() {
-		return fileContentType;
+	public String getbFileContentType() {
+		return bFileContentType;
 	}
-	public void setFileContentType(String fileContentType) {
-		this.fileContentType = fileContentType;
+	public void setbFileContentType(String bFileContentType) {
+		this.bFileContentType = bFileContentType;
 	}
+	public byte[] getbFileData() {
+		return bFileData;
+	}
+	public void setbFileData(byte[] bFileData) {
+		this.bFileData = bFileData;
+	}
+	
+	public List<Comments> getCommentList() {
+		return commentList;
+	}
+	public void setCommentList(List<Comments> commentList) {
+		this.commentList = commentList;
+	}
+	
 	@Override
 	public String toString() {
-		return "Board [boardId=" + boardId + ", categoryId=" + categoryId + ", writer=" + writer + ", email=" + email
-				+ ", password=" + password + ", title=" + title + ", content=" + content + ", writeDate=" + writeDate
-				+ ", masterId=" + masterId + ", readCount=" + readCount + ", replyNumber=" + replyNumber
-				+ ", replyStep=" + replyStep + ", seq=" + seq + ", page=" + page + ", fileId=" + fileId + ", fileName="
-				+ fileName + ", fileSize=" + fileSize + ", fileContentType=" + fileContentType + "]";
+		return "Board [boardId=" + boardId + ", boardCategoryId=" + boardCategoryId + ", userId=" + userId
+				+ ", boardTitle=" + boardTitle + ", boardContent=" + boardContent + ", boardDate=" + boardDate
+				+ ", readCount=" + readCount + ", page=" + page + ", bFileId=" + bFileId + ", bFileName=" + bFileName
+				+ ", bFileSize=" + bFileSize + ", bFileContentType=" + bFileContentType + "]";
 	}
-		
-	
 	
 }

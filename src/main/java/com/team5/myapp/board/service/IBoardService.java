@@ -26,14 +26,19 @@ public interface IBoardService {
 	BoardFile getFile(int fileId);
 	
 	//조회수 증가
-	void updateReadCount(int boardId);
+	//void updateReadCount(int boardId);
 
 	//댓글 작성, 수정, 삭제
 	void insertComment(Comments comment);
 	void updateComment(Comments comment);
 	void deleteComment(int commentId);
 	
+	//댓글 목록 조회
+	int selectTotalCommentsPageByCommentId(int boardId);
+	List<Comments> selectCommentsListByCommentId(int boardId, int page);
+   	
 	//검색
 	int selectTotalBoardPageByKeyword(String keyword);
-	List<Board> searchListByContentKeyword(String keyword);
+	List<Board> searchListByContentKeyword(String keyword, int page);
+	
 }

@@ -1,5 +1,206 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.myapp.board.dao.IBoardRepository">
+	<!-- 게시글 아이디 개수 조회 -->
+	<select id="selectMaxArticleNo" parameterType="int" resultType="int">
+		<![CDATA[
+			SELECT 
+				NVL(MAX(board_id),0) AS "boardId"
+			FROM board
+		]]>
+	</select>
+
+	<!-- 파일 아이디 개수 조회 -->
+	<select id="selectMaxFileId" parameterType="int" resultType="int">
+		<![CDATA[
+			SELECT 
+				NVL(MAX(b_file_id),0) AS "bFileId"
+			FROM board_file
+		]]>
+	</select>
 	
+	<!-- 게시글 작성 -->
+	<insert id="insertBoard" parameterType="com.team5.myapp.board.model.Board">
+		<![CDATA[
+			INSERT INTO 
+			board 
+				(board_id, board_title, board_content, board_date, user_id, board_category_id, read_count) 
+    		VALUES(#{boardId}, #{boardTitle}, #{boardContent}, sysdate, #{userId}, #{boardCategoryId}, default)
+		]]>
+	</insert>
+	
+	<!-- 파일 저장 -->
+	<insert id="insertFileData" parameterType="com.team5.myapp.board.model.BoardFile">
+		<![CDATA[
+			INSERT INTO 
+			board_file 
+				(b_file_id, board_id, b_file_name, b_file_size, b_file_content_type, b_file_data) 
+			VALUES 
+				(#{bFileId}, #{boardId}, #{bFileName}, #{bFileSize}, #{bFileContentType}, #{bFileData})
+		]]>
+	</insert>
+	<!-- 게시글 수정 -->
+	<update id="updateBoard" parameterType="com.team5.myapp.board.model.Board">
+		<![CDATA[
+			UPDATE BOARD
+			SET
+				BOARD_TITLE=#{boardTitle},
+				BOARD_CONTENT=#{boardContent},
+				BOARD_DATE=SYSDATE
+			WHERE BOARD_ID=#{boardId}
+		]]>
+	</update>
+	<update id="updateFileData" parameterType="com.team5.myapp.board.model.BoardFile">
+		<![CDATA[
+			UPDATE BOARD_FILE
+			SET
+				B_FILE_NAME=#{bFileName},
+				B_FILE_SIZE=#{bFileSize},
+				B_FILE_CONTENT_TYPE=#{bFileContentType},
+				B_FILE_DATA=#{bFileData}
+			WHERE B_FILE_ID=#{bFileId}
+		]]>
+		
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoard" parameterType="int">
+		<![CDATA[
+			DELETE FROM BOARD
+			WHERE BOARD_ID=#{boardId}
+		]]>
+	</delete>
+	
+	<select id="selectBoardListByCategory" parameterType="map" resultType="com.team5.myapp.board.model.Board">
+		<![CDATA[ 
+			SELECT
+				BOARD_ID AS "boardId",
+				BOARD_CATEGORY_ID AS "boardCategoryId",
+				USER_ID AS "userId",
+				BOARD_TITLE AS "boardTitle",
+				BOARD_DATE AS "boardDate",
+				READ_COUNT AS "readCount",
+				RNUM+1 AS "seq"
+			FROM (
+				SELECT
+					BOARD_ID,
+					BOARD_CATEGORY_ID,
+					USER_ID,
+					BOARD_TITLE,
+					BOARD_DATE,
+					READ_COUNT,
+					ROWNUM AS RNUM
+				FROM (
+					SELECT * FROM BOARD
+					WHERE BOARD_CATEGORY_ID=#{boardCategoryId}
+					ORDER BY BOARD_ID DESC
+				)
+			)
+			WHERE RNUM BETWEEN #{start} AND #{end}
+			]]>
+	</select>
+	
+	<!-- 게시글 조회 -->
+	<select id="selectTotalBoardPageByCategoryId" parameterType="int" resultType="int">
+		<![CDATA[
+			SELECT COUNT(BOARD_ID) AS "count"
+			FROM BOARD
+			WHERE BOARD_CATEGORY_ID=#{boardCategoryId}
+		]]>
+	</select>
+	
+	<!-- 게시글 상세 조회 -->
+	<select id="selectBoard" parameterType="int" resultType="com.team5.myapp.board.model.Board">
+		<![CDATA[
+		select
+			board.board_id as "boardId",
+			board_category_id as "boardCategoryId",
+			board_title as "boardTitle",
+			board_content as "boardContent",
+			board_date as "boardDate",
+			user_id as "userId",
+			read_count as "readCount",
+			b_file_id as "bFileId",
+			b_file_name as "bFileName",
+			b_file_size as "bFileSize",
+			b_file_content_type as "bFileContentType"
+		from board left outer join board_file
+		on board.board_id=board_file.board_id 
+		where board.board_id=#{boardId}
+		]]>	
+	</select>
+	
+	<select id="getFile" parameterType="int" resultType="com.team5.myapp.board.model.BoardFile">
+		<![CDATA[
+			select
+				b_file_id as "bFileId",
+				b_file_name as "bFileName",
+				b_file_size as "bFileSize",
+				b_file_content_type as "bFileContentType",
+				b_file_data as "bFileData",
+				board_id as "boardId"
+			from board_file
+			where b_file_id=#{bFileId}
+		]]>	
+	</select>
+	
+	<update id="updateReadCount" parameterType="int">
+		<![CDATA[
+			update board
+				set read_count=read_count+1
+				where board_id=#{boardId}
+		]]>	
+	</update>
+	
+	<select id="selectCommentsListByCommentId" parameterType="map" resultType="com.team5.myapp.board.model.Comments">
+		<![CDATA[
+			select
+				comment_id as "commentId",
+				comment_date as "commentDate",
+				comment_content as "CommentContent",
+				c.board_id as "boardId",
+				c.user_id as "userId"
+			from comments c left outer join board
+            on c.board_id=board.board_id 
+            where c.board_id=#{boardId}
+			order by comment_id desc
+			OFFSET #{start}-1 ROWS
+			FETCH FIRST 10 ROWS ONLY	
+		]]>
+	</select>
+	
+	<select id="selectTotalCommentsPageByCommentId" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(comment_Id) as "count"
+			from comments
+			where board_id=#{boardId}
+		]]>	
+	</select>
+	
+	<!-- 댓글 작성 -->
+	<select id="insertComment" parameterType="map" resultType="com.team5.myapp.board.model.Comments">
+		<![CDATA[
+			INSERT INTO COMMENTS (COMMENT_ID, COMMENT_DATE, COMMENT_CONTENT, BOARD_ID, USER_ID) 
+			VALUES (seq_comment_id.nextval,sysdate,#{commentContent},#{boardId},#{userId})
+		]]>
+	</select>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateComment" parameterType="com.team5.myapp.board.model.Comments">
+		<![CDATA[
+			UPDATE COMMENTS
+			SET 
+				COMMENT_DATE=SYSDATE,
+				COMMENT_CONTENT=#{commentContent}
+			WHERE COMMENT_ID=#{commentId}
+		]]>
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		<![CDATA[
+			DELETE FROM comment
+			WHERE comment_id=#{commentId}
+		]]>
+	</delete>
 </mapper>
