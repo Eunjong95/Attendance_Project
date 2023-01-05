@@ -49,7 +49,7 @@
 				BOARD_DATE=SYSDATE
 			WHERE BOARD_ID=#{boardId}
 		]]>
-	</update>nested exception is java.lang.NumberFormatException: For input string: "vendor"
+	</update>
 	<update id="updateFileData" parameterType="com.team5.myapp.board.model.BoardFile">
 		<![CDATA[
 			UPDATE BOARD_FILE
