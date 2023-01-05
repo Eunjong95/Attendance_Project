@@ -235,7 +235,6 @@
 	<!-- Footer -->
 	<jsp:include page="/WEB-INF/views/include/footer.jsp"/>
 	<!-- End of Footer -->
-
 </body>
 
 </html>

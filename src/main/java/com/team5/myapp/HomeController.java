@@ -47,4 +47,10 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	public String admin(Locale locale, HttpSession session, Model model) {
+		
+		return "admin/home";
+	}
+	
 }
