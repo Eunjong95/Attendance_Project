@@ -38,10 +38,11 @@ public interface IBoardRepository {
 	
 
     //댓글 조회
-    int selectTotalCommentsPageByCommentId(int commentId);
-    List<Comments> selectCommentsListByCommentId(@Param("commentId") int commentId, @Param("start") int start, @Param("end") int end);
+    int selectTotalCommentsPageByCommentId(int boardId);
+    List<Comments> selectCommentsListByCommentId(@Param("boardId") int commentId, @Param("start") int start, @Param("end") int end);
 
 	//검색
 	int selectTotalBoardPageByKeyword(String keyword);
 	List<Board> searchListByContentKeyword(@Param("keyword") String keyword, @Param("start") int start, @Param("end") int end);
+	Comments selectComment(int commentId);
 }

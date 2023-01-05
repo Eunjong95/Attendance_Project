@@ -40,5 +40,6 @@ public interface IBoardService {
 	//검색
 	int selectTotalBoardPageByKeyword(String keyword);
 	List<Board> searchListByContentKeyword(String keyword, int page);
+	Comments selectComment(int commentId);
 	
 }

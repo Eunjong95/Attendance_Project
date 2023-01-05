@@ -167,7 +167,7 @@
 									<div class="row mx-2 bottonbox d-flex justify-content-left mt-3">
 										<div>
 											<input type="hidden" name="bFileId" value="${board.bFileId}">
-        									<input type="file" id="i_file" name="bFileName">${board.bFileName}<br/>
+        									<input type="file" id="i_file" name="file">${board.bFileName}<br/>
 						    				<span id="droparea" class="help-block">파일 용량은 50MB 이하로만 업로드 가능합니다.</span>
 										</div>
 									</div>

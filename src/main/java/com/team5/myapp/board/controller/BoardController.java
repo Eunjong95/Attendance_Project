@@ -109,6 +109,7 @@ public class BoardController {
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
 			MultipartFile mfile= board.getFile();
 			if(mfile!=null&& !mfile.isEmpty()) {
+				logger.info("/board/update : " + mfile.getOriginalFilename());
 				BoardFile file=new BoardFile();
 				file.setbFileName(mfile.getOriginalFilename());
 				file.setbFileSize(mfile.getSize());
@@ -117,6 +118,7 @@ public class BoardController {
 				file.setBoardId(board.getBoardId());
 				boardService.updateBoard(board, file);
 			}else {
+				logger.info("/board/write : " + board);
 				boardService.updateBoard(board);
 			}
 		}catch(Exception e) {
@@ -207,23 +209,28 @@ public class BoardController {
 	public String updateComment(Comments comment,Model model, BindingResult result, HttpSession session, RedirectAttributes redirectAttrs) {
 		try {
 			boardService.updateComment(comment);
-			model.addAttribute("comment",comment);
+			Comments updatedComment=boardService.selectComment(comment.getCommentId());
+			model.addAttribute("comment",updatedComment);
+			logger.info("updateComment :"+ updatedComment.toString());
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "board/comment/update";
+		return "board/comment";
 	}
 	
 	//댓글 삭제
 	@RequestMapping(value="/board/comment/delete",method=RequestMethod.POST)
 	public String deleteComments(Comments comment, BindingResult result,HttpSession session, RedirectAttributes redirectAttrs) {
+		Comments deleteComment=boardService.selectComment(comment.getCommentId());
 		try {
 			//board.setBoardId(4);//테스트용 
+			
 			boardService.deleteComment(comment.getCommentId());
+			logger.info("deleteComment :"+deleteComment.toString());
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/board/view/"+comment.getBoardId()+"/"+(Integer)session.getAttribute("page");
+		return "redirect:/board/view/"+deleteComment.getBoardId()+"/"+(Integer)session.getAttribute("page")+"/1";
 	}
 }
