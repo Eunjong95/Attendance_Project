@@ -36,6 +36,7 @@ public class BoardController {
 	@Autowired
 	IBoardService boardService;
 	
+	
 	@RequestMapping("/file/{fileId}")
 	public ResponseEntity<byte[]> getFile(@PathVariable int fileId) {
 		BoardFile file = boardService.getFile(fileId);
@@ -135,7 +136,6 @@ public class BoardController {
 		}
 		return "redirect:/board/cat/"+board.getBoardCategoryId()+"/"+(Integer)session.getAttribute("page");
 	}
-	
 	//게시글 목록
 	@RequestMapping("/board/cat/{boardCategoryId}/{page}")
 	public String getBoardList(@PathVariable int boardCategoryId, @PathVariable int page, HttpSession session, Model model ) {

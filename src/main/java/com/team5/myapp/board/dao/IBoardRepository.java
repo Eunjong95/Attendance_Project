@@ -37,15 +37,21 @@ public interface IBoardRepository {
 	void deleteComment(int commentId);
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
     //댓글 조회
     int selectTotalCommentsPageByCommentId(int commentId);
     List<Comments> selectCommentsListByCommentId(@Param("commentId") int commentId, @Param("start") int start, @Param("end") int end);
 =======
+=======
+>>>>>>> refs/heads/comment
 	//댓글 조회
 	int selectTotalCommentsPageByCommentId(int boardId);
 	List<Comments> selectCommentsListByCommentId(@Param("boardId") int boardId, @Param("start") int start, @Param("end") int end);
 	
+<<<<<<< HEAD
 >>>>>>> branch 'master' of https://github.com/dksgksrlf/Attendance_Project.git
+=======
+>>>>>>> refs/heads/comment
 	//검색
 	int selectTotalBoardPageByKeyword(String keyword);
 	List<Board> searchListByContentKeyword(@Param("keyword") String keyword, @Param("start") int start, @Param("end") int end);

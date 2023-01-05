@@ -8,7 +8,7 @@
 				NVL(MAX(board_id),0) AS "boardId"
 			FROM board
 		]]>
-	</select>
+	</select> 
 
 	<!-- 파일 아이디 개수 조회 -->
 	<select id="selectMaxFileId" parameterType="int" resultType="int">
