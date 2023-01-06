@@ -38,7 +38,7 @@
 	<div class="sidebar-heading">Interface</div>
 
 	<!-- Nav Item - Pages Collapse Menu -->
-	<c:if test="${role eq 0}">
+	<c:if test="${role eq 0 || role eq null}">
 		<li class="nav-item">
 			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> 
 				<i class="fa-solid fa-list"></i> 
@@ -53,6 +53,7 @@
 		</li>
 	</c:if>
 	
+	<!-- 관리자용 사이드바 -->
 	<c:if test="${role eq 1}">
 		<li class="nav-item">
 			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> 
@@ -81,6 +82,8 @@
 			</a>
 		</li>
 	</c:if>
+	<!-- End of 관리자용 사이드바 -->
+	
 	<!-- Nav Item - Charts -->
 	<li class="nav-item">
 		<a class="nav-link" href="<c:url value='/board/cat/2'/>">

@@ -31,9 +31,9 @@
    <resources location="/WEB-INF/resources/vendor/" mapping="/vendor/**"/>
    <resources location="/WEB-INF/resources/img/" mapping="/img/**"/>
    
-   <resources location="/calendar/resources/js/" mapping="/WEB-INF/resources/calendar/**"></resources>
+   <resources location="/WEB-INF/resources/calendar/" mapping="/calendar/**"></resources>
    
-   <resources location="/calendar/resources/js/" mapping="/WEB-INF/resources/calendar/**"></resources>
+   <resources location="/calendar/resources/" mapping="/WEB-INF/resources/calendar/**"></resources>
    <!-- <resources location="/WEB-INF/resources/font-awesome/" mapping="/font-awesome/**"/>
    <resources location="/WEB-INF/resources/assets/" mapping="/assets/**"/> -->
    
