@@ -140,7 +140,7 @@
 											 <div class="content">
 												<div id='calendar'></div>
 											</div>
-										 	<script src="<c:url value='/calendar/resources/js/'/>"></script>
+										 	<%-- <script src="<c:url value='/calendar/resources/js/'/>"></script> --%>
 												<script>
 												
 												  document.addEventListener('DOMContentLoaded', function() {
