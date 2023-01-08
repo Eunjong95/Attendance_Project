@@ -31,5 +31,12 @@
 			WHERE user_id=#{userId}
 		]]>
 	</select>
-
+	
+	<select id="selectMemberCount" parameterType="int" resultType="int">
+		<![CDATA[
+			SELECT COUNT(user_id) as "count" 
+			FROM MEMBERS 
+			WHERE lecture_id=#{lectureId}
+		]]>
+	</select>
 </mapper>

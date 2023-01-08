@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.team5.myapp.board.model.Board;
 import com.team5.myapp.board.service.IBoardService;
-
+import com.team5.myapp.lecture.model.Lecture;
+import com.team5.myapp.lecture.service.ILectureService;
 /**
  * Handles requests for the application home page.
  */
@@ -26,7 +27,8 @@ public class HomeController {
 	
 	@Autowired
 	IBoardService boardService;
-	
+	@Autowired
+	ILectureService lectureService;
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, HttpSession session, Model model) {
 		session.setAttribute("page", 1);
@@ -49,7 +51,18 @@ public class HomeController {
 	
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin(Locale locale, HttpSession session, Model model) {
+		session.setAttribute("page", 1);
+		List<Lecture> lectureList = lectureService.selectLectureList(1);
+		model.addAttribute("lectureList",lectureList);
+		logger.info("homeController : ", lectureList);
+		//paging start
+		/*int lCount = lectureService.selectTotalLecturePage()
+		int totalPage = 0;
+		if(lCount>0) {
+			totalPage = (int)Math.ceil(lCount/5.0);
+		}
 		
+		model.addAttribute("lecturetotalPage",totalPage);*/
 		return "admin/home";
 	}
 	

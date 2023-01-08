@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -54,18 +55,16 @@
 
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="mb-0 ml-2 text-gray-800"><strong>JAVA</strong></h1>
+						<h1 class="mb-0 ml-2 text-gray-800"><strong>어서오세요 ${userId}님</strong></h1>
 						<!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3"><span style="font-size:18px;">출석 체크하기<i class="fa-solid fa-check ml-2"></i></span></a> -->
 					</div>
-					<div class="d-sm-flex align-items-center justify-content-end mb-4 mr-3">
-						<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3"><span style="font-size:18px;">출석 체크하기<i class="fa-solid fa-check ml-2"></i></span></a>
-					</div>
+					
 					<!-- 출퇴근 표시 -->
 					<div class="row">
 						<div class="container-fluid">
 							<div class="row">
-								<div class="col-6">
-									<div class="card border-left-primary shadow h-100 py-2">
+								<div class="col-3">
+									<div class="card border-left-warning shadow h-100 py-2">
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
@@ -80,15 +79,47 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-6">
-									<div class="card border-left-danger shadow h-100 py-2">
+								<div class="col-3">
+									<div class="card border-left-warning shadow h-100 py-2">
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
-													<div class="text-xl font-bold text-danger text-uppercase mb-1"><b>OUT</b></div>
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
 													<div class="mb-0 font-weight-bold text-gray-700">2023년 01월 02일(월)</div>
 												</div>
-												<div class="col-auto d-flex mt-3">
+												<div class="col-auto d-flex mt-3 align-content-center">
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">08:45:00</div>
+													<div><i class="fa-regular fa-clock fa-2x"></i></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="card border-left-warning shadow h-100 py-2">
+										<div class="card-body">
+											<div class="row no-gutters align-items-center">
+												<div class="col mr-2">
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
+													<div class="mb-0 font-weight-bold text-gray-700">2023년 01월 02일(월)</div>
+												</div>
+												<div class="col-auto d-flex mt-3 align-content-center">
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">08:45:00</div>
+													<div><i class="fa-regular fa-clock fa-2x"></i></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="card border-left-warning shadow h-100 py-2">
+										<div class="card-body">
+											<div class="row no-gutters align-items-center">
+												<div class="col mr-2">
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
+													<div class="mb-0 font-weight-bold text-gray-700">2023년 01월 02일(월)</div>
+												</div>
+												<div class="col-auto d-flex mt-3 align-content-center">
 													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">08:45:00</div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
@@ -105,28 +136,26 @@
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-6">
-									<span>강의 자료 목록</span>
+									<span>강의 목록</span>
 									<table class="table" style="background-color: white;">
 										<thead>
 											<tr>
 												<th>No.</th>
-												<th>카테고리</th>
-												<th>제목</th>
-												<th>작성자</th>
-												<th>작성일</th>
+												<th>강의명</th>
+												<th>인원</th>
+												<!-- <th>대기중인 요청</th> -->
 											</tr>
 										</thead>
 										<tbody>
-											<c:set var="seq" value="${(page-1)*10+1}" scope="page"/> 
-	                                    	<c:forEach var="board" items="${boardList}">
+											<%-- <c:set var="seq" value="${(page-1)*10+1}" scope="page"/> --%> 
+	                                    	<c:forEach var="lecture" items="${lectureList}">
 	                                    		<tr>
-	                                    			<td>${board.boardId}</td>
+	                                    			<td>${lecture.lectureId}</td>
 	                                    			<td>
-	                                    				<c:if test="${board.boardCategoryId == 1}">자료실</c:if>
+	                                    				${lecture.lectureName}
 	                                    			</td>
-	                                    			<td>${board.boardTitle}</td>
-	                                    			<td>${board.userId}</td>
-	                                    			<td><fmt:formatDate value="${board.boardDate}" pattern="YYYY-MM-dd"/></td>
+	                                    			<td>${lecture.memberNum}</td>
+	                                    			<%-- <td>${lecture.reasonCount}</td> --%>
 	                                    		</tr>
 	                                    	</c:forEach>    
 										</tbody>
@@ -140,7 +169,7 @@
 											 <div class="content">
 												<div id='calendar'></div>
 											</div>
-										 	<script src="<c:url value='/calendar/resources/js/'/>"></script>
+										 	<%-- <script src="<c:url value='/calendar/resources/js/'/>"></script> --%>
 												<script>
 												
 												  document.addEventListener('DOMContentLoaded', function() {
