@@ -5,16 +5,29 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.team5.myapp.attendance.model.Attendance;
 import com.team5.myapp.reason.model.Reason;
 
-public interface IReasonRepository {
+public interface IReasonRepository {	
+//	int selectMaxAttendanceId();
+//	int selectMaxReasonId();
+
+	// 사용자의 attendance_id 가져오기 : 안씀
+	int selectAttendanceIdForReason();
 	
-	//사유서 신청 목록
-	int selectTotalReasonPage(String userId);
-	List<Reason> selectReasonList(@Param("userId") String userId, @Param("start") int start, @Param("end") int end);
+	// max attendance_id 생성 : 안씀
+	int selectMaxAttendanceId();
+	
+	//attendance 행 넣어주기 : 안씀
+	int insertAttendanceForReason(Attendance attendance);
+	
+	//내 사유서 신청 목록
+	int selectTotalReasonPage(@Param("userId")String userId);
+	List<Reason> selectReasonList(@Param("userId")String userId, @Param("start") int start, @Param("end") int end);
 
 	//사유서 작성 - attendance status : 휴가로 업데이트 
 	void insertReason(Reason reason);
+	void insertReasonWithFile(Reason reason);
 	
 	//사유서를 신청할 날짜가 존재하는지
 	//날짜가 존재하면 해당 날짜로 reason insert

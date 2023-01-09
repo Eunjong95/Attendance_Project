@@ -1,4 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.myapp.reason.dao.IReasonRepository">
+
+	<!-- 내 사유서 신청 목록 조회 -->
+	<select id="selectReasonList" parameterType="map"
+		resultType="com.team5.myapp.reason.model.Reason">
+		<![CDATA[
+			select
+				reason_id as "reasonId",
+				reason_date as "reasonDate",
+				reason_write_date as "reasonWriteDate",
+				reason_category_id as "reasonCategoryId",
+				reason_status as "reasonStatus",
+				reason.user_id as "userId"
+			from reason left outer join members
+            on reason.user_id=members.user_id
+            where reason.user_id=#{userId}
+			order by reason_date
+			OFFSET #{start}-1 ROWS
+			FETCH FIRST 5 ROWS ONLY	
+		]]>
+	</select>
+
+	<!-- 사유서 신청목록 페이징 -->
+	<select id="selectTotalReasonPage" parameterType="map"
+		resultType="int">
+		<![CDATA[
+			select count(reason_id) as "count"
+			from reason left outer join members
+			on reason.user_id=members.user_id
+			where reason.user_id=#{userId}
+		]]>
+	</select>
+
+	<!-- insertReason을 위해 attendanceId 가져오기 -->
+	<select id="selectAttendanceIdForReason" parameterType="int"
+		resultType="int">
+		<![CDATA[
+			select attendance.attendance_id as "attendanceId"
+			from attendance, reason
+			where attendance.attendance_id=#{attendanceId}
+		]]>
+	</select>
+
+	<select id="selectMaxAttendanceId" parameterType="int"
+		resultType="int">
+		<![CDATA[
+			select NVL(MAX(attendance_id),0) AS "attendanceId"
+			from attendance
+		]]>
+	</select>
+
+	<insert id="insertAttendanceForReason" parameterType="com.team5.myapp.attendance.model.Attendance">
+		<![CDATA[
+			insert into attendance(attendance_id, attendance_date, user_id)
+			values(#{attendanceId}, #{reasonDate}, #{userId})
+		]]>
+	</insert>
+
+	<!-- 여기서부터 쓰는 것 -->
+	<insert id="insertReasonWithFile"
+		parameterType="com.team5.myapp.reason.model.Reason">		
+		<![CDATA[
+		insert into reason (reason_id, reason_content, reason_date, user_id,
+			reason_category_id, reason_status, reason_file_name, reason_file_size, reason_file_content_type, reason_file_data, reason_write_date)
+		values 
+			(seq_reason_id.nextval, #{reasonContent}, #{reasonDate}, #{userId}, #{reasonCategoryId}, #{reasonStatus}, #{reasonFileName}, #{reasonFileSize}, #{reasonFileContentType}, #{reasonFileData}, sysdate)			
+		]]>
+	</insert>
+
+	<insert id="insertReason"
+		parameterType="com.team5.myapp.reason.model.Reason">		
+		<![CDATA[
+		insert into reason (reason_id, reason_content, reason_date, user_id,
+			reason_category_id, reason_status, reason_write_date)
+		values 
+			(seq_reason_id.nextval, #{reasonContent}, #{reasonDate}, #{userId}, #{reasonCategoryId}, #{reasonStatus}, sysdate)	
+		]]>
+	</insert>
+
+
+
 </mapper>
