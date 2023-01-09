@@ -1,4 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.myapp.reason.dao.IReasonRepository">
+
+	<select id="selectTotalReasonPage" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM reason, members
+		WHERE reason.user_id = members.user_id
+		<if test="reasonStatus == 0">
+			and reason_status = 0
+		</if>
+		<if test="reasonStatus != 0">
+			and not (reason_status=0)
+		</if>
+		<if test="lectureId != 0">
+			and lecture_id = #{lectureId}
+		</if>
+	</select>
+	
+	<!-- 사유서 전체 목록 -->
+	<select id="selectReasonList" parameterType="map" resultType="com.team5.myapp.reason.model.Reason">
+		SELECT
+		    r.reason_id as "reasonId",
+		    reason_category_name as "reasonCategoryName",
+		    reason_content as "reasonContent",
+		    r.user_id as "userId",
+		    user_name as "userName",
+		    reason_date as "reasonDate",
+		    reason_write_date as "reasonWriteDate",
+		    reason_status as "reasonStatus",
+		    lecture_id as "lectureId"
+		FROM reason r, reason_category c, members m
+		WHERE r.reason_category_id = c.reason_category_id and r.user_id = m.user_id
+		<if test="reasonStatus == 0">
+			and reason_status = 0
+		</if>
+		<if test="reasonStatus != 0">
+			and not (reason_status=0)
+		</if>
+		<if test="lectureId != 0">
+			and lecture_id = #{lectureId}
+		</if>
+		ORDER BY reason_id DESC
+		OFFSET #{start}-1 ROWS
+		FETCH FIRST #{end} ROWS ONLY
+	</select>
+	
+	<!-- 사유서 상세보기 -->
+	<select id="selectReason" parameterType="int" resultType="com.team5.myapp.reason.model.Reason">
+		<![CDATA[
+			select
+			    r.reason_id as "reasonId",
+			    reason_category_name as "reasonCategoryName",
+			    r.user_id as "userId",
+			    user_name as "userName",
+			    reason_content as "reasonContent",
+			    reason_date as "reasonDate",
+			    reason_write_date as "reasonWriteDate",
+			    reason_status as "reasonStatus",
+			    reason_file_name as "reasonFileName",
+			    reason_file_size as "reasonFileSize",
+			    reason_file_content_type as "reasonFileContentType"
+			from reason r, reason_category c, members m
+			where r.reason_category_id=c.reason_category_id and r.user_id=m.user_id 
+			and r.reason_id=#{reasonId}
+		]]>	
+	</select>
+	
+	<select id="getFile" parameterType="int" resultType="com.team5.myapp.reason.model.Reason">
+		<![CDATA[
+			select
+				reason_file_name as "reasonFileName",
+			    reason_file_size as "reasonFileSize",
+			    reason_file_content_type as "reasonFileContentType",
+				reason_file_data as "reasonFileData",
+				reason_id as "reasonId"
+			from reason
+			where reason_id=#{reasonId}
+		]]>	
+	</select>
+	<!-- 사유서 승인처리 -->
+	<update id="updateReasonStatus" parameterType="map">
+		<![CDATA[
+			UPDATE reason
+			SET reason_status=#{reasonStatus}
+			WHERE reason_id=#{reasonId}
+		]]>
+	</update>
 </mapper>

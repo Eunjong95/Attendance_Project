@@ -16,15 +16,14 @@ public class ReasonService implements IReasonService {
 	IReasonRepository reasonRepository;
 
 	@Override
-	public int selectTotalReasonPage(String userId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int selectTotalReasonPage(int reasonStatus, int lectureId) {
+		return reasonRepository.selectTotalReasonPage(reasonStatus, lectureId);
 	}
 
 	@Override
-	public List<Reason> selectReasonList(String userId, int page) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Reason> selectReasonList(int reasonStatus, int lectureId, int page) {
+		int start =(page-1)*5 + 1;
+		return reasonRepository.selectReasonList(reasonStatus, lectureId, start, start+4);
 	}
 
 	@Override
@@ -47,14 +46,17 @@ public class ReasonService implements IReasonService {
 
 	@Override
 	public void updateReasonStatus(int resaonId, int reasonStatus) {
-		// TODO Auto-generated method stub
-		
+		reasonRepository.updateReasonStatus(resaonId, reasonStatus);
 	}
 
 	@Override
+	public Reason getFile(int reasonId) {
+		return reasonRepository.getFile(reasonId);
+	}
+	
+	@Override
 	public Reason selectReason(int reasonId) {
-		// TODO Auto-generated method stub
-		return null;
+		return reasonRepository.selectReason(reasonId);
 	}
 
 	@Override
@@ -68,5 +70,5 @@ public class ReasonService implements IReasonService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }
