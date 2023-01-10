@@ -8,7 +8,7 @@
 				NVL(MAX(board_id),0) AS "boardId"
 			FROM board
 		]]>
-	</select>
+	</select> 
 
 	<!-- 파일 아이디 개수 조회 -->
 	<select id="selectMaxFileId" parameterType="int" resultType="int">
@@ -199,8 +199,21 @@
 	<!-- 댓글 삭제 -->
 	<delete id="deleteComment" parameterType="int">
 		<![CDATA[
-			DELETE FROM comment
+			DELETE FROM comments
 			WHERE comment_id=#{commentId}
 		]]>
 	</delete>
+	<!-- 댓글 한개 가져오기 -->
+	<select id="selectComment" parameterType="int" resultType="com.team5.myapp.board.model.Comments">
+		<![CDATA[
+			select 
+				comment_id as "commentId",
+				comment_date as "commentDate",
+				comment_content as "CommentContent",
+				board_id as "boardId",
+				user_id as "userId"
+			from comments
+			where comment_id=#{commentId}
+		]]>	
+	</select>
 </mapper>

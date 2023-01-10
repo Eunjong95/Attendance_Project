@@ -2,8 +2,17 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<c:if test="${role eq 0}">
+	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+</c:if>
 
+<c:if test="${empty userId}">
+	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+</c:if>
+
+<c:if test="${role eq 1}">
+	<ul class="navbar-nav bg-gradient-warning sidebar sidebar-dark accordion" id="accordionSidebar">
+</c:if>
 	<!-- Sidebar - Brand -->
 	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="<c:url value='/'/>">
 		<div class="sidebar-brand-icon rotate-n-15">
@@ -29,19 +38,52 @@
 	<div class="sidebar-heading">Interface</div>
 
 	<!-- Nav Item - Pages Collapse Menu -->
-	<li class="nav-item">
-		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> 
-			<i class="fa-solid fa-list"></i> 
-			<span>근태 현황</span>
-		</a>
-		<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="buttons.html">나의 근태(월별)</a> 
-				<a class="collapse-item" href="cards.html">휴가 신청</a>
+	<c:if test="${role eq 0 || role eq null}">
+		<li class="nav-item">
+			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> 
+				<i class="fa-solid fa-list"></i> 
+				<span>근태 현황</span>
+			</a>
+			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="collapse-item" href="<c:url value='/attendance/list'/>">나의 근태(월별)</a> 
+					<a class="collapse-item" href="cards.html">휴가 신청</a>
+				</div>
 			</div>
-		</div>
-	</li>
-
+		</li>
+	</c:if>
+	
+	<!-- 관리자용 사이드바 -->
+	<c:if test="${role eq 1}">
+		<li class="nav-item">
+			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> 
+				<i class="fa-solid fa-clipboard"></i> 
+				<span>사유서</span>
+			</a>
+			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="collapse-item" href="<c:url value='/admin/reason/list/0'/>">사유서 요청 목록</a> 
+					<a class="collapse-item" href="<c:url value='/admin/reason/list/1'/>">사유서 처리 완료 목록</a>
+				</div>
+			</div>
+		</li>
+		
+		<li class="nav-item">
+			<a class="nav-link" href="<c:url value='/admin/lecture'/>">
+				<i class="fa-solid fa-list"></i> 
+				<span>강의 목록</span>
+			</a>
+		</li>
+		
+		<li class="nav-item">
+			<a class="nav-link" href="<c:url value='/admin/student'/>">
+				<i class="fa-solid fa-users"></i>
+				<span>학생 목록</span>
+			</a>
+		</li>
+	</c:if>
+	<!-- End of 관리자용 사이드바 -->
+	
 	<!-- Nav Item - Charts -->
 	<li class="nav-item">
 		<a class="nav-link" href="<c:url value='/board/cat/2'/>">

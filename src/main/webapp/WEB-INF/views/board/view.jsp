@@ -27,8 +27,9 @@
 	<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
 	<!-- fullcalendar 언어 CDN -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
-
+	<script src="<c:url value='/js/view.js'/>"></script>
 </head>
 
 <body id="page-top">
@@ -113,10 +114,15 @@
 							</div>
 							<hr />
 							<div class="d-flex justify-content-center">
-								<button type="button"
-									class="btn btn-primary btn-sm mr-1 text-center" onclick="">수정</button>
-								<button type="button" class="btn btn-primary btn-sm text-center"
-									onclick="">삭제</button>
+								<a href='<c:url value="/board/update/${board.boardId}"/>'
+									class="btn btn-primary btn-sm mr-1 text-center" >수정</a>
+								<form id="deleteBoard" action="<c:url value='/board/delete'/>" method="POST">
+								    <input type="hidden" name="boardId" value="${board.boardId}">
+								    <input type="hidden" name="boardCategoryId" value="${board.boardCategoryId}">
+								    
+								    <button type="submit" class="btn btn-primary btn-sm mr-1 text-center" form="deleteBoard" >삭제</button>
+						    	
+						    	</form>
 							</div>
 						</div>
 					</div>
@@ -148,26 +154,26 @@
 								<!-- DB에서 댓글 가져오기 -->
 								<c:if test="${board.commentList!=null}">
 									<c:forEach var="comments" items="${board.commentList}">
-										<div class="row pl-4 my-3">
+										<div id="comment${comments.commentId }" class="row pl-4 my-3">
 											<div class="col-1">
 												<h6>${comments.userId}</h6>
 											</div>
-											<div class="col-8">
+											<div id="commentContent${comments.commentId}" class="col-8">
 												<h6>${comments.commentContent}</h6>
 											</div>
-											<div class="col-1 pl-2">
-												<h6>${comments.commentDate}</h6>
+											<div id="commentDate${comments.commentId}" class="col-1 pl-2">
+												<h6 id="commentDate${comments.commentId}">${comments.commentDate}</h6>
 											</div>
-											<div class="d-flex col-2 justify-content-end">
-												<%-- <form id="commentForm" name="commentForm" method="post" action="<c:url value='/board/comment/update'/>">
-													<input type="hidden" name="commentId" value="${comments.commentId}">
-													<button type="submit" class="btn btn-primary btn-sm text-center mr-1" >수정</button>
-												</form>
-												<form id="commentForm" name="commentForm" method="post" action="<c:url value='/board/comment/delete'/>">
-													<input type="hidden" name="commentId" value="${comments.commentId}">
-													<button type="submit" class="btn btn-primary btn-sm text-center">삭제</button>
-												</form> --%>
-											</div>
+											<c:if test="${comments.userId eq userId}">
+												<div id="commentForm" class="d-flex col-2 justify-content-end">
+													<button id="commentUpdateBtn${comments.commentId}" onclick="updateComment(${comments.commentId})" class="btn btn-primary btn-sm text-center mr-1" >수정</button>
+													
+													<form id="commentdeleteForm" name="commentForm" method="post" action="<c:url value='/board/comment/delete'/>">
+														<input type="hidden" name="commentId" value="${comments.commentId}">
+														<button type="submit" class="btn btn-primary btn-sm text-center">삭제</button>
+													</form> 
+												</div>
+											</c:if>
 										</div>
 									</c:forEach>
 								</c:if>
@@ -238,22 +244,9 @@
 			</div>
 		</div>
 
-		<!-- Bootstrap core JavaScript-->
-		<script src="vendor/jquery/jquery.min.js"></script>
-		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-		<!-- Core plugin JavaScript-->
-		<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-		<!-- Custom scripts for all pages-->
-		<script src="js/sb-admin-2.min.js"></script>
-
-		<!-- Page level plugins -->
-		<script src="vendor/chart.js/Chart.min.js"></script>
-
-		<!-- Page level custom scripts -->
-		<script src="js/demo/chart-area-demo.js"></script>
-		<script src="js/demo/chart-pie-demo.js"></script>
+		<!-- Footer -->
+		<jsp:include page="/WEB-INF/views/include/footer.jsp"/>
+		<!-- End of Footer -->
 </body>
 
 </html>

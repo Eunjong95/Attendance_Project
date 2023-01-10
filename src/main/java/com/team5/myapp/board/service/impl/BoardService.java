@@ -119,4 +119,9 @@ public class BoardService implements IBoardService {
 		return null;
 	}
 
+	@Override
+	public Comments selectComment(int commentId) {
+		
+		return boardRepository.selectComment(commentId);
+	}
 }
