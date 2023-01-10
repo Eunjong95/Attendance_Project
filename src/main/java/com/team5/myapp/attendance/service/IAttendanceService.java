@@ -12,8 +12,11 @@ public interface IAttendanceService {
 	void insertWorktime(String userId);
 	void updateWorktime(String userId);
 	
+	//출결 가져오기
+	Attendance selectAttendance(String userId);
+	
 	//출결 상태 update
-	void updateAttendanceStatus(int attendanceId);
+	void updateAttendanceStatus(int attendanceStatus,String userId);
 	
 	//출결 현황 목록
 	int selectTotalAttendancePage(String userId);
@@ -23,7 +26,7 @@ public interface IAttendanceService {
 	int selectLateCount(String userId);
 	
 	//결근 횟수
-	int selectAbsenceCount(String usrId);
+	int selectAbsenceCount(String userId);
 	
 	//출석 횟수
 	int selectAttendanceCount(String userId);

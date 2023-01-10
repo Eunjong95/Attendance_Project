@@ -46,7 +46,7 @@
 			</a>
 			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
-					<a class="collapse-item" href="buttons.html">나의 근태(월별)</a> 
+					<a class="collapse-item" href="<c:url value='/attendance/list'/>">나의 근태(월별)</a> 
 					<a class="collapse-item" href="cards.html">휴가 신청</a>
 				</div>
 			</div>
@@ -62,8 +62,8 @@
 			</a>
 			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
-					<a class="collapse-item" href="<c:url value='/reason/list/0'/>">사유서 요청 목록</a> 
-					<a class="collapse-item" href="<c:url value='/reason/list/1'/>">사유서 처리 완료 목록</a>
+					<a class="collapse-item" href="<c:url value='/admin/reason/list/0'/>">사유서 요청 목록</a> 
+					<a class="collapse-item" href="<c:url value='/admin/reason/list/1'/>">사유서 처리 완료 목록</a>
 				</div>
 			</div>
 		</li>

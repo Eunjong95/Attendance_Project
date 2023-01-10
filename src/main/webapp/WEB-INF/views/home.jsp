@@ -27,6 +27,45 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
 <!-- fullcalendar 언어 CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+<!-- JS -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	$(document).ready(function(){
+		$('#workCheck').click(function(){ 
+			$.ajax({
+				url:'worktime',
+				type:'get',
+				success : function(data){ 
+					console.log(data);
+					var date = data.attendanceDate;
+					var time = data.clockIn;
+					$('#dateIn').append(date);
+					$('#timeIn').append(time);
+					$('#workCheck').removeClass('d-sm-inline-block');
+					$('#workCheck2').addClass('d-sm-inline-block');
+				}
+			});
+		});
+		$('#workCheck2').click(function(){ 
+			$.ajax({
+				url:'worktime',
+				type:'post',
+				success : function(data){ 
+					var date = data.attendanceDate;
+					var time = data.clockOut;
+					$('#dateOut').append(date);
+					$('#timeOut').append(time);
+					$('#workCheck2').removeClass('d-sm-inline-block');
+					$('#workCheck').addClass('d-sm-inline-block');
+				}
+			});
+		});
+	});
+</script>
+
 
 </head>
 
@@ -57,9 +96,18 @@
 						<h1 class="mb-0 ml-2 text-gray-800"><strong>JAVA</strong></h1>
 						<!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3"><span style="font-size:18px;">출석 체크하기<i class="fa-solid fa-check ml-2"></i></span></a> -->
 					</div>
-					<div class="d-sm-flex align-items-center justify-content-end mb-4 mr-3">
-						<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3"><span style="font-size:18px;">출석 체크하기<i class="fa-solid fa-check ml-2"></i></span></a>
-					</div>
+					
+						<div class="d-sm-flex align-items-center justify-content-end mb-4 mr-3">
+							<a id="workCheck" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3">
+								<span id="message1" style="font-size:18px;">출근 체크하기
+								</span>
+							</a>
+							<a id="workCheck2" class="d-none btn btn-sm btn-primary shadow-sm p-3">
+								<span id="message2" style="font-size:18px;">퇴근 체크하기
+								</span>
+							</a>
+						</div>
+					
 					<!-- 출퇴근 표시 -->
 					<div class="row">
 						<div class="container-fluid">
@@ -70,10 +118,13 @@
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
 													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
-													<div class="mb-0 font-weight-bold text-gray-700">2023년 01월 02일(월)</div>
+													<div id="dateIn" class="mb-0 font-weight-bold text-gray-700">
+													</div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">08:45:00</div>
+													<div id="timeIn" class="h3 mb-0 font-weight-bold text-gray-800 mr-3">
+														
+													</div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
 											</div>
@@ -86,10 +137,14 @@
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
 													<div class="text-xl font-bold text-danger text-uppercase mb-1"><b>OUT</b></div>
-													<div class="mb-0 font-weight-bold text-gray-700">2023년 01월 02일(월)</div>
+													<div id="dateOut" class="mb-0 font-weight-bold text-gray-700">
+														
+													</div>
 												</div>
 												<div class="col-auto d-flex mt-3">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">08:45:00</div>
+													<div id="timeOut" class="h3 mb-0 font-weight-bold text-gray-800 mr-3">
+														
+													</div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
 											</div>
@@ -140,7 +195,6 @@
 											 <div class="content">
 												<div id='calendar'></div>
 											</div>
-										 	<%-- <script src="<c:url value='/calendar/resources/js/'/>"></script> --%>
 												<script>
 												
 												  document.addEventListener('DOMContentLoaded', function() {
@@ -205,7 +259,7 @@
 	<a class="scroll-to-top rounded" href="#page-top"> 
 		<i class="fas fa-angle-up"></i>
 	</a>
-
+	
 	<!-- Logout Modal-->
 	<jsp:include page="/WEB-INF/views/include/logout.jsp"/>
 	

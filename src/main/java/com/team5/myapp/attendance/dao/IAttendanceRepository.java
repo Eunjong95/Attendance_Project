@@ -13,8 +13,11 @@ public interface IAttendanceRepository {
 	void insertWorktime(String userId);
 	void updateWorktime(String userId);
 	
+	//금일 출결 가져오기
+	Attendance selectAttendance(String userId);
+	
 	//출결 상태 update
-	void updateAttendanceStatus(int attendanceId);
+	void updateAttendanceStatus(Attendance attendance);
 	
 	//출결 현황 목록
 	int selectTotalAttendancePage(String userId);
@@ -24,7 +27,7 @@ public interface IAttendanceRepository {
 	int selectLateCount(String userId);
 	
 	//결근 횟수
-	int selectAbsenceCount(String usrId);
+	int selectAbsenceCount(String userId);
 	
 	//출석 횟수
 	int selectAttendanceCount(String userId);

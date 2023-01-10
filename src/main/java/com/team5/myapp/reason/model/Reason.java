@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString(exclude= {"reasonFileData", "reasonFile"})
+@ToString(exclude= {"reasonFileData", "files"})
 public class Reason {
 	private int reasonId;
 	private String reasonContent;
@@ -22,7 +22,7 @@ public class Reason {
 	private long reasonFileSize;
 	private String reasonFileContentType;
 	private byte[] reasonFileData;
-	private MultipartFile reasonFile;
+	private MultipartFile files;
 	private int lectureId;
 	private String reasonCategoryName;
 	private Date reasonWriteDate;
