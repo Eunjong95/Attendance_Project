@@ -28,7 +28,7 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
 <!-- fullcalendar 언어 CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
-
+<script src="<c:url value='/js/member/adminMember.js'/>"></script>
 </head>
 
 <body id="page-top">
@@ -68,11 +68,11 @@
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
-													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
-													<div class="mb-0 font-weight-bold text-gray-700">2023년 01월 02일(월)</div>
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b></b></div>
+													<div class="mb-0 font-weight-bold text-gray-700"></div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">08:45:00</div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3"></div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
 											</div>
@@ -84,11 +84,11 @@
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
-													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
-													<div class="mb-0 font-weight-bold text-gray-700">2023년 01월 02일(월)</div>
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b></b></div>
+													<div class="mb-0 font-weight-bold text-gray-700"></div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">08:45:00</div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3"></div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
 											</div>
@@ -100,11 +100,11 @@
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
-													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
-													<div class="mb-0 font-weight-bold text-gray-700">2023년 01월 02일(월)</div>
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b></b></div>
+													<div class="mb-0 font-weight-bold text-gray-700"></div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">08:45:00</div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3"></div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
 											</div>
@@ -116,11 +116,12 @@
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
-													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
-													<div class="mb-0 font-weight-bold text-gray-700">2023년 01월 02일(월)</div>
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b></b></div>
+													<div class="mb-0 font-weight-bold text-gray-700"></div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">08:45:00</div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3"></div>
+
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
 											</div>
@@ -141,6 +142,9 @@
 										<thead>
 											<tr>
 												<th>No.</th>
+
+												<th>강의 번호</th>
+
 												<th>강의명</th>
 												<th>인원</th>
 												<!-- <th>대기중인 요청</th> -->
@@ -148,8 +152,10 @@
 										</thead>
 										<tbody>
 											<%-- <c:set var="seq" value="${(page-1)*10+1}" scope="page"/> --%> 
-	                                    	<c:forEach var="lecture" items="${lectureList}">
+	                                    	<c:forEach var="lecture" items="${lectureList}" varStatus="status">
 	                                    		<tr>
+	                                    			<td>${status.count}</td>
+
 	                                    			<td>${lecture.lectureId}</td>
 	                                    			<td>
 	                                    				${lecture.lectureName}
@@ -161,57 +167,31 @@
 										</tbody>
 									</table>
 								</div>
-	
-								<div class="col-6">
-									<span>달력</span>
-									<div class="card">
-										 <div class="card-body">
-											 <div class="content">
-												<div id='calendar'></div>
-											</div>
-										 	<%-- <script src="<c:url value='/calendar/resources/js/'/>"></script> --%>
-												<script>
-												
-												  document.addEventListener('DOMContentLoaded', function() {
-												    var calendarEl = document.getElementById('calendar');
-												
-												    var calendar = new FullCalendar.Calendar(calendarEl, {
-												      headerToolbar: {
-												        left: 'prev,next today',
-												        center: 'title',
-												        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-												      },
-												      initialDate: '2023-01-03',
-												      navLinks: true, // can click day/week names to navigate views
-												      selectable: true,
-												      selectMirror: true,
-												      select: function(arg) {
-												        var title = prompt('Event Title:');
-												        if (title) {
-												          calendar.addEvent({
-												            title: title,
-												            start: arg.start,
-												            end: arg.end,
-												            allDay: arg.allDay
-												          })
-												        }
-												        calendar.unselect()
-												      },
-												      eventClick: function(arg) {
-												        if (confirm('Are you sure you want to delete this event?')) {
-												          arg.event.remove()
-												        }
-												      },
-												      editable: true,
-												      dayMaxEvents: true, // allow "more" link when too many events
-												      events: []
-												    });
-												
-												    calendar.render();
-												  });
-												
-												</script>
-										</div>
+
+								<div  class="col-6" >
+									<span>학생 목록</span>
+									<div id="memberWraper" onscroll="getMemberList()" style="overflow-y:scroll; height:300px">
+										<table id="memberList" class="table" style="background-color: white;width:100%">
+											<thead>
+												<tr>
+													<th>No.</th>
+													<th>성명</th>
+													<th>강의</th>
+													<th>출석현황</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%-- <c:set var="seq" value="${(page-1)*10+1}" scope="page"/> --%> 
+		                                    	<c:forEach var="member" items="${memberList}" varStatus="mStatus">
+		                                    		<tr>
+		                                    			<td>${mStatus.count}</td>
+		                                    			<td>${member.userName}</td>
+		                                    			<td>${member.lectureName}</td>
+		                                    			<td>${member.todayStatus}</td>
+		                                    		</tr>
+		                                    	</c:forEach>    
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</div>
@@ -236,30 +216,7 @@
 	</a>
 
 	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<br>
-					로그아웃을 원하시면 로그아웃 버튼을 눌러주세요.	
-					<br>
-					<br>
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="<c:url value='/member/logout'/>">Logout</a>
-				</div>
-			</div>
-		</div>
-	</div>
+	<jsp:include page="/WEB-INF/views/include/logout.jsp"/>
 	
 	<!-- Footer -->
 	<jsp:include page="/WEB-INF/views/include/footer.jsp"/>

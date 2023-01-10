@@ -1,4 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.myapp.reason.dao.IReasonRepository">
+	<!-- 관리자 사유서 목록 -->
+	<select id="selectTotalReasonPage" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM reason, members
+		WHERE reason.user_id = members.user_id
+		<if test="reasonStatus == 0">
+			and reason_status = 0
+		</if>
+		<if test="reasonStatus != 0">
+			and not (reason_status=0)
+		</if>
+		<if test="lectureId != 0">
+			and lecture_id = #{lectureId}
+		</if>
+	</select>
+	
+	<!-- 사유서 전체 목록 -->
+	<select id="selectReasonList" parameterType="map" resultType="com.team5.myapp.reason.model.Reason">
+		SELECT
+		    r.reason_id as "reasonId",
+		    reason_category_name as "reasonCategoryName",
+		    reason_content as "reasonContent",
+		    r.user_id as "userId",
+		    user_name as "userName",
+		    reason_date as "reasonDate",
+		    reason_write_date as "reasonWriteDate",
+		    reason_status as "reasonStatus",
+		    lecture_id as "lectureId"
+		FROM reason r, reason_category c, members m
+		WHERE r.reason_category_id = c.reason_category_id and r.user_id = m.user_id
+		<if test="reasonStatus == 0">
+			and reason_status = 0
+		</if>
+		<if test="reasonStatus != 0">
+			and not (reason_status=0)
+		</if>
+		<if test="lectureId != 0">
+			and lecture_id = #{lectureId}
+		</if>
+		ORDER BY reason_id DESC
+		OFFSET #{start}-1 ROWS
+		FETCH FIRST #{end} ROWS ONLY
+	</select>
+	
+	<!-- 사유서 상세보기 -->
+	<select id="selectReason" parameterType="int" resultType="com.team5.myapp.reason.model.Reason">
+		<![CDATA[
+			select
+			    r.reason_id as "reasonId",
+			    reason_category_name as "reasonCategoryName",
+			    r.user_id as "userId",
+			    user_name as "userName",
+			    reason_content as "reasonContent",
+			    reason_date as "reasonDate",
+			    reason_write_date as "reasonWriteDate",
+			    reason_status as "reasonStatus",
+			    reason_file_name as "reasonFileName",
+			    reason_file_size as "reasonFileSize",
+			    reason_file_content_type as "reasonFileContentType"
+			from reason r, reason_category c, members m
+			where r.reason_category_id=c.reason_category_id and r.user_id=m.user_id 
+			and r.reason_id=#{reasonId}
+		]]>	
+	</select>
+	
+	<select id="getFile" parameterType="int" resultType="com.team5.myapp.reason.model.Reason">
+		<![CDATA[
+			select
+				reason_file_name as "reasonFileName",
+			    reason_file_size as "reasonFileSize",
+			    reason_file_content_type as "reasonFileContentType",
+				reason_file_data as "reasonFileData",
+				reason_id as "reasonId"
+			from reason
+			where reason_id=#{reasonId}
+		]]>	
+	</select>
+	
+	<!-- 사유서 승인처리 -->
+	<update id="updateReasonStatus" parameterType="map">
+		<![CDATA[
+			UPDATE reason
+			SET reason_status=#{reasonStatus}
+			WHERE reason_id=#{reasonId}
+		]]>
+	</update>
+	
+	<!-- 내 사유서 신청 목록 조회 -->
+	<select id="selectReasonListByUserId" parameterType="map"
+		resultType="com.team5.myapp.reason.model.Reason">
+		<![CDATA[
+			select
+				reason_id as "reasonId",
+				reason_date as "reasonDate",
+				reason_write_date as "reasonWriteDate",
+				reason_category_id as "reasonCategoryId",
+				reason_status as "reasonStatus",
+				reason.user_id as "userId"
+			from reason left outer join members
+            on reason.user_id=members.user_id
+            where reason.user_id=#{userId}
+			order by reason_date
+			OFFSET #{start}-1 ROWS
+			FETCH FIRST 5 ROWS ONLY	
+		]]>
+	</select>
+
+	<!-- 사유서 신청목록 페이징 -->
+	<select id="selectTotalReasonPageByUserId" parameterType="map"
+		resultType="int">
+		<![CDATA[
+			select count(reason_id) as "count"
+			from reason left outer join members
+			on reason.user_id=members.user_id
+			where reason.user_id=#{userId}
+		]]>
+	</select>
+	<!-- 사유서 작성 -->
+	<insert id="insertReasonWithFile"
+		parameterType="com.team5.myapp.reason.model.Reason">		
+		<![CDATA[
+		insert into reason (reason_id, reason_content, reason_date, user_id,
+			reason_category_id, reason_status, reason_file_name, reason_file_size, reason_file_content_type, reason_file_data, reason_write_date)
+		values 
+			(seq_reason_id.nextval, #{reasonContent}, #{reasonDate}, #{userId}, #{reasonCategoryId}, #{reasonStatus}, #{reasonFileName}, #{reasonFileSize}, #{reasonFileContentType}, #{reasonFileData}, sysdate)			
+		]]>
+	</insert>
+
+	<insert id="insertReason"
+		parameterType="com.team5.myapp.reason.model.Reason">		
+		<![CDATA[
+		insert into reason (reason_id, reason_content, reason_date, user_id,
+			reason_category_id, reason_status, reason_write_date)
+		values 
+			(seq_reason_id.nextval, #{reasonContent}, #{reasonDate}, #{userId}, #{reasonCategoryId}, #{reasonStatus}, sysdate)	
+		]]>
+	</insert>
 </mapper>

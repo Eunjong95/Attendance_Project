@@ -1,10 +1,13 @@
 package com.team5.myapp.reason.service.impl;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team5.myapp.reason.dao.IReasonRepository;
 import com.team5.myapp.reason.model.Reason;
@@ -16,21 +19,43 @@ public class ReasonService implements IReasonService {
 	IReasonRepository reasonRepository;
 
 	@Override
-	public int selectTotalReasonPage(String userId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int selectTotalReasonPage(int reasonStatus, int lectureId) {
+		return reasonRepository.selectTotalReasonPage(reasonStatus, lectureId);
 	}
 
 	@Override
-	public List<Reason> selectReasonList(String userId, int page) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Reason> selectReasonList(int reasonStatus, int lectureId, int page) {
+		int start =(page-1)*5 + 1;
+		return reasonRepository.selectReasonList(reasonStatus, lectureId, start, start+4);
 	}
 
 	@Override
+	public int selectTotalReasonPageByUserId(String userId) {
+		return reasonRepository.selectTotalReasonPageByUserId(userId);
+	}
+
+	@Override
+	public List<Reason> selectReasonListByUserId(String userId, int page) {
+		int start = (page - 1) * 5 + 1;
+		return reasonRepository.selectReasonListByUserId(userId, start, start + 9);
+	}
+
+	@Transactional
 	public void insertReason(Reason reason) {
-		// TODO Auto-generated method stub
-		
+		MultipartFile files = reason.getFiles();
+		if (files != null && !files.isEmpty()) {
+			reason.setReasonFileName(files.getOriginalFilename());
+			reason.setReasonFileSize(files.getSize());
+			reason.setReasonFileContentType(files.getContentType());
+			try {
+				reason.setReasonFileData(files.getBytes());
+				reasonRepository.insertReasonWithFile(reason);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			reasonRepository.insertReason(reason);
+		}
 	}
 
 	@Override
@@ -47,14 +72,17 @@ public class ReasonService implements IReasonService {
 
 	@Override
 	public void updateReasonStatus(int resaonId, int reasonStatus) {
-		// TODO Auto-generated method stub
-		
+		reasonRepository.updateReasonStatus(resaonId, reasonStatus);
 	}
 
 	@Override
+	public Reason getFile(int reasonId) {
+		return reasonRepository.getFile(reasonId);
+	}
+	
+	@Override
 	public Reason selectReason(int reasonId) {
-		// TODO Auto-generated method stub
-		return null;
+		return reasonRepository.selectReason(reasonId);
 	}
 
 	@Override
@@ -68,5 +96,5 @@ public class ReasonService implements IReasonService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

@@ -1,5 +1,7 @@
 package com.team5.myapp.member.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,4 +30,9 @@ public class MemberService implements IMemberService {
 		return memberDao.selectMemberRole(userId);
 	}
 
+	@Override
+	public List<Member> selectMemberList(int page) {
+		int start =(page-1)*5 +1;
+		return memberDao.selectMemberList(start,start+4);
+	}
 }

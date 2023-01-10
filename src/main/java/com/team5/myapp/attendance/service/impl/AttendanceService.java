@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.team5.myapp.attendance.dao.IAttendanceRepository;
 import com.team5.myapp.attendance.model.Attendance;
@@ -15,52 +16,60 @@ public class AttendanceService implements IAttendanceService {
 	@Autowired
 	IAttendanceRepository attendanceRepository;
 	
+	//출근
 	@Override
 	public void insertWorktime(String userId) {
-		// TODO Auto-generated method stub
-		
+		attendanceRepository.insertWorktime(userId);
 	}
-
+	//퇴근
 	@Override
-	public void updateWorktime(String userId) {
-		// TODO Auto-generated method stub
+	public void updateWorktime(String userId){
+		attendanceRepository.updateWorktime(userId);
+	}
+	
+	//출결 가져오기
+	@Transactional
+	public Attendance selectAttendance(String userId) {
+		return attendanceRepository.selectAttendance(userId);
+	}
+	
+	//status 현황 변경
+	@Transactional
+	public void updateAttendanceStatus(int attendanceStatus, String userId) {
+		Attendance attendance = new Attendance();
+		attendance.setStatus(attendanceStatus);
+		attendance.setUserId(userId);
+		attendanceRepository.updateAttendanceStatus(attendance);
 		
 	}
-
-	@Override
-	public void updateAttendanceStatus(int attendanceId) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
+	
 	@Override
 	public int selectTotalAttendancePage(String userId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return attendanceRepository.selectTotalAttendancePage(userId);
 	}
-
+	
+	//출결현황
 	@Override
 	public List<Attendance> selectAttendanceList(String userId, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		int start = (page-1)*5+1;
+		return attendanceRepository.selectAttendanceList(userId, start, start+4);
 	}
-
+	
+	//지각
 	@Override
 	public int selectLateCount(String userId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return attendanceRepository.selectLateCount(userId);
 	}
-
+	//결근
 	@Override
 	public int selectAbsenceCount(String usrId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return attendanceRepository.selectAbsenceCount(usrId);
 	}
-
+	//출근
 	@Override
 	public int selectAttendanceCount(String userId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return attendanceRepository.selectAttendanceCount(userId);
 	}
 
 	@Override

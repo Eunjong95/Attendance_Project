@@ -8,3 +8,4 @@ public interface ILectureService {
 	int selectTotalLecturePage();
 	List<Lecture> selectLectureList(int page);
 }
+

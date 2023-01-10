@@ -1,5 +1,9 @@
 package com.team5.myapp.lecture.model;
 
+import java.util.List;
+
+import com.team5.myapp.member.model.Member;
+
 public class Lecture {
 	private int lectureId;
 	private String lectureName;
@@ -22,6 +26,6 @@ public class Lecture {
 	public void setLectureName(String lectureName) {
 		this.lectureName = lectureName;
 	}
-	
 
 }
+
