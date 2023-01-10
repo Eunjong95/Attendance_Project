@@ -121,6 +121,7 @@
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
 													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3"></div>
+
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
 											</div>
@@ -141,7 +142,9 @@
 										<thead>
 											<tr>
 												<th>No.</th>
+
 												<th>강의 번호</th>
+
 												<th>강의명</th>
 												<th>인원</th>
 												<!-- <th>대기중인 요청</th> -->
@@ -152,6 +155,7 @@
 	                                    	<c:forEach var="lecture" items="${lectureList}" varStatus="status">
 	                                    		<tr>
 	                                    			<td>${status.count}</td>
+
 	                                    			<td>${lecture.lectureId}</td>
 	                                    			<td>
 	                                    				${lecture.lectureName}
@@ -163,7 +167,7 @@
 										</tbody>
 									</table>
 								</div>
-	
+
 								<div  class="col-6" >
 									<span>학생 목록</span>
 									<div id="memberWraper" onscroll="getMemberList()" style="overflow-y:scroll; height:300px">

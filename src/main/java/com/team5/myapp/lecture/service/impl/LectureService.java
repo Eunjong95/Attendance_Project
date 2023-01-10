@@ -15,7 +15,7 @@ public class LectureService implements ILectureService {
 	ILectureRepository lectureRepository;
 	@Autowired
 	IMemberRepository memberRepository;
-	
+
 	@Override
 	public int selectTotalLecturePage() {
 		return lectureRepository.selectTotalLecturePage();
@@ -30,5 +30,5 @@ public class LectureService implements ILectureService {
 		}
 		return lectures;
 	}
-
 }
+

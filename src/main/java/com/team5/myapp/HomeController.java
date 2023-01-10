@@ -36,6 +36,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	ILectureService lectureService;
 	@Autowired
 	IMemberService memberService;
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, HttpSession session, Model model) {
 		session.setAttribute("page", 1);
@@ -58,16 +59,20 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin(Locale locale, HttpSession session, Model model) {
+
 		//System.out.println(session.getAttribute("role"));
 		if(session.getAttribute("role")==null||session.getAttribute("role").equals(0)) {
 			return "redirect:/";
 		}
+
 		session.setAttribute("page", 1);
 		List<Lecture> lectureList = lectureService.selectLectureList(1);
 		model.addAttribute("lectureList",lectureList);
 		logger.info("homeController : ", lectureList);
+
 		List<Member> memberList=memberService.selectMemberList(1);
 		model.addAttribute("memberList", memberList);
+
 		//paging start
 		/*int lCount = lectureService.selectTotalLecturePage()
 		int totalPage = 0;

@@ -26,5 +26,6 @@ public class Lecture {
 	public void setLectureName(String lectureName) {
 		this.lectureName = lectureName;
 	}
-	
+
 }
+
