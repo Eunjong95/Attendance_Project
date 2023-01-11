@@ -25,7 +25,7 @@ public interface IReasonService {
 
 	// 승인 취소 요청 (승인된 사유(1)에 대해서) - reason_status=1 -> reason_status=3, 관리자가 임의로 출근상태
 	// 변경할 때
-	void updateReasonStatus(int resaonId, int reasonStatus);
+	void updateReasonStatus(int reasonId, int reasonStatus);
 
 	// 사유서 상세보기
 	Reason selectReason(int reasonId);

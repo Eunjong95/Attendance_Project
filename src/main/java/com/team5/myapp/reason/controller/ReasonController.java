@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -69,8 +70,7 @@ public class ReasonController {
 		return "reason/write";
 	}
 
-	// 사유서 작성 POST -> 관리자가 신청을 승인해줘야 attendanceId가 생성되기 때문에 사유서 작성시에는 attendanceId
-	// 필요 없음
+	// 사유서 작성 POST -> 관리자가 신청을 승인해줘야 attendanceId가 생성되기 때문에 사유서 작성시에는 attendanceId 필요 없음
 	@RequestMapping(value = "/reason/write", method = RequestMethod.POST)
 	public String writeReason(Reason reason, BindingResult result, HttpSession session,
 			RedirectAttributes redirectAttrs) {
@@ -92,8 +92,8 @@ public class ReasonController {
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
 		System.out.println(reason.toString());
-		return "redirect:/";
-		// return "redirect:/reason/view/{reasonId}";
+		//return "redirect:/";
+		return "redirect:/reason/list"; 
 	}
 
 	// 사유서 목록
@@ -137,7 +137,7 @@ public class ReasonController {
 		return new ResponseEntity<byte[]>(reason.getReasonFileData(), headers, HttpStatus.OK);
 	}
 
-	@RequestMapping("/reason/view/{reasonId}/{page}")
+	@RequestMapping("/admin/reason/view/{reasonId}/{page}")
 	public String getReasonDetail(@PathVariable int reasonId, @PathVariable int page, HttpSession session,
 			Model model) {
 		Reason reason = reasonService.selectReason(reasonId);
@@ -146,19 +146,59 @@ public class ReasonController {
 		model.addAttribute("lectureId", reason.getLectureId());
 
 		logger.info("getReasonDetail", reason.toString());
+
 		return "admin/reason/reasonView";
 	}
 
-	@RequestMapping("/reason/view/{reasonId}")
-	public String getBoardDetail(@PathVariable int reasonId, HttpSession session, Model model) {
+	@RequestMapping("/admin/reason/view/{reasonId}")
+	public String getReasonDetail(@PathVariable int reasonId, HttpSession session, Model model) {
 		return getReasonDetail(reasonId, 1, session, model);
 	}
 
+	// modal & ajax용 사유서 상세보기
+	@RequestMapping("/reason/view/{reasonId}/{page}")
+	public @ResponseBody Reason getReasonDetailJson(@PathVariable int reasonId, @PathVariable int page,
+			HttpSession session, Model model) {
+		Reason reason = reasonService.selectReason(reasonId);
+		
+		model.addAttribute("reason", reason);
+		model.addAttribute("page", page);
+
+		logger.info("getReasonDetailJson", reason.toString());
+		System.out.println("reason: " + reason.toString());
+		return reason;
+	}
+
+	// modal & ajax용 사유서 상세보기
+	@RequestMapping(value = "/reason/view/{reasonId}", method = RequestMethod.GET)
+	public @ResponseBody Reason getReasonDetailJson(@PathVariable int reasonId, HttpSession session, Model model) {
+		return getReasonDetailJson(reasonId, 1, session, model);
+	}
+	
+	// 사유서 취소 요청 (승인된 사유서에 대해 취소요청 하기)-post
+	@RequestMapping(value="/reason/update", method=RequestMethod.POST)
+	public String updateReason(Reason reason, BindingResult result, HttpSession session, RedirectAttributes redirectAttrs) {
+		System.out.println("reasonId" + reason.getReasonId());
+		System.out.println("reasonStatus" + reason.getReasonStatus());
+		
+		reasonService.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());	
+		return "redirect:/reason/list/" + session.getAttribute("page");
+	}
+	
+	
+	// 사유서 삭제 (미승인 사유서면 삭제 가능)
+	@RequestMapping(value="/reason/delete", method=RequestMethod.POST)
+	public String deleteReason(Reason reason, BindingResult result, HttpSession session, RedirectAttributes redirectAttrs) {	
+		System.out.println("reasonId" + reason.getReasonId());
+		
+		reasonService.deleteReason(reason.getReasonId());
+		return "redirect:/reason/list/" + session.getAttribute("page");
+	}
+		
 	// 사유서 승인
 	@RequestMapping(value = "/reason/approve", method = RequestMethod.POST)
 	public String updateReasonStatus(Reason reason, HttpSession session) {
 		reasonService.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
-
 		return "redirect:/reason/list/1";
 	}
 

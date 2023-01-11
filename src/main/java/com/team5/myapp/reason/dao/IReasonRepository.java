@@ -27,7 +27,7 @@ public interface IReasonRepository {
 	//사유서 삭제 (승인되기전에만 가능), (관리자)승인 취소 요청 승인
 	void deleteReason(int reasonId);
 	
-	//승인 취소 요청 (승인된 사유(1)에 대해서) - reason_status=1 -> reason_status=3, 관리자가 임의로 출근상태 변경할 때 
+	//reason_status 상태 변경 (승인된 사유(1)에 대해서) - reason_status=1 -> reason_status=3, 관리자가 임의로 출근상태 변경할 때 
 	void updateReasonStatus(@Param("reasonId") int reasonId, @Param("reasonStatus") int reasonStatus);
 	
 	//사유서 상세보기

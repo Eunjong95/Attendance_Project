@@ -28,10 +28,9 @@
 <!-- fullcalendar 언어 CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 <!-- JS -->
-<script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
 	$(document).ready(function(){
 		$('#workCheck').click(function(){ 
@@ -39,13 +38,15 @@
 				url:'worktime',
 				type:'get',
 				success : function(data){ 
-					console.log(data);
 					var date = data.attendanceDate;
 					var time = data.clockIn;
 					$('#dateIn').append(date);
 					$('#timeIn').append(time);
 					$('#workCheck').removeClass('d-sm-inline-block');
 					$('#workCheck2').addClass('d-sm-inline-block');
+					$('#dateIn').attr('id','dateInInputEnd');
+					$('#timeIn').attr('id','timeInInputEnd');
+					
 				}
 			});
 		});
@@ -60,6 +61,8 @@
 					$('#timeOut').append(time);
 					$('#workCheck2').removeClass('d-sm-inline-block');
 					$('#workCheck').addClass('d-sm-inline-block');
+					$('#dateOut').attr('id','dateOutInputEnd');
+					$('#timeOut').attr('id','timeOutInputEnd');
 				}
 			});
 		});
@@ -99,11 +102,11 @@
 					
 						<div class="d-sm-flex align-items-center justify-content-end mb-4 mr-3">
 							<a id="workCheck" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3">
-								<span id="message1" style="font-size:18px;">출근 체크하기
+								<span style="font-size:18px;">출근 체크하기
 								</span>
 							</a>
 							<a id="workCheck2" class="d-none btn btn-sm btn-primary shadow-sm p-3">
-								<span id="message2" style="font-size:18px;">퇴근 체크하기
+								<span style="font-size:18px;">퇴근 체크하기
 								</span>
 							</a>
 						</div>
@@ -119,11 +122,14 @@
 												<div class="col mr-2">
 													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
 													<div id="dateIn" class="mb-0 font-weight-bold text-gray-700">
+														<c:set var="attendanceDate" value="${attendanceDate}"/>
+                                            			<c:out value="${attendanceDate}"/>
 													</div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
 													<div id="timeIn" class="h3 mb-0 font-weight-bold text-gray-800 mr-3">
-														
+														<c:set var="clockIn" value="${clockIn}"/>
+                                            			<c:out value="${clockIn}"/>
 													</div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
@@ -138,12 +144,14 @@
 												<div class="col mr-2">
 													<div class="text-xl font-bold text-danger text-uppercase mb-1"><b>OUT</b></div>
 													<div id="dateOut" class="mb-0 font-weight-bold text-gray-700">
-														
+														<c:set var="attendanceDate" value="${attendanceDate}"/>
+                                            			<c:out value="${attendanceDate}"/>
 													</div>
 												</div>
 												<div class="col-auto d-flex mt-3">
 													<div id="timeOut" class="h3 mb-0 font-weight-bold text-gray-800 mr-3">
-														
+														<c:set var="clockOut" value="${clockOut}"/>
+                                            			<c:out value="${clockOut}"/>
 													</div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>

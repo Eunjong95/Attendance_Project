@@ -25,8 +25,8 @@ public class ReasonService implements IReasonService {
 
 	@Override
 	public List<Reason> selectReasonList(int reasonStatus, int lectureId, int page) {
-		int start =(page-1)*5 + 1;
-		return reasonRepository.selectReasonList(reasonStatus, lectureId, start, start+4);
+		int start = (page - 1) * 5 + 1;
+		return reasonRepository.selectReasonList(reasonStatus, lectureId, start, start + 4);
 	}
 
 	@Override
@@ -39,7 +39,6 @@ public class ReasonService implements IReasonService {
 		int start = (page - 1) * 5 + 1;
 		return reasonRepository.selectReasonListByUserId(userId, start, start + 9);
 	}
-
 
 	@Transactional
 	public void insertReason(Reason reason) {
@@ -67,20 +66,19 @@ public class ReasonService implements IReasonService {
 
 	@Override
 	public void deleteReason(int reasonId) {
-		// TODO Auto-generated method stub
+		reasonRepository.deleteReason(reasonId);
 	}
 
 	@Override
-	public void updateReasonStatus(int resaonId, int reasonStatus) {
-		// TODO Auto-generated method stub
-		reasonRepository.updateReasonStatus(resaonId, reasonStatus);
+	public void updateReasonStatus(int reasonId, int reasonStatus) {
+		reasonRepository.updateReasonStatus(reasonId, reasonStatus);
 	}
 
 	@Override
 	public Reason getFile(int reasonId) {
 		return reasonRepository.getFile(reasonId);
 	}
-	
+
 	@Override
 	public Reason selectReason(int reasonId) {
 		return reasonRepository.selectReason(reasonId);
