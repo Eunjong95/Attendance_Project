@@ -90,12 +90,38 @@
 		]]>
 	</select>
 	
+	<!-- 캘린더 출결 리스트 -->
+	<select id="selectCalendarList" parameterType="String" resultType="com.team5.myapp.attendance.model.Attendance">
+		<![CDATA[
+			SELECT
+    			ATTENDANCE_DATE AS "attendanceDate",
+    			CLOCK_IN AS "clockIn",
+    			CLOCK_OUT AS "clockOut",
+    			STATUS AS "status"
+				FROM ATTENDANCE
+				WHERE USER_ID = #{userId}
+		]]>
+	</select>
+	
 	<!-- 출근 횟수 -->
 	<select id="selectAttendanceCount" parameterType="String" resultType="int">
 		<![CDATA[
 			SELECT COUNT(USER_ID) AS "count"
 			FROM ATTENDANCE
-			WHERE USER_ID = #{userId} AND status = 0
+			WHERE USER_ID = #{userId} 
+			AND ATTENDANCE_DATE BETWEEN TRUNC(sysdate,'MM') AND LAST_DAY(sysdate)
+			AND status = 0
+		]]>
+	</select>
+
+	<!-- 결근 -->
+	<select id="selectAbsenceCount" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT COUNT(USER_ID) AS "count"
+			FROM ATTENDANCE
+			WHERE USER_ID = #{userId} 
+			AND ATTENDANCE_DATE BETWEEN TRUNC(sysdate,'MM') AND LAST_DAY(sysdate)
+			AND status = 1
 		]]>
 	</select>
 	
@@ -104,18 +130,35 @@
 		<![CDATA[
 			SELECT COUNT(USER_ID) AS "count"
 			FROM ATTENDANCE
-			WHERE USER_ID = #{userId} AND status = 2
+			WHERE USER_ID = #{userId} 
+			AND ATTENDANCE_DATE BETWEEN TRUNC(sysdate,'MM') AND LAST_DAY(sysdate)
+			AND status = 2
 		]]>
 	</select>
 	
-	<!-- 결근 -->
-	<select id="selectAbsenceCount" parameterType="String" resultType="int">
+	<!-- 조퇴 -->
+	<select id="selectLeaveCount" parameterType="String" resultType="int">
 		<![CDATA[
 			SELECT COUNT(USER_ID) AS "count"
 			FROM ATTENDANCE
-			WHERE USER_ID = #{userId} AND status = 1
+			WHERE USER_ID = #{userId} 
+			AND ATTENDANCE_DATE BETWEEN TRUNC(sysdate,'MM') AND LAST_DAY(sysdate)
+			AND status = 4
 		]]>
 	</select>
+	
+	
+	<!-- 출퇴근 값이 null일 경우 status 1(결근으로 수정) -->
+	<update id="noCheckAttendance" parameterType="String">
+		<![CDATA[
+			UPDATE ATTENDANCE SET 
+			STATUS = 1
+			WHERE CLOCK_OUT IS NULL 
+			AND ATTENDANCE_DATE NOT BETWEEN TO_DATE(to_char(sysdate,'YYYY-MM-DD'), 'YYYY-MM-DD') AND TO_DATE(to_char(sysdate,'YYYY-MM-DD'), 'YYYY-MM-DD') + 1 
+			AND USER_ID = #{userId}
+		]]>
+	</update>
+	
 
 
 </mapper>

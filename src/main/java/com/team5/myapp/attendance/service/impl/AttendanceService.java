@@ -55,6 +55,10 @@ public class AttendanceService implements IAttendanceService {
 		int start = (page-1)*5+1;
 		return attendanceRepository.selectAttendanceList(userId, start, start+4);
 	}
+	@Override
+	public List<Attendance> selectCalendarList(String userId) {
+		return attendanceRepository.selectCalendarList(userId);
+	}
 	
 	//지각
 	@Override
@@ -71,16 +75,17 @@ public class AttendanceService implements IAttendanceService {
 	public int selectAttendanceCount(String userId) {
 		return attendanceRepository.selectAttendanceCount(userId);
 	}
-
+	//조퇴
 	@Override
-	public int seletTotalMemberPageByLecture(int lectureId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int selectLeaveCount(String userId) {
+		return attendanceRepository.selectLeaveCount(userId);
+	}
+	
+	//출퇴근 값이 null일 경우 status 1(결근으로 수정)
+	@Override
+	public void noCheckAttendance(String userId) {
+		attendanceRepository.noCheckAttendance(userId);
 	}
 
-	@Override
-	public List<Member> selectMemberListByLecture(int lectureId, int page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }

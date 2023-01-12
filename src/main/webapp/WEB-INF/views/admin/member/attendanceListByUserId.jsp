@@ -55,7 +55,7 @@
 						
 						<!-- 게시글 목록 -->
 						<div class="card border-left-primary shadow h-100 py-2" >
-							<div class="card-header" style="color:black;"><b>사유서 신청 목록</b></div>
+							<div class="card-header" style="color:black;"><b>학생 목록</b></div>
 							<div class="card-body" style="height: 730px">
 								<div class="table-responsive" style="overflow:hidden">
                                 	<div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -86,12 +86,12 @@
                                 				<table class="table table-bordered dataTable" id="dataTable"  cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
 				                                    <thead>
 				                                        <tr role="row">
-				                                        	<th style="width: 10%;">No.</th>
-				                                        	<th style="width: 20%;">휴가 사유</th>
-				                                        	<th style="width: 10%;">작성자</th>
-				                                        	<th style="width: 10%;">승인 상태</th>
-				                                        	<th style="width: 20%;">작성 날짜</th>
-				                                        	<th style="width: 20%;">휴가 날짜</th>
+				                                        	<th style="width: 5%;">No.</th>
+				                                        	<th style="width: 15%;">강의명</th>
+				                                        	<th style="width: 15%;">이름</th>
+				                                        	<th style="width: 15%;">출근 상태</th>
+				                                        	<th style="width: 20%;">출근 시간</th>
+				                                        	<th style="width: 20%;">퇴근 시간</th>
 				                                        </tr>
 				                                    </thead>
 				                                    <tbody> 

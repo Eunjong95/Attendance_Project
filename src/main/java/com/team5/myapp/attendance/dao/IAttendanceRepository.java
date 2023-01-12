@@ -22,19 +22,19 @@ public interface IAttendanceRepository {
 	//출결 현황 목록
 	int selectTotalAttendancePage(String userId);
 	List<Attendance> selectAttendanceList(@Param("userId") String userId, @Param("start") int start, @Param("end") int end);
-
+	List<Attendance> selectCalendarList(String userId);
+	
 	//지각 횟수
 	int selectLateCount(String userId);
-	
+	//조퇴 횟수
+	int selectLeaveCount(String userId);
 	//결근 횟수
 	int selectAbsenceCount(String userId);
-	
 	//출석 횟수
 	int selectAttendanceCount(String userId);
+	//출퇴근 값이 null일 경우 status 1(결근으로 수정)
+	void noCheckAttendance(String userId);
 	
-	/* 관리자 */
-	//강의 별 학생 목록
-	int seletTotalMemberPageByLecture(int lectureId);
-	List<Member> selectMemberListByLecture(@Param("lectureId") int lectureId, @Param("start") int start, @Param("end") int end);
+
 	
 }

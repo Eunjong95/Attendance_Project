@@ -68,11 +68,27 @@
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
-													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b></b></div>
-													<div class="mb-0 font-weight-bold text-gray-700"></div>
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>대기중인 요청</b></div>
+													<div class="mb-0 font-weight-bold text-gray-700"> </div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3"></div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${newReasonCount}</div>
+													<div><i class="fa-regular fa-bell fa-2x"></i></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="card border-left-warning shadow h-100 py-2">
+										<div class="card-body">
+											<div class="row no-gutters align-items-center">
+												<div class="col mr-2">
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>출석인원</b></div>
+													<div class="mb-0 font-weight-bold text-gray-700"> </div>
+												</div>
+												<div class="col-auto d-flex mt-3 align-content-center">
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${attendanceCount}/${totalMemberCount }</div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
 											</div>
@@ -84,12 +100,12 @@
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
-													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b></b></div>
-													<div class="mb-0 font-weight-bold text-gray-700"></div>
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>지각인원</b></div>
+													<div class="mb-0 font-weight-bold text-gray-700"> </div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3"></div>
-													<div><i class="fa-regular fa-clock fa-2x"></i></div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${lateCount}/${totalMemberCount }</div>
+													<div><i class="fas fa-clock fa-2x"></i></div>
 												</div>
 											</div>
 										</div>
@@ -100,29 +116,13 @@
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
-													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b></b></div>
-													<div class="mb-0 font-weight-bold text-gray-700"></div>
+													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>휴가인원</b></div>
+													<div class="mb-0 font-weight-bold text-gray-700"> </div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3"></div>
-													<div><i class="fa-regular fa-clock fa-2x"></i></div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-3">
-									<div class="card border-left-warning shadow h-100 py-2">
-										<div class="card-body">
-											<div class="row no-gutters align-items-center">
-												<div class="col mr-2">
-													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b></b></div>
-													<div class="mb-0 font-weight-bold text-gray-700"></div>
-												</div>
-												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3"></div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${vacationCount}/${totalMemberCount }</div>
 
-													<div><i class="fa-regular fa-clock fa-2x"></i></div>
+													<div><i class="fa-regular fa-calendar-check fa-2x"></i></div>
 												</div>
 											</div>
 										</div>
@@ -133,71 +133,91 @@
 					</div>
 
 					<!-- 자료실 게시글 목록 및 달력 -->
-					<div class="row" style="margin-top:100px">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-6">
-									<span>강의 목록</span>
-									<table class="table" style="background-color: white;">
-										<thead>
-											<tr>
-												<th>No.</th>
-
-												<th>강의 번호</th>
-
-												<th>강의명</th>
-												<th>인원</th>
-												<!-- <th>대기중인 요청</th> -->
-											</tr>
-										</thead>
-										<tbody>
-											<%-- <c:set var="seq" value="${(page-1)*10+1}" scope="page"/> --%> 
-	                                    	<c:forEach var="lecture" items="${lectureList}" varStatus="status">
-	                                    		<tr>
-	                                    			<td>${status.count}</td>
-
-	                                    			<td>${lecture.lectureId}</td>
-	                                    			<td>
-	                                    				${lecture.lectureName}
-	                                    			</td>
-	                                    			<td>${lecture.memberNum}</td>
-	                                    			<%-- <td>${lecture.reasonCount}</td> --%>
-	                                    		</tr>
-	                                    	</c:forEach>    
-										</tbody>
-									</table>
-								</div>
-
-								<div  class="col-6" >
-									<span>학생 목록</span>
-									<div id="memberWraper" onscroll="getMemberList()" style="overflow-y:scroll; height:300px">
-										<table id="memberList" class="table" style="background-color: white;width:100%">
-											<thead>
-												<tr>
-													<th>No.</th>
-													<th>성명</th>
-													<th>강의</th>
-													<th>출석현황</th>
-												</tr>
-											</thead>
-											<tbody>
-												<%-- <c:set var="seq" value="${(page-1)*10+1}" scope="page"/> --%> 
-		                                    	<c:forEach var="member" items="${memberList}" varStatus="mStatus">
-		                                    		<tr>
-		                                    			<td>${mStatus.count}</td>
-		                                    			<td>${member.userName}</td>
-		                                    			<td>${member.lectureName}</td>
-		                                    			<td>${member.todayStatus}</td>
-		                                    		</tr>
-		                                    	</c:forEach>    
-											</tbody>
-										</table>
+					
+							<div class="row" style="margin-top:100px">
+								<div class="container-fluid ">
+									<div class="row">
+										<div class="col-6 ">
+											<div class="card border-left-warning shadow h-100 py-2">
+												<div class="card-body ">
+													<span>강의 목록</span>
+													<div style="overflow-y:scroll;">
+														<table class="table" style="background-color: white;">
+															<thead>
+																<tr>
+																	<th>No.</th>
+					
+																	<th>강의 번호</th>
+					
+																	<th>강의명</th>
+																	<th>인원</th>
+																	<!-- <th>대기중인 요청</th> -->
+																</tr>
+															</thead>
+															<tbody>
+																<%-- <c:set var="seq" value="${(page-1)*10+1}" scope="page"/> --%> 
+						                                    	<c:forEach var="lecture" items="${lectureList}" varStatus="status">
+						                                    		<tr>
+						                                    			<td>${status.count}</td>
+					
+						                                    			<td>${lecture.lectureId}</td>
+						                                    			<td>
+						                                    				${lecture.lectureName}
+						                                    			</td>
+						                                    			<td>${lecture.attendMemberNum}/${lecture.memberNum}</td>
+						                                    			<%-- <td>${lecture.reasonCount}</td> --%>
+						                                    		</tr>
+						                                    	</c:forEach>    
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+		
+										<div  class="col-6" >
+											<div class="card border-left-warning shadow h-100 py-2">
+												<div class="card-body">
+													<span>학생 목록</span>
+													<div id="memberWraper" onscroll="getMemberList()" style="overflow-y:scroll; height:300px">
+														<table id="memberList" class="table" style="background-color: white;width:100%">
+															<thead>
+																<tr>
+																	<th>No.</th>
+																	<th>성명</th>
+																	<th>강의</th>
+																	<th>출석현황</th>
+																</tr>
+															</thead>
+															<tbody>
+																<%-- <c:set var="seq" value="${(page-1)*10+1}" scope="page"/> --%> 
+						                                    	<c:forEach var="member" items="${memberList}" varStatus="mStatus">
+						                                    		<tr>
+						                                    			<td>${mStatus.count}</td>
+						                                    			<td>${member.userName}</td>
+						                                    			<td>${member.lectureName}</td>
+						                                    			<td>
+						                                    				<c:if test="${empty member.todayStatus}">
+						                                    					미출석
+						                                    				</c:if>
+						                                    				<c:if test="${member.todayStatus==0}">정상출근</c:if>
+								                                          	<c:if test="${member.todayStatus==1}">결근</c:if>
+								                                          	<c:if test="${member.todayStatus==2}">지각</c:if>
+								                                          	<c:if test="${member.todayStatus==3}">휴가</c:if>
+								                                          	<c:if test="${member.todayStatus==4}">조퇴</c:if>
+								                                          	<c:if test="${member.todayStatus==5}">출근중</c:if>
+						                                    			</td>
+						                                    		</tr>
+						                                    	</c:forEach>    
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-
 				</div>
 				<!-- /.container-fluid -->
 

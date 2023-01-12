@@ -31,14 +31,10 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 <!-- fullcalendar CDN -->
-<link
-	href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css'
-	rel='stylesheet' />
-<script
-	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
 <!-- fullcalendar 언어 CDN -->
-<script
-	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 
 </head>
 <body id="page-top">
@@ -64,10 +60,11 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4">
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800">휴가 신청 내역</h1>
-						<button class="btn btn-primary"
-							onClick="location.href='<c:url value="/reason/write"/>'">휴가 신청</button>
+						<button class="btn btn-primary" onClick="location.href='<c:url value="/reason/write"/>'">
+						휴가신청</button>
 					</div>
 
 					<!-- 사유서 신청 내역 -->
@@ -91,6 +88,9 @@
 											</c:if>
 											<c:if test="${reason.reasonStatus==3}">
 												<h6 class="font-weight-bold" style="color: #ff6600;">취소요청</h6>
+											</c:if>
+											<c:if test="${reason.reasonStatus==4}">
+												<h6 class="font-weight-bold" style="color: #009933;">취소완료</h6>
 											</c:if>
 										</div>
 
@@ -124,9 +124,9 @@
 										<div class="row col-md-1">
 											<input type="hidden" name="reasonId"
 												value="${reason.reasonId}">
-											<button class="btn btn-primary"
-												onClick="location.href='<c:url value="/reason/view/${reasonId}"/>'">자세히
-												보기</button>
+											<button type="button" class="btn btn-primary"
+												onclick="show(${reason.reasonId})" data-toggle="modal"
+												data-target="modalView">자세히보기</button>
 										</div>
 									</div>
 								</div>
@@ -134,6 +134,9 @@
 						</c:forEach>
 					</div>
 				</div>
+
+				<!-- modal jsp -->
+				<jsp:include page="/WEB-INF/views/reason/modalView.jsp" />
 
 				<!-- 페이징 -->
 				<div class="row">
@@ -171,44 +174,11 @@
 	</a>
 
 	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
-				</div>
-			</div>
-		</div>
-	</div>
+	<jsp:include page="/WEB-INF/views/include/logout.jsp" />
 
-	<!-- Bootstrap core JavaScript-->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-	<!-- Core plugin JavaScript-->
-	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-	<!-- Custom scripts for all pages-->
-	<script src="js/sb-admin-2.min.js"></script>
-
-	<!-- Page level plugins -->
-	<script src="vendor/chart.js/Chart.min.js"></script>
-
-	<!-- Page level custom scripts -->
-	<script src="js/demo/chart-area-demo.js"></script>
-	<script src="js/demo/chart-pie-demo.js"></script>
+	<!-- Footer -->
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	<!-- End of Footer -->
 
 </body>
 

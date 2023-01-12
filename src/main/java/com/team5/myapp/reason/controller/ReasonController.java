@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.team5.myapp.Pager;
 import com.team5.myapp.board.model.BoardFile;
 import com.team5.myapp.reason.model.Reason;
 import com.team5.myapp.reason.service.IReasonService;
@@ -63,6 +67,26 @@ public class ReasonController {
 		return "reason/list";
 	}
 	
+	// modal & ajax용 사유서 상세보기
+	@RequestMapping("/reason/view/{reasonId}/{page}")
+	public @ResponseBody Reason getReasonDetailJson(@PathVariable int reasonId, @PathVariable int page,
+			HttpSession session, Model model) {
+		Reason reason = reasonService.selectReason(reasonId);
+		
+		model.addAttribute("reason", reason);
+		model.addAttribute("page", page);
+
+		logger.info("getReasonDetailJson", reason.toString());
+		System.out.println("reason: " + reason.toString());
+		return reason;
+	}
+	
+	// modal & ajax용 사유서 상세보기
+	@RequestMapping(value = "/reason/view/{reasonId}", method = RequestMethod.GET)
+	public @ResponseBody Reason getReasonDetailJson(@PathVariable int reasonId, HttpSession session, Model model) {
+		return getReasonDetailJson(reasonId, 1, session, model);
+	}
+	
 	// 사유서 작성 GET
 	@RequestMapping(value = "/reason/write", method = RequestMethod.GET)
 	public String writeReason() {
@@ -81,44 +105,68 @@ public class ReasonController {
 		System.out.println(session.getAttribute("userId"));
 
 		try {
-//			reason.setReasonContent(reason.getReasonContent().replace("\r\n", "<br>"));
-//			reason.setReasonContent(Jsoup.clean(reason.getReasonContent(), Whitelist.basic()));
+			reason.setReasonContent(reason.getReasonContent().replace("\r\n", "<br>"));
+			reason.setReasonContent(Jsoup.clean(reason.getReasonContent(), Whitelist.basic()));
 			MultipartFile files = reason.getFiles();
 			if (files != null && !files.isEmpty()) {
 			}
 			reasonService.insertReason(reason);
 		} catch (Exception e) {
 			e.printStackTrace();
-			redirectAttrs.addFlashAttribute("message", e.getMessage());
+			//redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
 		System.out.println(reason.toString());
-		return "redirect:/";
-		// return "redirect:/reason/view/{reasonId}";
+		return "redirect:/reason/list"; 
 	}
-
-	//사유서 목록
-	@RequestMapping("/admin/reason/list/{reasonStatus}/{page}")
-	public String getReasonList(@PathVariable("reasonStatus") int reasonStatus, @RequestParam(value="lectureId", required=false, defaultValue="0") int lectureId, @PathVariable int page, HttpSession session, Model model) {
-		session.setAttribute("page", page);
-		List<Reason> reasonList = reasonService.selectReasonList(reasonStatus, lectureId, page);
-		model.addAttribute("reasonList", reasonList);
-		System.out.println(reasonStatus);
-		//paging start
-		int bbsCount = reasonService.selectTotalReasonPage(reasonStatus, lectureId);
-		int totalPage = 0;
-		if(bbsCount>0) {
-			totalPage = (int)Math.ceil(bbsCount/5.0);
-		}
+	
+	// 사유서 취소 요청 (승인된 사유서에 대해 취소요청 하기)-post
+	@RequestMapping(value="/reason/update", method=RequestMethod.POST)
+	public String updateReason(Reason reason, BindingResult result, HttpSession session, RedirectAttributes redirectAttrs) {
+		System.out.println("reasonId" + reason.getReasonId());
+		System.out.println("reasonStatus" + reason.getReasonStatus());
 		
-		model.addAttribute("totalPageCount", totalPage);
+		reasonService.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());	
+		return "redirect:/reason/list/" + session.getAttribute("page");
+	}
+	
+	
+	// 사유서 삭제 (미승인 사유서면 삭제 가능)
+	@RequestMapping(value="/reason/delete", method=RequestMethod.POST)
+	public String deleteReason(Reason reason, BindingResult result, HttpSession session, RedirectAttributes redirectAttrs) {	
+		System.out.println("reasonId" + reason.getReasonId());
+		
+		reasonService.deleteReason(reason.getReasonId());
+		return "redirect:/reason/list/" + session.getAttribute("page");
+	}
+	
+	/********* 관리자 *********/
+	
+	//사유서 목록(관리자)
+	@RequestMapping("/admin/reason/list/{reasonListStatus}/{lectureId}/{page}")
+	public String getReasonList(@PathVariable("reasonListStatus") int reasonListStatus, @PathVariable(value="lectureId", required = false) Integer lectureId, @PathVariable int page, HttpSession session, Model model) {
+		session.setAttribute("page", page);
+		session.setAttribute("lectureId", lectureId);
+		session.setAttribute("reasonListStatus", reasonListStatus);
+		
+		int reasonCount = reasonService.selectTotalReasonPage(reasonListStatus, lectureId);
+		Pager pager = new Pager(10, 5, reasonCount, page);
+		
+		List<Reason> reasonList = reasonService.selectReasonList(reasonListStatus, lectureId, pager);
+		
+		model.addAttribute("reasonList", reasonList);
 		model.addAttribute("page", page);
-		model.addAttribute("reasonStatus", reasonStatus);
+		model.addAttribute("pager", pager);
 		return "admin/reason/reasonList";
 	}
 	
-	@RequestMapping("/admin/reason/list/{reasonStatus}")
-	public String getReasonList(@PathVariable("reasonStatus") int reasonStatus, @RequestParam(required=false, defaultValue="0") int lectureId, HttpSession session, Model model) {
-		return getReasonList(reasonStatus, lectureId, 1, session, model);
+	//사유서 목록(관리자)
+	@RequestMapping("/admin/reason/list/{reasonListStatus}/{lectureId}")
+	public String getReasonList(@PathVariable("reasonListStatus") int reasonListStatus, @PathVariable(value="lectureId", required = false) Integer lectureId, HttpSession session, Model model) {
+		if(lectureId == null) {
+			lectureId = 0;
+		}
+		
+		return getReasonList(reasonListStatus, lectureId, 1, session, model);
 	}
 	
 	//사유서 상세보기
@@ -134,27 +182,48 @@ public class ReasonController {
 		return new ResponseEntity<byte[]>(reason.getReasonFileData(), headers, HttpStatus.OK);
 	}
 	
-	@RequestMapping("/reason/view/{reasonId}/{page}")
+	@RequestMapping("/admin/reason/view/{reasonId}/{page}")
 	public String getReasonDetail(@PathVariable int reasonId, @PathVariable int page, HttpSession session, Model model) {
 		Reason reason = reasonService.selectReason(reasonId);
 		model.addAttribute("reason", reason);
 		model.addAttribute("page", page);
-		model.addAttribute("lectureId", reason.getLectureId());
+		model.addAttribute("lectureId", session.getAttribute("lectureId"));
+		model.addAttribute("reasonListStatus", session.getAttribute("reasonListStatus"));
 		
 		logger.info("getReasonDetail", reason.toString());
 		return "admin/reason/reasonView";
 	}
 
-	@RequestMapping("/reason/view/{reasonId}")
-	public String getBoardDetail(@PathVariable int reasonId, HttpSession session, Model model) {
-		return getReasonDetail(reasonId, 1, session, model);
+	//사유서 승인
+	@RequestMapping(value="/admin/reason/approve", method=RequestMethod.POST)
+	public String approveReason(Reason reason, HttpSession session) {
+		System.out.println("Controller.approveReason.reasonDate: "+ reason.getReasonDate());
+		int attendanceId = reasonService.selectAttendanceDate(reason);
+		
+		if(attendanceId == 0) { //attendance 가 존재하지않음
+			reasonService.insertAttendanceStatus(reason);
+		} 
+		
+		reasonService.updateAttendanceStatus(attendanceId, reason);
+		
+		return "redirect:/admin/reason/list/1/0";
 	}
 	
-	//사유서 승인
-	@RequestMapping(value="/reason/approve", method=RequestMethod.POST)
-	public String updateReasonStatus(Reason reason, HttpSession session) {
+	//사유서 반려
+	@RequestMapping(value="/admin/reason/reject", method=RequestMethod.POST)
+	public String rejectReason(Reason reason, HttpSession session) {
 		reasonService.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
 		
-		return "redirect:/reason/list/1";
+		return "redirect:/admin/reason/list/1/0";
+	}
+	
+	//사유서 취소요청 처리
+	@RequestMapping(value="/admin/reason/cancel", method=RequestMethod.POST)
+	public String cancelReason(Reason reason, HttpSession session) {
+		int attendanceId = reasonService.selectAttendanceDate(reason);
+		reasonService.deleteAttendanceStatus(attendanceId, reason);
+		reasonService.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
+		
+		return "redirect:/admin/reason/list/1/0";
 	}
 }

@@ -12,13 +12,34 @@ function getMemberList(){
 			type:"GET",
 			success:function(result){
 				prePage=mPage;
-				console.log(result);
-				console.log(prePage);
+				//console.log(result);
 				result.forEach((value,index)=>{
 					var memberNum=(mPage-1)*5+(index+1);
-					if(value.todayStatus==null){
+					
+					
+					if(value.todayStatus==null)
+					{
 						value.todayStatus="미출석";
 					}
+					if(value.todayStatus==0)
+					{
+						value.todayStatus="정상출근";
+					}
+                  	if(value.todayStatus==1){
+                  		value.todayStatus="결근";
+                  	}
+                  	if(value.todayStatus==2){
+                  		value.todayStatus="지각";
+                  	}
+                  	if(value.todayStatus==3){
+                  		value.todayStatus="휴가";
+                  	}
+                  	if(value.todayStatus==4){
+                  		value.todayStatus="조퇴";
+                  	}
+                  	if(value.todayStatus==5){
+                  		value.todayStatus="출근중";
+                  	}
 					$("#memberList tbody").append(
 							"<tr>" +
 							"	<td>"+memberNum+"</td>" +

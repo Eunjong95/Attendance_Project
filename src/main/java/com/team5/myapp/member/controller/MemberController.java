@@ -1,5 +1,7 @@
 package com.team5.myapp.member.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -7,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team5.myapp.member.model.Member;
 import com.team5.myapp.member.service.IMemberService;
@@ -73,5 +77,43 @@ public class MemberController {
 		session.invalidate();
 		return "redirect:/";
 	}
+	
+	//강의 별 학생 목록
+//	@RequestMapping(value="/admin/member/list/{lectureId}/{page}", method=RequestMethod.GET)
+//	public String getMemberList(@PathVariable(value="lectureId", required = false) Integer lectureId, @PathVariable int page, HttpSession session, Model model) {
+//		session.setAttribute("page", page);
+//		session.setAttribute("lectureId", lectureId);
+//		
+//		//int memberCount = memberService.selectMemberByLecturePage(lectureId);
+//		//Pager pager = new Pager(10, 5, memberCount, page);
+//		
+//		//List<Member> memberList = memberService.selectAttendanceListByLecture(lectureId, pager);
+//		
+//		//model.addAttribute("memberList", memberList);
+//		model.addAttribute("page", page);
+//		//model.addAttribute("pager", pager);
+//		return "admin/member/memberList";
+//	}
+	
+//	@RequestMapping(value="/admin/member/list/{lectureId}", method=RequestMethod.GET)
+//	public String getMemberList(@PathVariable(value="lectureId", required = false) Integer lectureId, HttpSession session, Model model) {
+//		if(lectureId == null) {
+//			lectureId = 0;
+//		}
+//		
+//		return getMemberList(lectureId, 1, session, model);
+//	}
+	
+	@RequestMapping(value="/admin/lecture/list/members/{lectureId}/{page}", method=RequestMethod.GET)
+	public @ResponseBody List<Member> getMemberListByLectureId(@PathVariable int lectureId, @PathVariable int page ) {
+		List<Member> memberList=memberService.selectMemberListByLectureId(lectureId,page);
+		//System.out.println(memberList);
+		return memberList;
+	}
+	
+	@RequestMapping(value="/admin/lecture/list/members/{lectureId}", method=RequestMethod.GET)
+	public @ResponseBody List<Member> getMemberListByLectureId(@PathVariable int lectureId ) {
 		
+		return getMemberListByLectureId(lectureId,1);
+	}
 }
