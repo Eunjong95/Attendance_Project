@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -233,4 +234,31 @@ public class BoardController {
 		}
 		return "redirect:/board/view/"+deleteComment.getBoardId()+"/"+(Integer)session.getAttribute("page")+"/1";
 	}
+	
+	//게시글 검색
+	@RequestMapping("/board/search/{page}")
+	public String boardSearch(@RequestParam(required=false,defaultValue="")String keyword,@PathVariable int page,HttpSession session, Model model) {
+		try {
+			
+			List<Board> boardList = boardService.searchListByContentKeyword(keyword, page);
+			model.addAttribute("boardList",boardList);
+			
+			//paging
+			int bbsCount = boardService.selectTotalBoardPageByKeyword(keyword);
+			
+			int totalPage = 0;
+			if(bbsCount>0) {
+				totalPage = (int)Math.ceil(bbsCount/5.0);
+			}
+			model.addAttribute("totalPageCount",totalPage);
+			model.addAttribute("page",page);
+			model.addAttribute("keyword",keyword);
+			logger.info(totalPage+":"+page+":"+keyword);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "board/search";
+	}
 }
+

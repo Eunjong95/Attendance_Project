@@ -2,6 +2,7 @@
 <%@ tag body-content="empty"%>
 <%@ attribute name="totalPageCount" type="java.lang.Integer" required="true"%>
 <%@ attribute name="nowPage" type="java.lang.Integer" required="true"%>
+<%@ attribute name="keyword" type="java.lang.String" required="false"%>
 <%
 	int totalPageBlock = (int) (Math.ceil(totalPageCount/5.0));
 	int nowPageBlock = (int) Math.ceil(nowPage/5.0);
@@ -22,7 +23,7 @@
 	
 	if(nowPageBlock>1){
 		out.print("<li>");
-		out.print("<a href=\""+contextPath+"/admin/reason/list/"+(startPage-1)+"\"aria-label=\"Previous\">");
+		out.print("<a href=\""+contextPath+"/board/search/"+(startPage-1)+"?keyword="+keyword+"\"aria-label=\"Previous\">");
 		out.print("<button class='btn btn-primary' style='color:white'>");
 		out.print("Previous ");
 		out.print("</button>");
@@ -36,7 +37,7 @@
 		}else{
 			out.print("<li>");
 		}
-		out.print("<a href=\""+contextPath+"/admin/reason/list/"+(i)+"\">");
+		out.print("<a href=\""+contextPath+"/board/search/"+(i)+"?keyword="+keyword+"\">");
 		out.print("<button class='btn'>");
 		out.print(i);
 		out.print("</button>");
@@ -45,7 +46,7 @@
 	}
 	if(nowPageBlock < totalPageBlock) {
 		out.print("<li>");
-		out.print("<a href=\""+contextPath+ "/admin/reason/list/"+(endPage+1)+"\" aria-label=\"Next\">");
+		out.print("<a href=\""+contextPath+ "/board/search/"+(endPage+1)+"?keyword="+keyword+"\" aria-label=\"Next\">");
 		out.print("<button class='btn btn-primary'style='color:white'>");
 		out.print("Next");
 		out.print("</button>");

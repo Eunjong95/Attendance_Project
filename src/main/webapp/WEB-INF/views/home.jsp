@@ -28,10 +28,9 @@
 <!-- fullcalendar 언어 CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 <!-- JS -->
-<script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
 	$(document).ready(function(){
 		$('#workCheck').click(function(){ 
@@ -39,13 +38,15 @@
 				url:'worktime',
 				type:'get',
 				success : function(data){ 
-					console.log(data);
 					var date = data.attendanceDate;
 					var time = data.clockIn;
-					$('#dateIn').append(date);
-					$('#timeIn').append(time);
+					$('#dateIn').text(date);
+					$('#timeIn').text(time);
 					$('#workCheck').removeClass('d-sm-inline-block');
 					$('#workCheck2').addClass('d-sm-inline-block');
+					$('#dateIn').attr('id','dateInInputEnd');
+					$('#timeIn').attr('id','timeInInputEnd');
+					
 				}
 			});
 		});
@@ -56,14 +57,17 @@
 				success : function(data){ 
 					var date = data.attendanceDate;
 					var time = data.clockOut;
-					$('#dateOut').append(date);
-					$('#timeOut').append(time);
+					$('#dateOut').text(date);
+					$('#timeOut').text(time);
 					$('#workCheck2').removeClass('d-sm-inline-block');
 					$('#workCheck').addClass('d-sm-inline-block');
+					$('#dateOut').attr('id','dateOutInputEnd');
+					$('#timeOut').attr('id','timeOutInputEnd');
 				}
 			});
 		});
 	});
+	
 </script>
 
 
@@ -96,16 +100,48 @@
 						<h1 class="mb-0 ml-2 text-gray-800"><strong>JAVA</strong></h1>
 						<!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3"><span style="font-size:18px;">출석 체크하기<i class="fa-solid fa-check ml-2"></i></span></a> -->
 					</div>
-					
 						<div class="d-sm-flex align-items-center justify-content-end mb-4 mr-3">
+						<c:if test="${clockIn == null}">						
 							<a id="workCheck" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3">
-								<span id="message1" style="font-size:18px;">출근 체크하기
-								</span>
+								<span style="font-size:18px;">출근 체크하기</span>
 							</a>
+						</c:if>
+						<c:if test="${clockIn != null}">
+							<button id="workCheck" type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3" data-toggle="modal" data-target="#myModal">출근 체크하기</button>
+							<div class="modal fade" id="myModal">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-body">
+											<span>이미 출석 체크를 하셨습니다.</span>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-sm" data-dismiss="modal">확인</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</c:if>
+						<c:if test="${clockOut == null}">						
 							<a id="workCheck2" class="d-none btn btn-sm btn-primary shadow-sm p-3">
-								<span id="message2" style="font-size:18px;">퇴근 체크하기
-								</span>
+								<span style="font-size:18px;">퇴근 체크하기</span>
 							</a>
+						</c:if>
+						<c:if test="${clockOut != null}">
+							<button id="workCheck2" type="button" class="d-none btn btn-sm btn-primary shadow-sm p-3" data-toggle="modal" data-target="#myModal">퇴근 체크하기</button>
+							<div class="modal fade" id="myModal">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-body">
+											<span>이미 출석 체크를 하셨습니다.</span>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-sm" data-dismiss="modal">확인</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</c:if>
+						
 						</div>
 					
 					<!-- 출퇴근 표시 -->
@@ -119,11 +155,14 @@
 												<div class="col mr-2">
 													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>IN</b></div>
 													<div id="dateIn" class="mb-0 font-weight-bold text-gray-700">
+														<c:set var="attendanceDate" value="${attendanceDate}"/>
+                                            			<c:out value="${attendanceDate}"/>
 													</div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
 													<div id="timeIn" class="h3 mb-0 font-weight-bold text-gray-800 mr-3">
-														
+														<c:set var="clockIn" value="${clockIn}"/>
+                                            			<c:out value="${clockIn}"/>
 													</div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
@@ -138,12 +177,14 @@
 												<div class="col mr-2">
 													<div class="text-xl font-bold text-danger text-uppercase mb-1"><b>OUT</b></div>
 													<div id="dateOut" class="mb-0 font-weight-bold text-gray-700">
-														
+														<c:set var="attendanceDate" value="${attendanceDate}"/>
+                                            			<c:out value="${attendanceDate}"/>
 													</div>
 												</div>
 												<div class="col-auto d-flex mt-3">
 													<div id="timeOut" class="h3 mb-0 font-weight-bold text-gray-800 mr-3">
-														
+														<c:set var="clockOut" value="${clockOut}"/>
+                                            			<c:out value="${clockOut}"/>
 													</div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
@@ -174,7 +215,7 @@
 										<tbody>
 											<c:set var="seq" value="${(page-1)*10+1}" scope="page"/> 
 	                                    	<c:forEach var="board" items="${boardList}">
-	                                    		<tr>
+	                                    		<tr onclick="location.href='<c:url value='/board/view/${board.boardId}'/>'" style="cursor:pointer;">
 	                                    			<td>${board.boardId}</td>
 	                                    			<td>
 	                                    				<c:if test="${board.boardCategoryId == 1}">자료실</c:if>

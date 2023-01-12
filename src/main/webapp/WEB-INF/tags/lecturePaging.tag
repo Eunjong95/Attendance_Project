@@ -22,7 +22,7 @@
 	
 	if(nowPageBlock>1){
 		out.print("<li>");
-		out.print("<a href=\""+contextPath+"/admin/reason/list/"+(startPage-1)+"\"aria-label=\"Previous\">");
+		out.print("<a href=\""+contextPath+"/admin/lecture/list/"+(startPage-1)+"\"aria-label=\"Previous\">");
 		out.print("<button class='btn btn-primary' style='color:white'>");
 		out.print("Previous ");
 		out.print("</button>");
@@ -36,7 +36,7 @@
 		}else{
 			out.print("<li>");
 		}
-		out.print("<a href=\""+contextPath+"/admin/reason/list/"+(i)+"\">");
+		out.print("<a href=\""+contextPath+"/admin/lecture/list/"+(i)+"\">");
 		out.print("<button class='btn'>");
 		out.print(i);
 		out.print("</button>");
@@ -45,7 +45,7 @@
 	}
 	if(nowPageBlock < totalPageBlock) {
 		out.print("<li>");
-		out.print("<a href=\""+contextPath+ "/admin/reason/list/"+(endPage+1)+"\" aria-label=\"Next\">");
+		out.print("<a href=\""+contextPath+"/admin/lecture/list/"+(endPage+1)+"\" aria-label=\"Next\">");
 		out.print("<button class='btn btn-primary'style='color:white'>");
 		out.print("Next");
 		out.print("</button>");

@@ -1,4 +1,4 @@
-package com.team5.myapp.reason.model;
+package com.team5.myapp;
 
 import lombok.Data;
 

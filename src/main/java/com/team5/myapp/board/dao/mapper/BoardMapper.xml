@@ -152,6 +152,48 @@
 		]]>	
 	</update>
 	
+	<!-- 게시글 검색 -->
+	<select id="selectTotalBoardPageByKeyword" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM BOARD
+			WHERE BOARD_TITLE LIKE #{keyword} 
+			OR BOARD_CONTENT LIKE #{keyword}
+			OR USER_ID LIKE #{keyword}
+		]]>
+	</select>
+	
+	<select id="searchListByContentKeyword" parameterType="map" resultType="com.team5.myapp.board.model.Board">
+		<![CDATA[
+			SELECT
+			    BOARD_ID AS "boardId",
+			    BOARD_CATEGORY_ID AS "boardCategoryId",
+			    USER_ID AS "userId",
+			    BOARD_TITLE AS "boardTitle",
+			    BOARD_DATE AS "boardDate",
+			    READ_COUNT AS "readCount",
+			    RNUM+1 AS "seq"
+			FROM (
+			    SELECT
+			        BOARD_ID,
+			        BOARD_CATEGORY_ID,
+			        USER_ID,
+			        BOARD_TITLE,
+			        BOARD_DATE,
+			        READ_COUNT,
+			        ROWNUM AS RNUM
+			    FROM (
+			        SELECT * FROM BOARD
+			        WHERE BOARD_TITLE LIKE #{keyword} 
+			        OR BOARD_CONTENT LIKE #{keyword}
+			        OR USER_ID LIKE #{keyword}
+			        ORDER BY BOARD_ID DESC
+			    )
+			)
+			WHERE RNUM BETWEEN #{start} AND #{end}
+		]]>
+	</select>
+	
 	<select id="selectCommentsListByCommentId" parameterType="map" resultType="com.team5.myapp.board.model.Comments">
 		<![CDATA[
 			select

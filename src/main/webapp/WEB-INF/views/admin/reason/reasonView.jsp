@@ -100,6 +100,9 @@
 									<c:if test="${reason.reasonStatus==3}">
 										<h6 class="font-weight-bold" style="color: #ff6600;">취소요청</h6>
 									</c:if>
+									<c:if test="${reason.reasonStatus==4}">
+										<h6 class="font-weight-bold" style="color: #009933;">취소완료</h6>
+									</c:if>
 								</div>
 							</div>
 							<hr />
@@ -164,29 +167,30 @@
 									</c:if>
 								</div>
 							</div>
-							<hr />
 							
 							<form>
 								<input type="hidden" name="reasonId" value="${reason.reasonId}">
+								<input type="hidden" name="reasonDate" value="${reason.reasonDate}">
+								<input type="hidden" name="userId" value="${reason.userId}">
 								<div class="d-flex justify-content-center">
-									<c:if test="${reason.reasonStatus!=3}">
+									<c:if test="${reason.reasonStatus==0}">
 										<button type="submit" class="btn btn-success btn-sm mr-1 text-center" formmethod="post"
-											formaction="<c:url value="/reason/approve"/>" name="reasonStatus" value="1">승인</button>
+											formaction="<c:url value="/admin/reason/approve"/>" name="reasonStatus" value="1">승인</button>
 									</c:if>
 									<c:if test="${reason.reasonStatus==3}">
 										<input type="hidden" name="reasonId" value="${reason.reasonId}">
 										<button type="submit" class="btn btn-success btn-sm mr-1 text-center" formmethod="post"
-											formaction="<c:url value="/reason/delete"/>">승인</button>
+											formaction="<c:url value="/admin/reason/cancel"/>" name="reasonStatus" value="4">승인</button>
 									</c:if>
-									<c:if test="${reason.reasonStatus!=3}">
+									<c:if test="${reason.reasonStatus==0}">
 										<button type="submit" class="btn btn-danger btn-sm mr-1 text-center" formmethod="post"
-											formaction="<c:url value="/reason/approve"/>" name="reasonStatus" value="2">반려</button>
+											formaction="<c:url value="/admin/reason/reject"/>" name="reasonStatus" value="2">반려</button>
 									</c:if>
 								</div>
 							</form>
 							<div class="d-flex justify-content-end">
 								<button type="button" class="btn btn-primary btn-sm text-center d-flex justify-content-end"
-									onclick="location.href='<c:url value="/reason/list/${reasonStatus}/${page}"/>'">목록으로</button>
+									onclick="location.href='<c:url value="/admin/reason/list/${reasonListStatus}/${lectureId}/${page}"/>'">목록으로</button>
 							</div>
 						</div>
 					</div>

@@ -3,7 +3,7 @@
 <%@ page session="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="boardPaging" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="searchPaging" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 
@@ -62,7 +62,7 @@
                                 		<div class="row">
                                 			<div class="col-sm-12 col-md-6">
                                 				<div class="d-flex justify-content-start">
-	                                				<form action="<c:url value='/board/search/1'/>" method="get">
+                                					<form action="<c:url value='/board/search/1'/>" method="get">
 		                                				<div id="dataTable_filter" class="dataTables_filter">
 		                                					<label>Search:
 		                                						<input type="text" name="keyword" class="form-control form-control-sm" placeholder="" aria-controls="dataTable">
@@ -74,13 +74,6 @@
                                 					</form>
                                 				</div>
                                 			</div>
-                                			<div class="col-sm-12 col-md-6">
-                                				<div class="d-flex justify-content-end">
-	                                				<div id="dataTable_filter" class="dataTables_filter mt-3">
-	                                					<button class="btn btn-primary" onClick="location.href='<c:url value='/board/write/${boardCategoryId}'/>'">글작성</button>
-	                                				</div>
-                                				</div>
-                                			</div>
                                 		</div>
                                 		<div class="row">
                                 			<div class="col-sm-12">
@@ -88,10 +81,10 @@
 				                                    <thead>
 				                                        <tr role="row">
 				                                        	<th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="No: activate to sort column descending" style="width: 10px;">No.</th>
-				                                        	<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 10%;">카테고리</th>
-				                                        	<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending" style="width: 50%;">제목</th>
-				                                        	<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Writer: activate to sort column ascending" style="width: 15%;">작성자</th>
-				                                        	<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="boardDate: activate to sort column ascending" style="width: 25%;">작성 날짜</th>
+				                                        	<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending" style="width: 30px;">카테고리</th>
+				                                        	<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending" style="width: 200px;">제목</th>
+				                                        	<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Writer: activate to sort column ascending" style="width: 10px;">작성자</th>
+				                                        	<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="boardDate: activate to sort column ascending" style="width: 20px;">작성 날짜</th>
 				                                        </tr>
 				                                    </thead>
 				                                    <tbody> 
@@ -121,7 +114,7 @@
 	                               					<table class="table" style="border-style: hidden">
 														<tr>
 															<td align="left">
-																<boardPaging:paging boardCategoryId="${boardCategoryId}" totalPageCount="${totalPageCount}" nowPage="${page}"/>
+																<searchPaging:searchPaging keyword="${keyword}" totalPageCount="${totalPageCount}" nowPage="${page}"/>
 															</td>
 														</tr>
 													</table>
@@ -155,3 +148,4 @@
 	</body>
 
 </html>
+	                                					

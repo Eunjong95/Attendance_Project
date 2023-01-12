@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper
-	namespace="com.team5.myapp.lecture.dao.ILectureRepository">
-	
+<mapper namespace="com.team5.myapp.lecture.dao.ILectureRepository">
+
 	<select id="selectTotalLecturePage" resultType="int">
 		<![CDATA[
 			select 
@@ -10,7 +9,7 @@
 			from lecture
 		]]>
 	</select>
-	
+
 	<select id="selectLectureList" parameterType="map" resultType="com.team5.myapp.lecture.model.Lecture">
 		<![CDATA[
 			select 

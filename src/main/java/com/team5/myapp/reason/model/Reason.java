@@ -4,6 +4,8 @@ import java.sql.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 import lombok.ToString;
 
@@ -12,6 +14,7 @@ import lombok.ToString;
 public class Reason {
 	private int reasonId;
 	private String reasonContent;
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
 	private Date reasonDate;
 	private String userId;
 	private String userName;
@@ -25,5 +28,6 @@ public class Reason {
 	private MultipartFile files;
 	private int lectureId;
 	private String reasonCategoryName;
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
 	private Date reasonWriteDate;
 }

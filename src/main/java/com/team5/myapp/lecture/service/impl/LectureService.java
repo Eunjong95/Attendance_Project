@@ -15,7 +15,7 @@ public class LectureService implements ILectureService {
 	ILectureRepository lectureRepository;
 	@Autowired
 	IMemberRepository memberRepository;
-	
+
 	@Override
 	public int selectTotalLecturePage() {
 		return lectureRepository.selectTotalLecturePage();
@@ -26,9 +26,10 @@ public class LectureService implements ILectureService {
 		int start =(page-1)*5 +1;
 		List<Lecture> lectures=lectureRepository.selectLectureList(start, start+4);
 		for(Lecture lecture : lectures) {
-			lecture.setMemberNum(memberRepository.selectMemberCount(lecture.getLectureId()));
+			lecture.setMemberNum(memberRepository.selectMemberCountByLecutreId(lecture.getLectureId()));
+			lecture.setAttendMemberNum(memberRepository.selectAttendMemberCountByLectureId(lecture.getLectureId()));
 		}
 		return lectures;
 	}
-
 }
+
