@@ -206,7 +206,7 @@ public class ReasonController {
 		
 		reasonService.updateAttendanceStatus(attendanceId, reason);
 		
-		return "redirect:/admin/reason/list/1";
+		return "redirect:/admin/reason/list/1/0";
 	}
 	
 	//사유서 반려
@@ -214,7 +214,7 @@ public class ReasonController {
 	public String rejectReason(Reason reason, HttpSession session) {
 		reasonService.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
 		
-		return "redirect:/admin/reason/list/1";
+		return "redirect:/admin/reason/list/1/0";
 	}
 	
 	//사유서 취소요청 처리
@@ -224,6 +224,6 @@ public class ReasonController {
 		reasonService.deleteAttendanceStatus(attendanceId, reason);
 		reasonService.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
 		
-		return "redirect:/admin/reason/list/1";
+		return "redirect:/admin/reason/list/1/0";
 	}
 }
