@@ -40,6 +40,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	ILectureService lectureService;
 	@Autowired
 	IMemberService memberService;
+
 	@Autowired
 	IReasonService reasonService;
 	@Autowired
@@ -98,6 +99,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		List<Lecture> lectureList = lectureService.selectLectureList(1);
 		model.addAttribute("lectureList",lectureList);
 		logger.info("homeController : ", lectureList);
+		
 		//맴버리스트
 		List<Member> memberList=memberService.selectMemberList(1);
 		model.addAttribute("memberList", memberList);
@@ -111,6 +113,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		model.addAttribute("vacationCount", memberService.selectMemberCount(3));
 		//출석인원
 		model.addAttribute("attendanceCount", memberService.selectMemberCount(0)+memberService.selectMemberCount(5));
+
 		//paging start
 		/*int lCount = lectureService.selectTotalLecturePage()
 		int totalPage = 0;
