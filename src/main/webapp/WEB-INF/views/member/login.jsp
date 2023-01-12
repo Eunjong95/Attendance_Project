@@ -45,7 +45,7 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome to OTI LMS !</h1>
                                     </div>
                                     <form action="<c:url value='/member/login'/>" method="post" class="user">
                                         <div class="form-group">

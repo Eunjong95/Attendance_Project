@@ -1,7 +1,6 @@
 package com.team5.myapp.reason.service.impl;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.team5.myapp.Pager;
 import com.team5.myapp.reason.dao.IReasonRepository;
 import com.team5.myapp.reason.model.Reason;
 import com.team5.myapp.reason.service.IReasonService;
@@ -24,9 +24,10 @@ public class ReasonService implements IReasonService {
 	}
 
 	@Override
-	public List<Reason> selectReasonList(int reasonStatus, int lectureId, int page) {
-		int start = (page - 1) * 5 + 1;
-		return reasonRepository.selectReasonList(reasonStatus, lectureId, start, start + 4);
+	public List<Reason> selectReasonList(int reasonStatus, int lectureId, Pager pager) {
+		int start = pager.getStartRowNo() - 1;
+		int end = pager.getRowsPerPage();
+		return reasonRepository.selectReasonList(reasonStatus, lectureId, start, end);
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public class ReasonService implements IReasonService {
 	@Override
 	public List<Reason> selectReasonListByUserId(String userId, int page) {
 		int start = (page - 1) * 5 + 1;
-		return reasonRepository.selectReasonListByUserId(userId, start, start + 9);
+		return reasonRepository.selectReasonListByUserId(userId, start, start + 4);
 	}
 
 	@Transactional
@@ -59,9 +60,8 @@ public class ReasonService implements IReasonService {
 	}
 
 	@Override
-	public int selectAttendanceDate(Date reasonDate) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int selectAttendanceDate(Reason reason) {
+		return reasonRepository.selectAttendanceDate(reason);
 	}
 
 	@Override
@@ -70,30 +70,41 @@ public class ReasonService implements IReasonService {
 	}
 
 	@Override
-	public void updateReasonStatus(int reasonId, int reasonStatus) {
-		reasonRepository.updateReasonStatus(reasonId, reasonStatus);
+	public void updateReasonStatus(int resaonId, int reasonStatus) {
+		reasonRepository.updateReasonStatus(resaonId, reasonStatus);
 	}
 
 	@Override
 	public Reason getFile(int reasonId) {
 		return reasonRepository.getFile(reasonId);
 	}
-
+	
 	@Override
 	public Reason selectReason(int reasonId) {
 		return reasonRepository.selectReason(reasonId);
 	}
 
-	@Override
-	public int selectTotalReasonPageByLecture(int lectureId) {
-		// TODO Auto-generated method stub
-		return 0;
+	@Transactional
+	public void updateAttendanceStatus(int attendanceId, Reason reason) {
+		reasonRepository.updateAttendanceStatus(attendanceId);
+		reasonRepository.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
+	}
+
+	@Transactional
+	public void insertAttendanceStatus(Reason reason) {
+		reasonRepository.insertAttendanceStatus(reason);
+		reasonRepository.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
+	}
+
+	@Transactional
+	public void deleteAttendanceStatus(int attendanceId, Reason reason) {
+		reasonRepository.deleteAttendanceStatus(attendanceId);
+		reasonRepository.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
+		
 	}
 
 	@Override
-	public List<Reason> selectReasonListByLecture(int lectureId, int page) {
-		// TODO Auto-generated method stub
-		return null;
+	public int selectNewReasonCount() {
+		return reasonRepository.selectReasonCount();
 	}
-
 }

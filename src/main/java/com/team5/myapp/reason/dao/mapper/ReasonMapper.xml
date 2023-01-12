@@ -1,59 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.myapp.reason.dao.IReasonRepository">
-
-	<!-- 관리자 사유서 목록 -->
-	<select id="selectTotalReasonPage" parameterType="int"
-		resultType="int">
+	<!-- 사유서 목록 갯수(관리자 )-->
+	<select id="selectTotalReasonPage" parameterType="int" resultType="int">
 		SELECT COUNT(*)
 		FROM reason, members
-		WHERE reason.user_id =
-		members.user_id
-		<if test="reasonStatus == 0">
-			and reason_status = 0
+		WHERE reason.user_id = members.user_id
+		<if test="reasonStatus == 0 or reasonStatus == 3">
+			and (reason_status = 0
+			or reason_status = 3)
 		</if>
-		<if test="reasonStatus != 0">
+		<if test="reasonStatus != 0 and reasonStatus != 3">
 			and not (reason_status=0)
+			and not (reason_status=3)
 		</if>
 		<if test="lectureId != 0">
 			and lecture_id = #{lectureId}
 		</if>
 	</select>
-
-	<!-- 사유서 전체 목록 -->
-	<select id="selectReasonList" parameterType="map"
-		resultType="com.team5.myapp.reason.model.Reason">
+	
+	<!-- 사유서 전체 목록(관리자) -->
+	<select id="selectReasonList" parameterType="map" resultType="com.team5.myapp.reason.model.Reason">
 		SELECT
-		r.reason_id as "reasonId",
-		reason_category_name as "reasonCategoryName",
-		reason_content as "reasonContent",
-		r.user_id as "userId",
-		user_name as "userName",
-		reason_date as "reasonDate",
-		reason_write_date as "reasonWriteDate",
-		reason_status as "reasonStatus",
-		lecture_id as "lectureId"
+		    r.reason_id as "reasonId",
+		    reason_category_name as "reasonCategoryName",
+		    reason_content as "reasonContent",
+		    r.user_id as "userId",
+		    user_name as "userName",
+		    reason_date as "reasonDate",
+		    reason_write_date as "reasonWriteDate",
+		    reason_status as "reasonStatus",
+		    lecture_id as "lectureId"
 		FROM reason r, reason_category c, members m
-		WHERE
-		r.reason_category_id = c.reason_category_id and r.user_id = m.user_id
-		<if test="reasonStatus == 0">
-			and reason_status = 0
+		WHERE r.reason_category_id = c.reason_category_id and r.user_id = m.user_id
+		<if test="reasonStatus == 0 or reasonStatus == 3">
+			and (reason_status = 0
+				or reason_status = 3)
 		</if>
-		<if test="reasonStatus != 0">
+		<if test="reasonStatus != 0 and reasonStatus != 3">
 			and not (reason_status=0)
+			and not (reason_status=3)
 		</if>
 		<if test="lectureId != 0">
 			and lecture_id = #{lectureId}
 		</if>
-		ORDER BY reason_id DESC
-		OFFSET #{start}-1 ROWS
-		FETCH FIRST #{end} ROWS
-		ONLY
+		ORDER BY reason_write_date DESC
+		OFFSET #{start} ROWS
+		FETCH FIRST #{end} ROWS ONLY
 	</select>
-
+	
 	<!-- 사유서 상세보기 -->
-	<select id="selectReason" parameterType="int"
-		resultType="com.team5.myapp.reason.model.Reason">
+	<select id="selectReason" parameterType="int" resultType="com.team5.myapp.reason.model.Reason">
 		<![CDATA[
 			select
 			    r.reason_id as "reasonId",
@@ -70,11 +67,10 @@
 			from reason r, reason_category c, members m
 			where r.reason_category_id=c.reason_category_id and r.user_id=m.user_id 
 			and r.reason_id=#{reasonId}
-		]]>
+		]]>	
 	</select>
-
-	<select id="getFile" parameterType="int"
-		resultType="com.team5.myapp.reason.model.Reason">
+	
+	<select id="getFile" parameterType="int" resultType="com.team5.myapp.reason.model.Reason">
 		<![CDATA[
 			select
 				reason_file_name as "reasonFileName",
@@ -84,29 +80,11 @@
 				reason_id as "reasonId"
 			from reason
 			where reason_id=#{reasonId}
-		]]>
+		]]>	
 	</select>
-
-	<!-- 사유서 승인처리 -->
-	<update id="updateReasonStatus" parameterType="map">
-		<![CDATA[
-			UPDATE reason
-			SET reason_status=#{reasonStatus}
-			WHERE reason_id=#{reasonId}
-		]]>
-	</update>
 	
-	<!-- 사유서 미승인일 경우 삭제 가능 (유저)-->
-	<delete id="deleteReason" parameterType="int">
-		<![CDATA[
-			DELETE FROM reason
-			WHERE reason_id=#{reasonId}
-		]]>
-	</delete>
-
-	<!-- 내 사유서 신청 목록 조회 -->
-	<select id="selectReasonListByUserId" parameterType="map"
-		resultType="com.team5.myapp.reason.model.Reason">
+	<!-- 내 사유서 신청 목록 조회(유저) -->
+	<select id="selectReasonListByUserId" parameterType="map" resultType="com.team5.myapp.reason.model.Reason">
 		<![CDATA[
 			select
 				reason_id as "reasonId",
@@ -124,7 +102,7 @@
 		]]>
 	</select>
 
-	<!-- 사유서 신청목록 페이징 -->
+	<!-- 사유서 신청목록 페이징(유저) -->
 	<select id="selectTotalReasonPageByUserId" parameterType="map"
 		resultType="int">
 		<![CDATA[
@@ -134,9 +112,17 @@
 			where reason.user_id=#{userId}
 		]]>
 	</select>
+	
+	<!-- 사유서 미승인일 경우 삭제 가능 (유저)-->
+	<delete id="deleteReason" parameterType="int">
+		<![CDATA[
+			DELETE FROM reason
+			WHERE reason_id=#{reasonId}
+		]]>
+	</delete>
+	
 	<!-- 사유서 작성 -->
-	<insert id="insertReasonWithFile"
-		parameterType="com.team5.myapp.reason.model.Reason">		
+	<insert id="insertReasonWithFile" parameterType="com.team5.myapp.reason.model.Reason">		
 		<![CDATA[
 		insert into reason (reason_id, reason_content, reason_date, user_id,
 			reason_category_id, reason_status, reason_file_name, reason_file_size, reason_file_content_type, reason_file_data, reason_write_date)
@@ -145,8 +131,7 @@
 		]]>
 	</insert>
 
-	<insert id="insertReason"
-		parameterType="com.team5.myapp.reason.model.Reason">		
+	<insert id="insertReason" parameterType="com.team5.myapp.reason.model.Reason">		
 		<![CDATA[
 		insert into reason (reason_id, reason_content, reason_date, user_id,
 			reason_category_id, reason_status, reason_write_date)
@@ -154,4 +139,57 @@
 			(seq_reason_id.nextval, #{reasonContent}, #{reasonDate}, #{userId}, #{reasonCategoryId}, #{reasonStatus}, sysdate)	
 		]]>
 	</insert>
+	
+	<!-- 휴가 날짜의 출결이 있는지 확인 -->
+	<select id="selectAttendanceDate" parameterType="com.team5.myapp.reason.model.Reason" resultType="int" >
+		<![CDATA[
+			SELECT NVL(max(attendance_id), 0) as "attendanceId"
+			FROM attendance
+			WHERE to_char(attendance_date, 'YY/MM/dd') = to_char(#{reasonDate}, 'YY/MM/dd')
+			    and user_id=#{userId}
+		]]>
+	</select>
+	
+	<!-- 사유서 승인처리 -->
+	<update id="updateReasonStatus" parameterType="map">
+		<![CDATA[
+			UPDATE reason
+			SET reason_status=#{reasonStatus}
+			WHERE reason_id=#{reasonId}
+		]]>
+	</update>
+	
+	<update id="updateAttendanceStatus" parameterType="map">
+		<![CDATA[
+			UPDATE attendance
+			SET status=0
+			WHERE attendance_id=#{attendanceId}
+		]]>
+	</update>
+	
+	<insert id="insertAttendanceStatus" parameterType="com.team5.myapp.reason.model.Reason">		
+		<![CDATA[
+			INSERT INTO attendance (attendance_id, attendance_date, user_id, status)
+			values 
+				(seq_attendance_id.nextval, #{reasonDate}, #{userId}, 0)	
+		]]>
+	</insert>
+	
+	<delete id="deleteAttendanceStatus" parameterType="int">
+		<![CDATA[
+			DELETE FROM attendance
+			WHERE attendance_id=#{attendanceId}
+		]]>
+	</delete>
+	
+	<select id="selectReasonCount"  resultType="int">
+		<![CDATA[
+			select 
+				count(reason_id) as "count"
+			from 
+				reason
+			where 
+				reason_status = 0 or reason_status=3
+		]]>
+	</select>
 </mapper>

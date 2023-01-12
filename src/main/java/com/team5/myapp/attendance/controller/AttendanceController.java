@@ -1,5 +1,6 @@
 package com.team5.myapp.attendance.controller;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,11 +32,16 @@ public class AttendanceController {
 	@RequestMapping(value="/worktime", method=RequestMethod.GET)
 	public Attendance clockIn(HttpSession session, Model model) {
 		String userId = (String)session.getAttribute("userId");
-		attendanceService.insertWorktime(userId);
-		System.out.println("출근 컨트롤러");
-		
 		Attendance attendance = attendanceService.selectAttendance(userId);
 		
+		if(attendance == null) {	
+			attendanceService.insertWorktime(userId);
+			System.out.println("출근체크함");
+		}else {
+			System.out.println("이미 출근 체크 했습니다.");
+			return null;
+		}
+		attendance = attendanceService.selectAttendance(userId);
 		return attendance;
 	}
 	
@@ -43,59 +50,72 @@ public class AttendanceController {
 	@RequestMapping(value="/worktime", method=RequestMethod.POST)
 	public Attendance clockOut(HttpSession session, Model model) {
 		String userId = (String)session.getAttribute("userId");
-		attendanceService.updateWorktime(userId);	
-		
-		//status 변경
 		Attendance attendance = attendanceService.selectAttendance(userId);
-		System.out.println("출결 조회 정보 가져오기");
-		int attendanceStatus = attendance.getStatus();
-		System.out.println("출결상태 확인1 :"+attendanceStatus);
-		
-		Timestamp attendanceClockIn = attendance.getClockIn();
-        System.out.println("출근 시간 : "+attendanceClockIn);
-		Timestamp attendanceClockOut = attendance.getClockOut();
-		System.out.println("퇴근 시간 : "+attendanceClockOut);
-        Calendar calIn = Calendar.getInstance();
-        Calendar calOut = Calendar.getInstance();
-        
-        calIn.setTimeInMillis(attendanceClockIn.getTime());
-        calOut.setTimeInMillis(attendanceClockOut.getTime());
-        int hour = calOut.get(Calendar.HOUR_OF_DAY) - calIn.get(Calendar.HOUR_OF_DAY);
-        System.out.println("금일 근무시간 : "+hour);
-		if(attendanceClockOut.equals(null)) {
-			attendanceStatus = 1;
-		}else if(!attendanceClockOut.equals(null)) {
-			if(hour>8) {
-				attendanceStatus = 0; // 정상출근
-			}else if(hour<8 && hour>4) {
-				attendanceStatus = 4; // 조퇴
-			}else if(hour<8 && hour>=7) {
-				attendanceStatus = 2; //지각
-			}else if(hour<4) {
-				attendanceStatus = 1; //결근
+		if(attendance.getClockOut() == null) {			
+			attendanceService.updateWorktime(userId);
+			System.out.println("퇴근체크함");
+			attendance = attendanceService.selectAttendance(userId);
+			
+			//status 변경
+			System.out.println("출결 조회 정보 가져오기");
+			int attendanceStatus = attendance.getStatus();
+			System.out.println("출결상태 확인1 :"+attendanceStatus);
+			
+			Timestamp attendanceClockIn = attendance.getClockIn();
+			System.out.println("출근 시간 : "+attendanceClockIn);
+			Timestamp attendanceClockOut = attendance.getClockOut();
+			System.out.println("퇴근 시간 : "+attendanceClockOut);
+			Calendar calIn = Calendar.getInstance();
+			Calendar calOut = Calendar.getInstance();
+			
+			calIn.setTimeInMillis(attendanceClockIn.getTime());
+			calOut.setTimeInMillis(attendanceClockOut.getTime());
+			int hour = calOut.get(Calendar.HOUR_OF_DAY) - calIn.get(Calendar.HOUR_OF_DAY);
+			System.out.println("출근 hour: "+calIn.get(Calendar.HOUR_OF_DAY));
+			System.out.println("퇴근 hour: "+calOut.get(Calendar.HOUR_OF_DAY));
+			
+			System.out.println("금일 근무시간 : "+hour);
+			if(!attendanceClockOut.equals(null)) {
+				if((calIn.get(Calendar.HOUR_OF_DAY)>=9)&&(calIn.get(Calendar.HOUR_OF_DAY)<10)&&(calOut.get(Calendar.HOUR_OF_DAY)<=20)&&(hour>=9)) {
+					attendanceStatus = 2; //지각
+				}else if((calIn.get(Calendar.HOUR_OF_DAY)==8)&&(calOut.get(Calendar.HOUR_OF_DAY)<=20)&& hour>=10) {
+					attendanceStatus = 0; // 정상출근
+				}else if(hour<8 && hour>=4) {
+					attendanceStatus = 4; // 조퇴
+				}else {
+					attendanceStatus = 1; //결근
+				}
 			}
+			System.out.println("출결상태 확인 :"+attendanceStatus);
+			attendanceService.updateAttendanceStatus(attendanceStatus,userId);
+		}else {
+			System.out.println("이미 퇴근 체크 했습니다.");
 		}
-		System.out.println("출결상태 확인 :"+attendanceStatus);
-		attendanceService.updateAttendanceStatus(attendanceStatus,userId);
-		System.out.println("여기도 완료");
+		System.out.println("--------------------------------------------");
+		
 		return attendance;
 	}
 	
-	
-	
 	//출결현황
-	@RequestMapping("/attendance/list/{page}")
-	public String getAttendanceList(int page, HttpSession session, Model model) {
+	@RequestMapping(value="/attendance/list/{page}")
+	public String getAttendanceList(@PathVariable int page, HttpSession session, Model model) {
 		session.setAttribute("page", page);
 		String userId = (String) session.getAttribute("userId");
+		
+		//출퇴근 값이 null일 경우 status 1(결근으로 수정)
+		attendanceService.noCheckAttendance(userId);
+		
 		List<Attendance> attendanceList = attendanceService.selectAttendanceList(userId, page);
-
+		List<Attendance> calendarList = attendanceService.selectCalendarList(userId);
 		//출근 횟수
 		int attendanceCount = attendanceService.selectAttendanceCount(userId);
 		model.addAttribute("attendanceCount",attendanceCount);
 		//지각 횟수
 		int lateCount = attendanceService.selectLateCount(userId);
 		model.addAttribute("lateCount",lateCount);
+		//조퇴 횟수
+		int leaveCount = attendanceService.selectLeaveCount(userId);
+		model.addAttribute("leaveCount",leaveCount);
 		//결근 횟수
 		int absenceCount = attendanceService.selectAbsenceCount(userId);
 		model.addAttribute("absenceCount",absenceCount);
@@ -106,9 +126,9 @@ public class AttendanceController {
 		
 		if(lateCount%3==0) {
 			chageLateCount = (lateCount/3);
-			attendancePercent = ((attendanceCount+(double)lateCount-chageLateCount)/(attendanceCount+lateCount+absenceCount))*100;
+			attendancePercent = ((attendanceCount+(double)lateCount-chageLateCount)/(attendanceCount+lateCount+leaveCount+absenceCount))*100;
 		}else {
-			attendancePercent =  ((attendanceCount+(double)lateCount)/(attendanceCount+lateCount+absenceCount))*100;
+			attendancePercent =  ((attendanceCount+(double)lateCount)/(attendanceCount+lateCount+leaveCount+absenceCount))*100;
 		}
 		model.addAttribute("attendancePercent",attendancePercent);
 		
@@ -118,17 +138,25 @@ public class AttendanceController {
 		if(myAttendanceListCount>0) {
 			totalPage = (int)Math.ceil(myAttendanceListCount/5.0);
 		}
-		
 		model.addAttribute("attendanceList",attendanceList);
+		model.addAttribute("calendarList",calendarList);
 		model.addAttribute("totalPageCount",totalPage);
 		model.addAttribute("page",page);
+
+		
+		Attendance attendance = attendanceService.selectAttendance(userId);
+		Date attendanceDate = attendance.getAttendanceDate();
+		model.addAttribute("attendanceDate",attendanceDate);
 		
 		return "attendance/list";
 	}
 	
-	@RequestMapping("/attendance/list")
+	@RequestMapping(value="/attendance/list")
 	public String getAttendanceList(HttpSession session, Model model) {
 		
 		return getAttendanceList(1,session,model);
 	}
+	
+	
+	
 }

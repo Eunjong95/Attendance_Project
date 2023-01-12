@@ -117,12 +117,11 @@
 			<i class="fas fa-angle-up"></i>
 		</a>
 	
-   <!-- Logout Modal-->
-   <jsp:include page="/WEB-INF/views/include/logout.jsp"/>
-   
-   <!-- Footer -->
-   <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
-   <!-- End of Footer -->
+		<!-- Logout Modal-->
+		<jsp:include page="/WEB-INF/views/include/logout.jsp"/>
+	
+		<!-- Footer -->
+		<jsp:include page="/WEB-INF/views/include/footer.jsp"/>
 		<!-- End of Footer -->
 		
 	</body>

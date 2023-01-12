@@ -8,6 +8,13 @@ public class Lecture {
 	private int lectureId;
 	private String lectureName;
 	private int memberNum;
+	private int attendMemberNum;
+	public int getAttendMemberNum() {
+		return attendMemberNum;
+	}
+	public void setAttendMemberNum(int attendMemberNum) {
+		this.attendMemberNum = attendMemberNum;
+	}
 	public int getMemberNum() {
 		return memberNum;
 	}

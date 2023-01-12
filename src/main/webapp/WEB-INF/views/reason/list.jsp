@@ -31,14 +31,10 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 <!-- fullcalendar CDN -->
-<link
-	href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css'
-	rel='stylesheet' />
-<script
-	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
 <!-- fullcalendar 언어 CDN -->
-<script
-	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 
 </head>
 <body id="page-top">
@@ -67,9 +63,8 @@
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800">휴가 신청 내역</h1>
-						<button class="btn btn-primary"
-							onClick="location.href='<c:url value="/reason/write"/>'">휴가
-							신청</button>
+						<button class="btn btn-primary" onClick="location.href='<c:url value="/reason/write"/>'">
+						휴가신청</button>
 					</div>
 
 					<!-- 사유서 신청 내역 -->

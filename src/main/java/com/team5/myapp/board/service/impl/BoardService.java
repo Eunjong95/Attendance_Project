@@ -20,6 +20,7 @@ public class BoardService implements IBoardService {
 	
 	@Transactional
 	public void insertBoard(Board board) {
+		board.setBoardId(boardRepository.selectMaxArticleNo()+1);
 		boardRepository.insertBoard(board);
 	}
 
@@ -97,9 +98,14 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
+	public List<Board> searchListByContentKeyword(String keyword, int page) {
+		int start = (page-1)*10+1;
+		return boardRepository.searchListByContentKeyword("%"+keyword+"%", start, start+9);
+	}
+
+	@Override
 	public int selectTotalBoardPageByKeyword(String keyword) {
-		// TODO Auto-generated method stub
-		return 0;
+		return boardRepository.selectTotalBoardPageByKeyword("%"+keyword+"%");
 	}
 
 	@Override
@@ -114,14 +120,7 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
-	public List<Board> searchListByContentKeyword(String keyword, int page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Comments selectComment(int commentId) {
-		
 		return boardRepository.selectComment(commentId);
 	}
 }

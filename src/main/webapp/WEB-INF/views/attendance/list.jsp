@@ -27,7 +27,7 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
 <!-- fullcalendar 언어 CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
-<!-- JS -->
+
 </head>
 
 <body id="page-top">
@@ -207,46 +207,42 @@
 												<div id='calendar'></div>
 											</div>
 												<script>
-												
-												  document.addEventListener('DOMContentLoaded', function() {
-												    var calendarEl = document.getElementById('calendar');
-												
+												document.addEventListener('DOMContentLoaded', function() {
+												    var calendarEl = document.getElementById('calendar');	
 												    var calendar = new FullCalendar.Calendar(calendarEl, {
-												      headerToolbar: {
-												        left: 'prev,next today',
-												        center: 'title',
-												        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-												      },
-												      initialDate: '2023-01-03',
-												      navLinks: true, // can click day/week names to navigate views
-												      selectable: true,
-												      selectMirror: true,
-												      select: function(arg) {
-												        var title = prompt('Event Title:');
-												        if (title) {
-												          calendar.addEvent({
-												            title: title,
-												            start: arg.start,
-												            end: arg.end,
-												            allDay: arg.allDay
-												          })
-												        }
-												        calendar.unselect()
-												      },
-												      eventClick: function(arg) {
-												        if (confirm('Are you sure you want to delete this event?')) {
-												          arg.event.remove()
-												        }
-												      },
-												      editable: true,
-												      dayMaxEvents: true, // allow "more" link when too many events
-												      events: []
+											      		headerToolbar: {
+										        			left: 'prev,next',
+												        	center: 'title',
+												        	right: 'dayGridMonth'
+												      	},
+												      	initialView: 'dayGridMonth',
+												      	events: [
+												      		
+												      		<c:forEach var="attendance" items="${calendarList}">
+												      		{
+												      			title :'<c:if test="${attendance.status==0}">출근</c:if>
+												      				<c:if test="${attendance.status==1}">결근</c:if>
+												      				<c:if test="${attendance.status==2}">지각</c:if>
+												      				<c:if test="${attendance.status==3}">휴가</c:if>
+												      				<c:if test="${attendance.status==4}">조퇴</c:if>
+												      				<c:if test="${attendance.status==5}">업무중</c:if>',
+												      			start :'${attendance.attendanceDate}',
+												      			<c:if test="${attendance.status==1}">backgroundColor:'#e74a3b'</c:if>
+											      				<c:if test="${attendance.status==2}">backgroundColor:'#f6c23e'</c:if>
+											      				<c:if test="${attendance.status==3}">backgroundColor:'#36b9cc'</c:if>
+											      				<c:if test="${attendance.status==4}">backgroundColor:'#49a3f1'</c:if>
+												      		},
+												      		</c:forEach>
+												      	]
+												      	,eventClick:function(info){
+												      		window.location.href(info.event.url);
+												      	}
 												    });
 												
 												    calendar.render();
 												  });
-												
-												</script>
+												 
+											</script>
 										</div>
 									</div>
 								</div>

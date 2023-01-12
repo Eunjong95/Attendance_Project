@@ -32,14 +32,43 @@
 		]]>
 	</select>
 
-	<select id="selectMemberCount" parameterType="int" resultType="int">
+	<select id="selectMemberCountByLecutreId" parameterType="int" resultType="int">
 		<![CDATA[
 			SELECT COUNT(user_id) as "count" 
 			FROM MEMBERS 
 			WHERE lecture_id=#{lectureId}
 		]]>
 	</select>
-	
+	<select id="selectAttendMemberCountByLectureId" parameterType="int" resultType="int">
+		<![CDATA[
+			select
+				count(m.user_id) as "count"
+			from
+				members m, 
+				lecture l,
+				(
+	            	select 
+	            		user_id, 
+	            		attendance_id , 
+	            		attendance_date ,
+	            		status
+	            	from 
+	            		attendance 
+	            	where 
+	            		to_char(attendance_date,'YY/MM/DD') = to_char(sysdate,'YY/MM/DD')
+	            ) a
+			where
+				a.user_id=m.user_id and
+				m.lecture_id=l.lecture_id and
+	            (
+		            to_char(a.attendance_date,'YY/MM/DD') =to_char(sysdate,'YY/MM/DD') or
+		            a.attendance_date is null
+	            )
+	            and m.role!=1
+	            and (a.status=0 or a.status=5)
+	            and l.lecture_id=#{lectureId}
+		]]>
+	</select>
 	<select id="selectMemberList" parameterType="map" resultType="com.team5.myapp.member.model.Member">
 		<![CDATA[
 			select
@@ -62,14 +91,23 @@
 			            l.lecture_name,
 			            a.attendance_date
 			        from
-			            attendance a,
+			            (
+			            	select 
+			            		user_id, 
+			            		attendance_date ,
+			            		status
+			            	from 
+			            		attendance 
+			            	where 
+			            		to_char(attendance_date,'YY/MM/DD') = to_char(sysdate,'YY/MM/DD')
+			            ) a,
 			            members m,
 			            lecture l
 			        where 
 			            a.user_id(+)=m.user_id and
 			            m.lecture_id=l.lecture_id and
 			            (
-				            to_char(a.attendance_date,'YY/MM/DD') ='23/01/07' or
+				            to_char(a.attendance_date,'YY/MM/DD') =to_char(sysdate,'YY/MM/DD') or
 				            a.attendance_date is null
 			            )
 			        order by lecture_name , user_name
@@ -82,4 +120,58 @@
 		]]>
 	</select>
 
+	<select id="selectMemberCountByStatus" parameterType="int" resultType="int">
+		select
+			count(m.user_id) as "count"
+		from
+			members m, 
+			(
+            	select 
+            		user_id, 
+            		attendance_date ,
+            		status
+            	from 
+            		attendance 
+            	where 
+            		to_char(attendance_date,'YY/MM/DD') = to_char(sysdate,'YY/MM/DD')
+            ) a
+		where
+			a.user_id(+)=m.user_id and
+            (
+	            to_char(a.attendance_date,'YY/MM/DD') =to_char(sysdate,'YY/MM/DD') or
+	            a.attendance_date is null
+            )
+            and m.role!=1
+		<if test="attendanceStatus != null">
+			and a.status = #{attendanceStatus}
+		</if>
+			
+	</select>
+	
+	<select id="selectMemberListByLectureId" parameterType="map" resultType="com.team5.myapp.member.model.Member">
+		<![CDATA[
+			select 
+				user_id as "userId",
+				user_name as "userName",
+				phone as "phone",
+				email as "email"
+			from
+			(
+				select
+					rownum as rnum,
+					user_id ,
+					user_name ,
+					phone ,
+					email 
+				from
+					members
+				where
+					lecture_id=#{lectureId}
+					and rownum<=#{end}
+			)
+			where 
+				rnum>=#{start}
+			
+		]]>
+	</select>
 </mapper>

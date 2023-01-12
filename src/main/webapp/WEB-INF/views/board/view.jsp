@@ -72,7 +72,7 @@
 		                           <h6>No.${board.boardId}</h6>
 		                        </div>
 		                        <div class="col-10">
-		                           <h6>${board.boardTitle}"</h6>
+		                           <h6>${board.boardTitle}</h6>
 		                        </div>
 		                        <div class="col-1">
 		                           <h6>조회수 ${board.readCount}</h6>
@@ -220,12 +220,11 @@
 			class="fas fa-angle-up"></i>
 		</a>
 
-   <!-- Logout Modal-->
-   <jsp:include page="/WEB-INF/views/include/logout.jsp"/>
-   
-   <!-- Footer -->
-   <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
-   <!-- End of Footer -->
+		<!-- Logout Modal-->
+		<jsp:include page="/WEB-INF/views/include/logout.jsp"/>
+
+		<!-- Footer -->
+		<jsp:include page="/WEB-INF/views/include/footer.jsp"/>
 		<!-- End of Footer -->
 </body>
 
