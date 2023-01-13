@@ -1,5 +1,7 @@
 package com.team5.myapp.attendance.service.impl;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.team5.myapp.attendance.dao.IAttendanceRepository;
 import com.team5.myapp.attendance.model.Attendance;
 import com.team5.myapp.attendance.service.IAttendanceService;
-import com.team5.myapp.member.model.Member;
 
 @Service
 public class AttendanceService implements IAttendanceService {
@@ -86,6 +87,20 @@ public class AttendanceService implements IAttendanceService {
 	public void noCheckAttendance(String userId) {
 		attendanceRepository.noCheckAttendance(userId);
 	}
-
+	@Override
+	public void noAllCheckAttendance() {
+		attendanceRepository.noAllCheckAttendance();
+	}
+	//무단결근
+	@Override
+	public void noInsertAttendance(String userId) {
+		
+		attendanceRepository.noInsertAttendance(userId);
+		
+	}
+	@Override
+	public List<Attendance> selectMember() {
+		return attendanceRepository.selectMember();
+	}
 	
 }

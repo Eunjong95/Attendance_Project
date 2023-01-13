@@ -15,8 +15,13 @@
    <ul class="navbar-nav bg-gradient-warning sidebar sidebar-dark accordion" id="accordionSidebar">
 </c:if>
    <!-- Sidebar - Brand -->
-   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<c:url value='/'/>">
-      <div class="sidebar-brand-icon ">
+   <c:if test="${role eq 1}">
+   	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="<c:url value='/admin'/>">
+   </c:if>
+   <c:if test="${role eq 0}">
+   	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="<c:url value='/attendance'/>">
+   </c:if>
+      <div class="sidebar-brand-icon">
          <i class="fas fa-laptop-house" style='font-size:32px'></i>
       </div>
       <div class="sidebar-brand-text mx-3"> OTI LMS
@@ -29,7 +34,7 @@
    <!-- Nav Item - Dashboard -->
    <li class="nav-item active"><a class="nav-link" href="#"> 
       <i class="fas fa-laptop"></i> 
-      <span>내 강의명</span></a>
+      <span>${lectureName}</span></a>
    </li>
 
    <!-- Divider -->
@@ -63,8 +68,8 @@
          </a>
          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-               <a class="collapse-item" href="<c:url value='/admin/reason/list/0/1'/>">사유서 요청 목록</a> 
-               <a class="collapse-item" href="<c:url value='/admin/reason/list/1/1'/>">사유서 처리 완료 목록</a>
+               <a class="collapse-item" href="<c:url value='/admin/reason/list/0/0'/>">사유서 요청 목록</a> 
+               <a class="collapse-item" href="<c:url value='/admin/reason/list/1/0'/>">사유서 처리 완료 목록</a>
             </div>
          </div>
       </li>
@@ -77,9 +82,9 @@
       </li>
       
       <li class="nav-item">
-         <a class="nav-link" href="<c:url value='/admin/member/list/0'/>">
+         <a class="nav-link" href="<c:url value='/admin/member/list/0/1'/>">
             <i class="fa-solid fa-users"></i>
-            <span>학생 목록</span>
+            <span>학생 출결 목록</span>
          </a>
       </li>
    </c:if>

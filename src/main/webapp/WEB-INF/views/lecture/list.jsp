@@ -175,7 +175,7 @@ function showMemberListMore(lectureId,page){
                                				</div>
                                				<div class="col-sm-12 col-md-1">
                                					<div class="d-flex justify-content-center">
-	                               					<table class="table">
+	                               					<table class="table" style="border-style: hidden">
 														<tr>
 															<td align="left">
 																<boardPaging:lecturePaging  totalPageCount="${totalPageCount}" nowPage="${page}"/>

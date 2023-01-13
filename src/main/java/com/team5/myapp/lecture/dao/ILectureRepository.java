@@ -9,4 +9,5 @@ import com.team5.myapp.lecture.model.Lecture;
 public interface ILectureRepository {
 	int selectTotalLecturePage();
 	List<Lecture> selectLectureList(@Param("start") int start,@Param("end") int end);
+	Lecture selectLecture(String userId);
 }

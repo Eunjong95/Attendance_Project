@@ -32,7 +32,7 @@ import com.team5.myapp.reason.service.IReasonService;
 @Controller
 public class HomeController {
 	
-private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
 	IBoardService boardService;
@@ -40,27 +40,17 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	ILectureService lectureService;
 	@Autowired
 	IMemberService memberService;
-
 	@Autowired
 	IReasonService reasonService;
 	@Autowired
 	IAttendanceService attendanceService;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/attendance", method = RequestMethod.GET)
 	public String home(HttpSession session, Model model) {
 		session.setAttribute("page", 1);
 		model.addAttribute("boardCategoryId",1);
-		List<Board> boardList = boardService.selectBoardListByCategory(1, 1);
+		List<Board> boardList = boardService.selectBoardListByRole(1);
 		model.addAttribute("boardList",boardList);
-		
-		//paging start
-		int bbsCount = boardService.selectTotalBoardPageByCategoryId(1);
-		int totalPage = 0;
-		if(bbsCount>0) {
-			totalPage = (int)Math.ceil(bbsCount/5.0);
-		}
-		
-		model.addAttribute("totalPageCount",totalPage);
 		model.addAttribute("page",1);
 		
 		//출퇴근 시간 표시
@@ -108,11 +98,12 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		//전체 인원
 		model.addAttribute("totalMemberCount", memberService.selectMemberCount());
 		//지각인원
-		model.addAttribute("lateCount", memberService.selectMemberCount(2));
+		model.addAttribute("lateList", memberService.selectMemberListByStatus(2,1));
 		//휴가인원
-		model.addAttribute("vacationCount", memberService.selectMemberCount(3));
+		model.addAttribute("vacationList", memberService.selectMemberListByStatus(3,1));
 		//출석인원
-		model.addAttribute("attendanceCount", memberService.selectMemberCount(0)+memberService.selectMemberCount(5));
+		model.addAttribute("attendanceList", memberService.selectMemberListByStatus(0,1));
+		model.addAttribute("attendanceList2",memberService.selectMemberListByStatus(5,1));
 
 		//paging start
 		/*int lCount = lectureService.selectTotalLecturePage()

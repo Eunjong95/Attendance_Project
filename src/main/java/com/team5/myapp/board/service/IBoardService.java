@@ -42,4 +42,7 @@ public interface IBoardService {
 	List<Board> searchListByContentKeyword(String keyword, int page);
 	Comments selectComment(int commentId);
 	
+	//공지사항
+	List<Board> selectBoardListByRole(int page);
+	
 }

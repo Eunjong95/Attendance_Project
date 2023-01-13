@@ -126,10 +126,11 @@
                                			<div class="row">
                                				<div class="col-sm-12 d-flex justify-content-center mt-4">
                                					<ul class="pagination">
-													<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/1'/>" class="page-link">◀◀</a></li>
-													   
-													<c:if test="${pager.groupNo > 1}">
-														<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${pager.startPageNo-1}'/>" class="page-link">◀</a></li>
+                               						<c:if test="${pager.groupNo > 1}">
+														<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${pager.startPageNo-1}'/>" class="page-link">Previous</a></li>
+													</c:if>
+													<c:if test="${pager.pageNo > 1}">
+														<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${page-1}'/>" class="page-link">◀</a></li>
 													</c:if>
 													   
 													<c:forEach var="i" begin="${pager.startPageNo}" end="${pager.endPageNo}">
@@ -141,10 +142,13 @@
 														</c:if>
 													</c:forEach>
 													   
-													<c:if test="${pager.groupNo < pager.totalGroupNo }">
-														<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/$${pager.endPageNo+1}'/>" class="page-link">▶</a></li>
+													<c:if test="${pager.pageNo < pager.totalPageNo}">
+														<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${page+1}'/>" class="page-link">▶</a></li>
 													</c:if>
-													<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${pager.totalPageNo}'/>" class="page-link">▶▶</a></li>
+													
+													<c:if test="${pager.groupNo < pager.totalGroupNo}">
+														<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${pager.endPageNo+1}'/>" class="page-link">Next</a></li>
+                             						</c:if>
                              					</ul>
                              				</div>
                                			</div>

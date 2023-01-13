@@ -7,5 +7,6 @@ import com.team5.myapp.lecture.model.Lecture;
 public interface ILectureService {
 	int selectTotalLecturePage();
 	List<Lecture> selectLectureList(int page);
+	Lecture selectLecture(String userId);
 }
 

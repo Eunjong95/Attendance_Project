@@ -32,4 +32,16 @@
 			where rnum >= #{start} 
 		]]>
 	</select>
+	<select id="selectLecture" parameterType="String" resultType="com.team5.myapp.lecture.model.Lecture">
+      <![CDATA[
+         select 
+            lecture_name as "lectureName"
+         from 
+            lecture l, members m
+         where 
+            l.lecture_id = m.lecture_id
+            and user_id=#{userId}
+            
+      ]]>
+   </select>
 </mapper>

@@ -14,53 +14,54 @@ import com.team5.myapp.member.service.IMemberService;
 public class MemberService implements IMemberService {
 
 	@Autowired
-	IMemberRepository memberDao;
+	IMemberRepository memberRepository;
 	
 	@Override
 	public Member selectMember(String userId) {
-		return memberDao.selectMember(userId);
+		return memberRepository.selectMember(userId);
 	}
 
 	@Override
 	public String getPassword(String userId) {
-		return memberDao.getPassword(userId);
+		return memberRepository.getPassword(userId);
 	}
 
 	@Override
 	public int selectMemberRole(String userId) {
-		return memberDao.selectMemberRole(userId);
+		return memberRepository.selectMemberRole(userId);
 	}
 
 	@Override
 	public List<Member> selectMemberList(int page) {
 		int start =(page-1)*5 +1;
-		return memberDao.selectMemberList(start,start+4);
+		return memberRepository.selectMemberList(start,start+4);
 	}
 
 	@Override
 	public int selectMemberByLecturePage(int lectureId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return memberRepository.selectMemberCountByLectureId(lectureId);
 	}
 
 	@Override
 	public List<Member> selectAttendanceListByLecture(int lectureId, Pager pager) {
 		int start = pager.getStartRowNo() - 1;
 		int end = pager.getRowsPerPage();
-		return memberDao.selectMemberListByLectureId(lectureId, start, end);
+		return memberRepository.selectMemberAttendanceByLectureId(lectureId, start, end);
 	}
 	
 	@Override
 	public int selectMemberCount() {
-		return memberDao.selectMemberCountByStatus();
+		return memberRepository.selectMemberCount();
 	}
 	@Override
-	public int selectMemberCount(int attendanceStatus) {
-		return memberDao.selectMemberCountByStatus(attendanceStatus);
+	public List<Member> selectMemberListByStatus(int attendanceStatus, int page) {
+
+		return memberRepository.selectMemberListByStatus(attendanceStatus, (page-1)*5+1, (page-1)*5+5);
 	}
+	
 	@Override
 	public List<Member> selectMemberListByLectureId(int lectureId,int page) {
 		int start=(page-1)*5+1;
-		return memberDao.selectMemberListByLectureId(lectureId,start,start+4);
+		return memberRepository.selectMemberListByLectureId(lectureId,start,start+4);
 	}
 }

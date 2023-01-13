@@ -162,7 +162,7 @@
 	<update id="updateAttendanceStatus" parameterType="map">
 		<![CDATA[
 			UPDATE attendance
-			SET status=0
+			SET status=3
 			WHERE attendance_id=#{attendanceId}
 		]]>
 	</update>
@@ -171,7 +171,7 @@
 		<![CDATA[
 			INSERT INTO attendance (attendance_id, attendance_date, user_id, status)
 			values 
-				(seq_attendance_id.nextval, #{reasonDate}, #{userId}, 0)	
+				(seq_attendance_id.nextval, #{reasonDate}, #{userId}, 3)	
 		]]>
 	</insert>
 	
