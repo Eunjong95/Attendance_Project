@@ -28,9 +28,9 @@ public class BoardService implements IBoardService {
 	public void insertBoard(Board board, BoardFile file) {
 		board.setBoardId(boardRepository.selectMaxArticleNo()+1);
 		boardRepository.insertBoard(board);
-        if(file != null && file.getbFileName() != null && !file.getbFileName().equals("")) {
+        if(file != null && file.getBoardFileName() != null && !file.getBoardFileName().equals("")) {
         	file.setBoardId(board.getBoardId());
-        	file.setbFileId(boardRepository.selectMaxFileId()+1);
+        	file.setBoardFileId(boardRepository.selectMaxFileId()+1);
         	boardRepository.insertFileData(file);
         }
 	}
@@ -43,8 +43,8 @@ public class BoardService implements IBoardService {
 	@Override
 	public void updateBoard(Board board, BoardFile file) {
 		boardRepository.updateBoard(board);
-		if(file!=null&&file.getbFileName()!=null&&!file.getbFileName().equals("")) {
-			if(file.getbFileId()>0) {
+		if(file!=null&&file.getBoardFileName()!=null&&!file.getBoardFileName().equals("")) {
+			if(file.getBoardFileId()>0) {
 				boardRepository.updateFileData(file);
 			}else {
 				
@@ -123,4 +123,10 @@ public class BoardService implements IBoardService {
 	public Comments selectComment(int commentId) {
 		return boardRepository.selectComment(commentId);
 	}
+	
+	@Override
+   public List<Board> selectBoardListByRole(int page) {
+      int start = (page - 1) * 5 + 1;
+      return boardRepository.selectBoardListByRole(start,start+4);
+   }
 }

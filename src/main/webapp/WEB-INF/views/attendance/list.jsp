@@ -55,7 +55,11 @@
 					<!-- Page Heading -->
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">내 출결 현황</h1>
+						<h1 class="h3 mb-0 text-gray-800">
+							<c:set var="attendanceDate" value="${attendanceDate}"/>
+							<fmt:formatDate value="${attendanceDate}" pattern="MM"/>
+							월 출결 현황
+						</h1>
 					</div>
 
 					<!-- 출퇴근 표시 -->
@@ -80,7 +84,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
@@ -178,8 +181,8 @@
 	                                    	<c:forEach var="attendance" items="${attendanceList}">
 	                                    		<tr>
 	                                    			<td><fmt:formatDate value="${attendance.attendanceDate}" pattern="YYYY-MM-dd"/></td>
-	                                    			<td><fmt:formatDate value="${attendance.clockIn}" pattern="HH:MM:ss"/></td>
-	                                    			<td><fmt:formatDate value="${attendance.clockOut}" pattern="HH:MM:ss"/></td>
+	                                    			<td><fmt:formatDate value="${attendance.clockIn}" pattern="HH:mm:ss"/></td>
+	                                    			<td><fmt:formatDate value="${attendance.clockOut}" pattern="HH:mm:ss"/></td>
 	                                    			<c:if test="${attendance.status==0}"><td>정상출근</td></c:if>
 	            									<c:if test="${attendance.status==1}"><td>결근</td></c:if>
 	            									<c:if test="${attendance.status==2}"><td>지각</td></c:if>
@@ -189,13 +192,16 @@
 	                                    		</tr>
 	                                    	</c:forEach> 
 										</tbody>
-										<tfoot class="d-flex justify-content-center">
-											<tr>
-												<td align="left">
-													<attendancePaging:attendancePaging attendanceId="${attendanceId}" totalPageCount="${totalPageCount}" nowPage="${page}"/>
-												</td>
-											</tr>
-										</tfoot>
+										<tfoot>
+		                                	<tr>
+		                                		<td></td>
+		                                    	<td class="d-flex justify-content-center" colspan="2">
+		                                       		<attendancePaging:attendancePaging totalPageCount="${totalPageCount}" nowPage="${page}"/>
+		                                    	</td>
+		                                    	<td></td>
+		                                    	<td></td>
+		                                 	</tr>
+		                              </tfoot>
 									</table>
 								</div>
 	
@@ -207,42 +213,43 @@
 												<div id='calendar'></div>
 											</div>
 												<script>
-												document.addEventListener('DOMContentLoaded', function() {
-												    var calendarEl = document.getElementById('calendar');	
-												    var calendar = new FullCalendar.Calendar(calendarEl, {
-											      		headerToolbar: {
-										        			left: 'prev,next',
-												        	center: 'title',
-												        	right: 'dayGridMonth'
-												      	},
-												      	initialView: 'dayGridMonth',
-												      	events: [
-												      		
-												      		<c:forEach var="attendance" items="${calendarList}">
-												      		{
-												      			title :'<c:if test="${attendance.status==0}">출근</c:if>
-												      				<c:if test="${attendance.status==1}">결근</c:if>
-												      				<c:if test="${attendance.status==2}">지각</c:if>
-												      				<c:if test="${attendance.status==3}">휴가</c:if>
-												      				<c:if test="${attendance.status==4}">조퇴</c:if>
-												      				<c:if test="${attendance.status==5}">업무중</c:if>',
-												      			start :'${attendance.attendanceDate}',
-												      			<c:if test="${attendance.status==1}">backgroundColor:'#e74a3b'</c:if>
-											      				<c:if test="${attendance.status==2}">backgroundColor:'#f6c23e'</c:if>
-											      				<c:if test="${attendance.status==3}">backgroundColor:'#36b9cc'</c:if>
-											      				<c:if test="${attendance.status==4}">backgroundColor:'#49a3f1'</c:if>
-												      		},
-												      		</c:forEach>
-												      	]
-												      	,eventClick:function(info){
-												      		window.location.href(info.event.url);
-												      	}
-												    });
-												
-												    calendar.render();
-												  });
-												 
-											</script>
+				                                    document.addEventListener('DOMContentLoaded', function() {
+				                                        var calendarEl = document.getElementById('calendar');   
+				                                        var calendar = new FullCalendar.Calendar(calendarEl, {
+				                                             headerToolbar: {
+				                                               left: 'prev,next',
+				                                               center: 'title',
+				                                               right: 'dayGridMonth'
+				                                             },
+				                                             initialView: 'dayGridMonth',
+				                                             events: [
+				                                                
+				                                                <c:forEach var="attendance" items="${calendarList}">
+				                                                {
+				                                                   title :'<c:if test="${attendance.status==0}">출근</c:if>
+				                                                      <c:if test="${attendance.status==1}">결근</c:if>
+				                                                      <c:if test="${attendance.status==2}">지각</c:if>
+				                                                      <c:if test="${attendance.status==3}">휴가</c:if>
+				                                                      <c:if test="${attendance.status==4}">조퇴</c:if>
+				                                                      <c:if test="${attendance.status==5}">업무중</c:if>',
+				                                                   url : '<c:url value="/reason/write"/>',
+				                                                   start :'${attendance.attendanceDate}',
+				                                                   <c:if test="${attendance.status==1}">backgroundColor:'#e74a3b'</c:if>
+				                                                   <c:if test="${attendance.status==2}">backgroundColor:'#f6c23e'</c:if>
+				                                                   <c:if test="${attendance.status==3}">backgroundColor:'#36b9cc'</c:if>
+				                                                   <c:if test="${attendance.status==4}">backgroundColor:'#49a3f1'</c:if>
+				                                                
+				                                                },
+				                                                </c:forEach>
+				                                             ]
+				                                             ,eventClick:function(info){
+				                                                window.location.href(info.event.url);
+				                                             }
+				                                        });
+				                                    
+				                                        calendar.render();
+				                                      });
+			                                 </script>
 										</div>
 									</div>
 								</div>

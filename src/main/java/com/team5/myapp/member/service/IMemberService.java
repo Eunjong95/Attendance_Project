@@ -11,9 +11,13 @@ public interface IMemberService {
 	int selectMemberRole(String userId);
 	List<Member> selectMemberList(int page);
 	int selectMemberCount();
-	int selectMemberCount(int attendanceStatus);
+	
+	List<Member> selectMemberListByStatus(int attendanceStatus,int page);
+	
 	//강의별 학생 출석 정보
 	int selectMemberByLecturePage(int lectureId);
 	List<Member> selectMemberListByLectureId(int lectureId, int page);
+	
+	//학생 출결 목록
 	List<Member> selectAttendanceListByLecture(int lectureId, Pager pager);
 }

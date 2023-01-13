@@ -34,7 +34,10 @@ public interface IAttendanceRepository {
 	int selectAttendanceCount(String userId);
 	//출퇴근 값이 null일 경우 status 1(결근으로 수정)
 	void noCheckAttendance(String userId);
+	void noAllCheckAttendance();
 	
-
+	//무단결근
+	void noInsertAttendance(String userId);
+	List<Attendance> selectMember();
 	
 }

@@ -14,7 +14,7 @@
 	<select id="selectMaxFileId" parameterType="int" resultType="int">
 		<![CDATA[
 			SELECT 
-				NVL(MAX(b_file_id),0) AS "bFileId"
+				NVL(MAX(board_file_id),0) AS "boardFileId"
 			FROM board_file
 		]]>
 	</select>
@@ -34,9 +34,9 @@
 		<![CDATA[
 			INSERT INTO 
 			board_file 
-				(b_file_id, board_id, b_file_name, b_file_size, b_file_content_type, b_file_data) 
+				(board_file_id, board_id, board_file_name, board_file_size, board_file_content_type, board_file_data) 
 			VALUES 
-				(#{bFileId}, #{boardId}, #{bFileName}, #{bFileSize}, #{bFileContentType}, #{bFileData})
+				(#boardFileId}, #{boardId}, #{boardFileName}, #{boardFileSize}, #{boardFileContentType}, #{boardFileData})
 		]]>
 	</insert>
 	<!-- 게시글 수정 -->
@@ -54,11 +54,11 @@
 		<![CDATA[
 			UPDATE BOARD_FILE
 			SET
-				B_FILE_NAME=#{bFileName},
-				B_FILE_SIZE=#{bFileSize},
-				B_FILE_CONTENT_TYPE=#{bFileContentType},
-				B_FILE_DATA=#{bFileData}
-			WHERE B_FILE_ID=#{bFileId}
+				BOARD_FILE_NAME=#{boardFileName},
+				BOARD_FILE_SIZE=#{boardFileSize},
+				BOARD_FILE_CONTENT_TYPE=#{bFileContentType},
+				BOARD_FILE_DATA=#{boardFileData}
+			WHERE BOARD_FILE_ID=#{boardFileId}
 		]]>
 		
 	</update>
@@ -120,10 +120,10 @@
 			board_date as "boardDate",
 			user_id as "userId",
 			read_count as "readCount",
-			b_file_id as "bFileId",
-			b_file_name as "bFileName",
-			b_file_size as "bFileSize",
-			b_file_content_type as "bFileContentType"
+			board_file_id as "bFileId",
+			board_file_name as "boardFileName",
+			board_file_size as "boardFileSize",
+			board_file_content_type as "boardFileContentType"
 		from board left outer join board_file
 		on board.board_id=board_file.board_id 
 		where board.board_id=#{boardId}
@@ -133,14 +133,14 @@
 	<select id="getFile" parameterType="int" resultType="com.team5.myapp.board.model.BoardFile">
 		<![CDATA[
 			select
-				b_file_id as "bFileId",
-				b_file_name as "bFileName",
-				b_file_size as "bFileSize",
-				b_file_content_type as "bFileContentType",
-				b_file_data as "bFileData",
+				board_file_id as "boardFileId",
+				board_file_name as "boardFileName",
+				board_file_size as "boardFileSize",
+				board_file_content_type as "boardFileContentType",
+				board_file_data as "boardFileData",
 				board_id as "boardId"
 			from board_file
-			where b_file_id=#{bFileId}
+			where board_file_id=#{boardFileId}
 		]]>	
 	</select>
 	
@@ -258,4 +258,41 @@
 			where comment_id=#{commentId}
 		]]>	
 	</select>
+	
+	<!-- 공지사항 가져오기 -->
+   	<select id="selectBoardListByRole" parameterType="map" resultType="com.team5.myapp.board.model.Board">
+    	<![CDATA[
+        	SELECT
+	            BOARD_ID AS "boardId",
+	            BOARD_CATEGORY_ID AS "boardCategoryId",
+	            USER_ID AS "userId",
+	            BOARD_TITLE AS "boardTitle",
+	            BOARD_DATE AS "boardDate",
+	            READ_COUNT AS "readCount",
+	            RNUM+1 AS "seq"
+	         FROM (
+	            SELECT
+	               BOARD_ID,
+	               BOARD_CATEGORY_ID,
+	               USER_ID,
+	               BOARD_TITLE,
+	               BOARD_DATE,
+	               READ_COUNT,
+	               ROWNUM AS RNUM
+	            FROM (
+	               SELECT 
+	                  BOARD_ID,
+	                  BOARD_CATEGORY_ID,
+	                  m.USER_ID,
+	                  BOARD_TITLE,
+	                  BOARD_DATE,
+	                  READ_COUNT
+	               FROM BOARD b, members m
+	               WHERE m.user_id=b.user_id and m.role=1
+	               ORDER BY BOARD_ID DESC
+	            )
+	         )
+	         WHERE RNUM BETWEEN #{start} AND #{end}
+      	]]>
+   	</select>
 </mapper>

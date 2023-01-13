@@ -45,4 +45,7 @@ public interface IBoardRepository {
 	int selectTotalBoardPageByKeyword(String keyword);
 	List<Board> searchListByContentKeyword(@Param("keyword") String keyword, @Param("start") int start, @Param("end") int end);
 	Comments selectComment(int commentId);
+	
+	//공지사항
+	List<Board> selectBoardListByRole(@Param("start")int start,@Param("end") int end);
 }

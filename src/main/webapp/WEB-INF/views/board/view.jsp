@@ -96,33 +96,40 @@
 									<h6>첨부파일</h6>
 								</div>
 								<div class="col-11">
-									<c:if test="${!empty board.bFileName}">
+									<c:if test="${!empty board.boardFileName}">
 										<div>
-											<c:set var="len" value="${fn:length(board.bFileName)}" />
+											<c:set var="len" value="${fn:length(board.boardFileName)}" />
 											<c:set var="filetype"
-												value="${fn:toUpperCase(fn:substring(board.bFileName, len-4, len))}" />
+												value="${fn:toUpperCase(fn:substring(board.boardFileName, len-4, len))}" />
 											<c:if
 												test="${(filetype eq '.JPG') or (filetype eq 'JPEG') or (filetype eq '.PNG') or (filetype eq '.GIF')}">
-												<img src='<c:url value="/file/${board.bFileId}"/>'
+												<img src='<c:url value="/file/${board.boardFileId}"/>'
 													class="img-thumbnail">
 												<br>
 											</c:if>
-											<a href='<c:url value="/file/${board.bFileId}"/>'>${board.bFileName}(${board.bFileSize}byte)</a>
+											<a href='<c:url value="/file/${board.boardFileId}"/>'>${board.boardFileName}(${board.boardFileSize}byte)</a>
 										</div>
 									</c:if>
 								</div>
 							</div>
 							<hr />
 							<div class="d-flex justify-content-center">
-								<a href='<c:url value="/board/update/${board.boardId}"/>'
-									class="btn btn-primary btn-sm mr-1 text-center" >수정</a>
-								<form id="deleteBoard" action="<c:url value='/board/delete'/>" method="POST">
-								    <input type="hidden" name="boardId" value="${board.boardId}">
-								    <input type="hidden" name="boardCategoryId" value="${board.boardCategoryId}">
-								    
-								    <button type="submit" class="btn btn-primary btn-sm mr-1 text-center" form="deleteBoard" >삭제</button>
-						    	
-						    	</form>
+								<c:if test="${board.userId eq userId}">
+                           			<a href='<c:url value="/board/update/${board.boardId}"/>' class="btn btn-primary btn-sm mr-1 text-center" >수정</a>
+                           			<form id="deleteBoard" action="<c:url value='/board/delete'/>" method="POST">
+                               			<input type="hidden" name="boardId" value="${board.boardId}">
+                               			<input type="hidden" name="boardCategoryId" value="${board.boardCategoryId}">
+                               			<button type="submit" class="btn btn-primary btn-sm mr-1 text-center" form="deleteBoard" >삭제</button>
+                            		</form>
+                         		</c:if>
+                         		<c:if test="${role eq 1}">
+                           			<a href='<c:url value="/board/update/${board.boardId}"/>' class="btn btn-primary btn-sm mr-1 text-center" >수정</a>
+                           			<form id="deleteBoard" action="<c:url value='/board/delete'/>" method="POST">
+                               			<input type="hidden" name="boardId" value="${board.boardId}">
+                               			<input type="hidden" name="boardCategoryId" value="${board.boardCategoryId}">
+                               			<button type="submit" class="btn btn-primary btn-sm mr-1 text-center" form="deleteBoard" >삭제</button>
+                            		</form>
+                         		</c:if>
 							</div>
 						</div>
 					</div>
@@ -216,8 +223,8 @@
 		<!-- End of Page Wrapper -->
 
 		<!-- Scroll to Top Button-->
-		<a class="scroll-to-top rounded" href="#page-top"> <i
-			class="fas fa-angle-up"></i>
+		<a class="scroll-to-top rounded" href="#page-top"> 
+			<i class="fas fa-angle-up"></i>
 		</a>
 
 		<!-- Logout Modal-->

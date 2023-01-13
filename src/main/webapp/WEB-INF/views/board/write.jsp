@@ -85,12 +85,13 @@
 											<textarea class="form-control" name="boardContent" id="boardContent" rows="5"></textarea>
 										</div>
 									</div>
-									<div class="row mx-2 bottonbox d-flex justify-content-left mt-3">
-										<div>
-											<input type="file" id="i_file" name="file"> <br/>
-						    				<span id="droparea" class="help-block">파일 용량은 50MB 이하로만 업로드 가능합니다.</span>
-										</div>
-									</div>
+                                    	<div class="row my-3 bottonbox d-flex">         
+                                          <div>
+	                                          <label for="files">파일 첨부</label>
+	                                          <input type="file" class="form-control" id="s" name="files">
+	                                          <span id="droparea" class="help-block">파일 용량은 50MB 이하로만 업로드 가능합니다.</span>      
+                                          </div>
+                                       	</div>
 									<input type="hidden" name="boardCategoryId" value="${boardCategoryId}">
 									<input type="hidden" name="userId" value="${sessionScope.userId}">
 									

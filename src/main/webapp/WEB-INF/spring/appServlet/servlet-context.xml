@@ -22,7 +22,7 @@
    
    <context:component-scan base-package="com.team5.myapp" />
    
-   <view-controller path="/" view-name="/member/login"/>
+   <view-controller path="/" view-name="member/login"/>
    
    <resources location="/WEB-INF/resources/" mapping="/**"/>
    <resources location="/WEB-INF/resources/js/" mapping="/js/**"/>
@@ -42,10 +42,9 @@
          <beans:value>50000000</beans:value>
       </beans:property>
    </beans:bean>   
-   
+	
    <context:component-scan base-package="com.team5.myapp.member.controller"/>
    <context:component-scan base-package="com.team5.myapp.board.controller"/>
    <context:component-scan base-package="com.team5.myapp.reason.controller"/>
    <context:component-scan base-package="com.team5.myapp.attendance.controller"/>
-   <context:component-scan base-package="com.team5.myapp.lecture.controller"/>
 </beans:beans>

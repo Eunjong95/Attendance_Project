@@ -193,12 +193,18 @@ public class ReasonController {
 		logger.info("getReasonDetail", reason.toString());
 		return "admin/reason/reasonView";
 	}
+	
+	@RequestMapping("/admin/reason/view/{reasonId}")
+	public String getReasonDetail(@PathVariable int reasonId, HttpSession session, Model model) {
+		return getReasonDetail(reasonId, 1, session, model);
+	}
 
 	//사유서 승인
 	@RequestMapping(value="/admin/reason/approve", method=RequestMethod.POST)
 	public String approveReason(Reason reason, HttpSession session) {
 		System.out.println("Controller.approveReason.reasonDate: "+ reason.getReasonDate());
 		int attendanceId = reasonService.selectAttendanceDate(reason);
+		System.out.println("attendace Id: " + attendanceId);
 		
 		if(attendanceId == 0) { //attendance 가 존재하지않음
 			reasonService.insertAttendanceStatus(reason);

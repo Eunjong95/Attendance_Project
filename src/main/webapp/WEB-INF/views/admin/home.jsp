@@ -64,7 +64,7 @@
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-3">
-									<div class="card border-left-warning shadow h-100 py-2">
+									<div class="card border-left-warning shadow h-100 py-2" onclick="location.href='<c:url value='/admin/reason/list/0/1'/>'">
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
@@ -78,53 +78,90 @@
 											</div>
 										</div>
 									</div>
+									
 								</div>
 								<div class="col-3">
 									<div class="card border-left-warning shadow h-100 py-2">
-										<div class="card-body">
+										<div class="card-body nav-link dropdown-toggle" href="#" id="attendanceDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
 													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>출석인원</b></div>
 													<div class="mb-0 font-weight-bold text-gray-700"> </div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${attendanceCount}/${totalMemberCount }</div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${fn:length(attendanceList)+fn:length(attendanceList2)}/${totalMemberCount }</div>
 													<div><i class="fa-regular fa-clock fa-2x"></i></div>
 												</div>
 											</div>
+										</div>
+										<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+											aria-labelledby="attendanceDropdown" >
+											<c:forEach var="attend" items="${attendanceList}" varStatus="attStatus">
+												<div class="dropdown-item"> 
+													<span>${attStatus.count} </span>
+													<span>${attend.userName} </span>
+													<span><fmt:formatDate value="${attend.clockIn }" pattern="hh : mm"/></span>
+												</div> 
+											</c:forEach>
+											<c:forEach var="attend" items="${attendanceList2}" varStatus="attStatus">
+												<div class="dropdown-item"> 
+													<span>${attStatus.count} </span>
+													<span>${attend.userName} </span>
+													<span><fmt:formatDate value="${attend.clockIn }" pattern="hh : mm"/></span>
+												</div> 
+											</c:forEach>
 										</div>
 									</div>
 								</div>
 								<div class="col-3">
 									<div class="card border-left-warning shadow h-100 py-2">
-										<div class="card-body">
+										<div class="card-body nav-link dropdown-toggle" href="#" id="lateDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
 													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>지각인원</b></div>
 													<div class="mb-0 font-weight-bold text-gray-700"> </div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${lateCount}/${totalMemberCount }</div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${fn:length(lateList)}/${totalMemberCount }</div>
 													<div><i class="fas fa-clock fa-2x"></i></div>
 												</div>
 											</div>
+										</div>
+										<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+											aria-labelledby="lateDropdown" >
+											<c:forEach var="late" items="${lateList}" varStatus="lateStatus">
+												<div class="dropdown-item"> 
+													<span>${lateStatus.count} </span>
+													<span>${late.userName} </span>
+													<span><fmt:formatDate value="${late.clockIn }" pattern="hh : mm"/></span>
+												</div> 
+											</c:forEach>
 										</div>
 									</div>
 								</div>
 								<div class="col-3">
 									<div class="card border-left-warning shadow h-100 py-2">
-										<div class="card-body">
+										<div class="card-body nav-link dropdown-toggle" href="#" id="vacationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
 													<div class="text-xl font-bold text-primary text-uppercase mb-1"><b>휴가인원</b></div>
 													<div class="mb-0 font-weight-bold text-gray-700"> </div>
 												</div>
 												<div class="col-auto d-flex mt-3 align-content-center">
-													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${vacationCount}/${totalMemberCount }</div>
+													<div class="h3 mb-0 font-weight-bold text-gray-800 mr-3">${fn:length(vacationList)}/${totalMemberCount }</div>
 
 													<div><i class="fa-regular fa-calendar-check fa-2x"></i></div>
 												</div>
 											</div>
+										</div>
+										<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+											aria-labelledby="vactionDropdown" >
+											<c:forEach var="vaction" items="${vactionList}" varStatus="vactionStatus">
+												<div class="dropdown-item"> 
+													<span>${vactionStatus.count} </span>
+													<span>${vaction.userName} </span>
+												</div> 
+											</c:forEach>
 										</div>
 									</div>
 								</div>

@@ -29,7 +29,11 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
 <!-- fullcalendar 언어 CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
-		
+<style>
+	#memberCursor>tr:hover {
+	   background-color: #e1e2e4;
+	}
+</style>	
 </head>
 	<body id="page-top">
 		
@@ -64,10 +68,10 @@
                                 				<div class="d-flex justify-content-start">
 	                                				<div id="dataTable_filter" class="dataTables_filter">
 	                                					<label>강의명
-	                                						<button class="btn btn-secondary" onclick="location.href='<c:url value="/admin/reason/list/${reasonListStatus}/0"/>'">전체</button>
-	                                						<button class="btn btn-secondary" onclick="location.href='<c:url value="/admin/reason/list/${reasonListStatus}/1"/>'">JAVA</button>
-	                                						<button class="btn btn-secondary" onclick="location.href='<c:url value="/admin/reason/list/${reasonListStatus}/2"/>'">C언어</button>
-	                                		 				<button class="btn btn-secondary" onclick="location.href='<c:url value="/admin/reason/list/${reasonListStatus}/3"/>'">Python</button>
+	                                						<button class="btn btn-secondary" onclick="location.href='<c:url value="/admin/member/list/0/1"/>'">전체</button>
+	                                						<button class="btn btn-secondary" onclick="location.href='<c:url value="/admin/member/list/1/1"/>'">JAVA</button>
+	                                						<button class="btn btn-secondary" onclick="location.href='<c:url value="/admin/member/list/2/1"/>'">C언어</button>
+	                                		 				<button class="btn btn-secondary" onclick="location.href='<c:url value="/admin/member/list/3/1"/>'">Python</button>
 	                                					</label>
 	                                					
 	                                				</div>
@@ -88,35 +92,56 @@
 				                                        <tr role="row">
 				                                        	<th style="width: 5%;">No.</th>
 				                                        	<th style="width: 15%;">강의명</th>
-				                                        	<th style="width: 15%;">이름</th>
-				                                        	<th style="width: 15%;">출근 상태</th>
+				                                        	<th style="width: 10%;">이름</th>
+				                                        	<th style="width: 20%;">날짜</th>
+				                                        	<th style="width: 10%;">출근 상태</th>
 				                                        	<th style="width: 20%;">출근 시간</th>
 				                                        	<th style="width: 20%;">퇴근 시간</th>
 				                                        </tr>
 				                                    </thead>
-				                                    <tbody> 
-				                                    	<c:forEach var="reason" items="${reasonList}"  varStatus="status">
-				                                    		<tr onclick="location.href='<c:url value='/admin/reason/view/${reason.reasonId}/${page}'/>'" style="cursor:pointer;">
+				                                    <tbody id="memberCursor"> 
+				                                    	<c:forEach var="member" items="${memberList}"  varStatus="status">
+				                                    		<tr style="cursor:pointer;">
 				                                    			<td>${status.count}</td>
-				                                    			<td>${reason.reasonCategoryName}</td>
-				                                    			<td>${reason.userName}</td>
-								                                <c:if test="${reason.reasonStatus==0}">
-								                                	<td class="font-weight-bold" style="color: #000000;">미승인</td>
+				                                    			<c:if test="${member.lectureId==1}">
+								                                	<td class="font-weight-bold">JAVA</td>
 								                                </c:if>
-									                            <c:if test="${reason.reasonStatus==1}">
-									                            	<td class="font-weight-bold" style="color: #009933;">승인</td>
+									                            <c:if test="${member.lectureId==2}">
+									                            	<td class="font-weight-bold">C언어</td>
 									                            </c:if>
-									                            <c:if test="${reason.reasonStatus==2}">
-									                            	<td class="font-weight-bold" style="color: #e60000;">반려</td>
+									                            <c:if test="${member.lectureId==3}">
+									                            	<td class="font-weight-bold">Python</td>
 									                            </c:if>
-									                            <c:if test="${reason.reasonStatus==3}">
-									                            	<td class="font-weight-bold" style="color: #ff6600;">취소요청</td>
-									                            </c:if>
-									                            <c:if test="${reason.reasonStatus==4}">
-									                            	<td class="font-weight-bold" style="color: #009933;">취소 완료</td>
-									                            </c:if>
-				                                    			<td><fmt:formatDate value="${reason.reasonWriteDate}" pattern="YYYY-MM-dd"/></td>
-				                                    			<td><fmt:formatDate value="${reason.reasonDate}" pattern="YYYY-MM-dd"/></td>
+				                                    			<td>${member.userName}</td>
+				                                    			<td>${member.attendanceDate}</td>
+				                                    			<c:if test="${member.todayStatus!=null}">
+									                                <c:if test="${member.todayStatus==0}">
+									                                	<td class="font-weight-bold" style="color: #009933;">정상 출근</td>
+									                                </c:if>
+										                            <c:if test="${member.todayStatus==1}">
+										                            	<td class="font-weight-bold" style="color: #e60000;">결석</td>
+										                            </c:if>
+										                            <c:if test="${member.todayStatus==2}">
+										                            	<td class="font-weight-bold" style="color: #e60000;">지각</td>
+										                            </c:if>
+										                            <c:if test="${member.todayStatus==3}">
+										                            	<td class="font-weight-bold" style="color: #ff6600;">휴가</td>
+										                            </c:if>
+										                            <c:if test="${member.todayStatus==4}">
+										                            	<td class="font-weight-bold" style="color: #ff6600;">조퇴</td>
+										                            </c:if>
+										                            <c:if test="${member.todayStatus==5}">
+										                            	<td class="font-weight-bold" style="color: #009933;">출근중</td>
+										                            </c:if>
+										                            <td><fmt:formatDate value="${member.clockIn}" pattern="HH:mm:ss"/></td>
+				                                    				<td><fmt:formatDate value="${member.clockOut}" pattern="HH:mm:ss"/></td>
+										                        </c:if>
+										                        <c:if test="${member.todayStatus==null}">
+										                        	<td>미출근</td>
+										                        	<td> </td>
+										                        	<td> </td>
+										                        </c:if>
+				                                    			
 				                                    		</tr>
 				                                    	</c:forEach>                                   	
 					                            	</tbody>
@@ -126,25 +151,29 @@
                                			<div class="row">
                                				<div class="col-sm-12 d-flex justify-content-center mt-4">
                                					<ul class="pagination">
-													<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/1'/>" class="page-link">◀◀</a></li>
-													   
-													<c:if test="${pager.groupNo > 1}">
-														<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${pager.startPageNo-1}'/>" class="page-link">◀</a></li>
+                               						<c:if test="${pager.groupNo > 1}">
+														<li class="page-item"><a href="<c:url value='/admin/member/list/${lectureId}/${pager.startPageNo-1}'/>" class="page-link">Previous</a></li>
+													</c:if>
+													<c:if test="${pager.pageNo > 1}">
+														<li class="page-item"><a href="<c:url value='/admin/member/list/${lectureId}/${page-1}'/>" class="page-link">◀</a></li>
 													</c:if>
 													   
 													<c:forEach var="i" begin="${pager.startPageNo}" end="${pager.endPageNo}">
 														<c:if test="${pager.pageNo != i}">
-															<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${i}'/>" class="page-link">${i}</a></li>
+															<li class="page-item"><a href="<c:url value='/admin/member/list/${lectureId}/${i}'/>" class="page-link">${i}</a></li>
 														</c:if>
 														<c:if test="${pager.pageNo == i}">
-															<li class="page-item active"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${i}'/>" class="page-link">${i}</a></li>
+															<li class="page-item active"><a href="<c:url value='/admin/member/list/${lectureId}/${i}'/>" class="page-link">${i}</a></li>
 														</c:if>
 													</c:forEach>
 													   
-													<c:if test="${pager.groupNo < pager.totalGroupNo }">
-														<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/$${pager.endPageNo+1}'/>" class="page-link">▶</a></li>
+													<c:if test="${pager.pageNo < pager.totalPageNo}">
+														<li class="page-item"><a href="<c:url value='/admin/member/list/${lectureId}/${page+1}'/>" class="page-link">▶</a></li>
 													</c:if>
-													<li class="page-item"><a href="<c:url value='/admin/reason/list/${reasonListStatus}/${lectureId}/${pager.totalPageNo}'/>" class="page-link">▶▶</a></li>
+													
+													<c:if test="${pager.groupNo < pager.totalGroupNo}">
+														<li class="page-item"><a href="<c:url value='/admin/member/list/${lectureId}/${pager.endPageNo+1}'/>" class="page-link">Next</a></li>
+                             						</c:if>
                              					</ul>
                              				</div>
                                			</div>

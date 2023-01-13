@@ -2,6 +2,7 @@ package com.team5.myapp.attendance.controller;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class AttendanceController {
 		session.setAttribute("page", page);
 		String userId = (String) session.getAttribute("userId");
 		
-		//출퇴근 값이 null일 경우 status 1(결근으로 수정)
+		//퇴근 값이 null일 경우 status 1(결근으로 수정)
 		attendanceService.noCheckAttendance(userId);
 		
 		List<Attendance> attendanceList = attendanceService.selectAttendanceList(userId, page);
@@ -156,7 +157,5 @@ public class AttendanceController {
 		
 		return getAttendanceList(1,session,model);
 	}
-	
-	
 	
 }
