@@ -140,6 +140,16 @@
 		]]>
 	</insert>
 	
+	<!-- 출결 상태 뽑아서 정상 출근이면 insert 불가하게 만들기 -->
+	<select id="selectAttendanceStatus" parameterType="com.team5.myapp.reason.model.Reason" resultType="map">
+		<![CDATA[
+			select attendance_id as "attendanceId"
+			from attendance
+			where to_char(attendance_date,'YY/MM/dd') = to_char(#{reasonDate}, 'YY/MM/dd')
+			and user_id=#{userId} and status=0
+		]]>
+	</select>
+	
 	<!-- 휴가 날짜의 출결이 있는지 확인 -->
 	<select id="selectAttendanceDate" parameterType="com.team5.myapp.reason.model.Reason" resultType="int" >
 		<![CDATA[

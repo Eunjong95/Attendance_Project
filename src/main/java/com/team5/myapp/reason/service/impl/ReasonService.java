@@ -41,6 +41,11 @@ public class ReasonService implements IReasonService {
 		return reasonRepository.selectReasonListByUserId(userId, start, start + 4);
 	}
 
+	@Override
+	public List<Integer> selectAttendanceStatus(Reason reason) {
+		return reasonRepository.selectAttendanceStatus(reason);
+	}
+	
 	@Transactional
 	public void insertReason(Reason reason) {
 		MultipartFile files = reason.getFiles();
