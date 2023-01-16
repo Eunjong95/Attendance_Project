@@ -56,8 +56,8 @@
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800">
-							<c:set var="attendanceDate" value="${attendanceDate}"/>
-							<fmt:formatDate value="${attendanceDate}" pattern="MM"/>
+							<c:set var="month" value="${month}"/>
+							<c:out value="${month}"/>
 							월 출결 현황
 						</h1>
 					</div>

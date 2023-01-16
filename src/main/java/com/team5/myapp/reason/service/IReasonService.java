@@ -16,6 +16,7 @@ public interface IReasonService {
 
 	// 사유서 작성 
 	void insertReason(Reason reason);
+	List<Integer> selectAttendanceStatus(Reason reason);
 
 	//사유서 삭제 (승인되기전에만 가능), (관리자)승인 취소 요청 승인
 	void deleteReason(int reasonId);

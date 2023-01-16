@@ -1,8 +1,10 @@
 package com.team5.myapp.reason.controller;
 
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.jsoup.Jsoup;
@@ -20,13 +22,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.team5.myapp.Pager;
-import com.team5.myapp.board.model.BoardFile;
 import com.team5.myapp.reason.model.Reason;
 import com.team5.myapp.reason.service.IReasonService;
 
@@ -96,7 +96,7 @@ public class ReasonController {
 
 	// 사유서 작성 POST -> 관리자가 신청을 승인해줘야 attendanceId가 생성되기 때문에 사유서 작성시에는 attendanceId 필요 없음
 	@RequestMapping(value = "/reason/write", method = RequestMethod.POST)
-	public String writeReason(Reason reason, BindingResult result, HttpSession session,
+	public String writeReason(Reason reason, BindingResult result, HttpSession session, HttpServletResponse response,
 			RedirectAttributes redirectAttrs) {
 		logger.info("/reason/write" + reason.toString());
 
@@ -104,19 +104,39 @@ public class ReasonController {
 		session.setAttribute("userId", userId);
 		System.out.println(session.getAttribute("userId"));
 
-		try {
-			reason.setReasonContent(reason.getReasonContent().replace("\r\n", "<br>"));
-			reason.setReasonContent(Jsoup.clean(reason.getReasonContent(), Whitelist.basic()));
-			MultipartFile files = reason.getFiles();
-			if (files != null && !files.isEmpty()) {
+		// 정상 출근일 경우에는 사유서 작성 불가하게 만들기
+		List<Integer> attendanceIdList = reasonService.selectAttendanceStatus(reason);
+		System.out.println(attendanceIdList);
+
+		// 정상출근이 아닐 경우(attendanceIdList가 빌 경우) insert
+		if (attendanceIdList == null || attendanceIdList.isEmpty()) {
+			try {
+				reason.setReasonContent(reason.getReasonContent().replace("\r\n", "<br>"));
+				reason.setReasonContent(Jsoup.clean(reason.getReasonContent(), Whitelist.basic()));
+				MultipartFile files = reason.getFiles();
+				if (files != null && !files.isEmpty()) {
+				}
+				reasonService.insertReason(reason);
+			} catch (Exception e) {
+				e.printStackTrace();
+				// redirectAttrs.addFlashAttribute("message", e.getMessage());
 			}
-			reasonService.insertReason(reason);
-		} catch (Exception e) {
-			e.printStackTrace();
-			//redirectAttrs.addFlashAttribute("message", e.getMessage());
+			System.out.println(reason.toString());
+			return "redirect:/reason/list";
+		} else {
+			// 정상 출근한 날 사유서를 작성할 경우 뜨는 팝업
+			response.setContentType("text/html; charset=UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out;
+			try {
+				out = response.getWriter();
+				out.println("<script>alert('정상 출근하신 날입니다. 날짜를 다시 확인해주세요.');</script>");
+				out.flush();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "reason/write";
 		}
-		System.out.println(reason.toString());
-		return "redirect:/reason/list"; 
 	}
 	
 	// 사유서 취소 요청 (승인된 사유서에 대해 취소요청 하기)-post

@@ -144,10 +144,11 @@ public class AttendanceController {
 		model.addAttribute("totalPageCount",totalPage);
 		model.addAttribute("page",page);
 
-		
-		Attendance attendance = attendanceService.selectAttendance(userId);
-		Date attendanceDate = attendance.getAttendanceDate();
-		model.addAttribute("attendanceDate",attendanceDate);
+		Calendar date = Calendar.getInstance();
+		date.add(Calendar.DATE, -1);
+		SimpleDateFormat format = new SimpleDateFormat("MM");
+		String month = format.format(date.getTime());
+		model.addAttribute("month",month);
 		
 		return "attendance/list";
 	}

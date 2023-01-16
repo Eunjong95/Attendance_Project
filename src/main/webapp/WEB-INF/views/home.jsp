@@ -68,6 +68,20 @@
 				}
 			});
 		});
+		$('#workCheck3').click(function(){ 
+			$.ajax({
+				url:'worktime',
+				type:'post',
+				success : function(data){ 
+					var date = data.attendanceDate;
+					var time = data.clockOut;
+					$('#dateOut').text(date);
+					$('#timeOut').text(time);
+					$('#dateOut').attr('id','dateOutInputEnd');
+					$('#timeOut').attr('id','timeOutInputEnd');
+				}
+			});
+		});
 	});
 </script>
 
@@ -100,36 +114,21 @@
                   <h1 class="mb-0 ml-2 text-gray-800"><strong>${lectureName}</strong></h1>
                   <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3"><span style="font-size:18px;">출석 체크하기<i class="fa-solid fa-check ml-2"></i></span></a> -->
                </div>
-                  <div class="d-sm-flex align-items-center justify-content-end mb-4 mr-3">
-                  <c:if test="${clockIn == null}">			
-					<a id="workCheck" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3">
-						<span style="font-size:18px;">출근 체크하기</span>
-					</a>
+               <div class="d-sm-flex align-items-center justify-content-end mb-4 mr-3">			
+					<c:if test="${clockIn == null}">			
+						<a id="workCheck" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3">
+							<span style="font-size:18px;">출근 체크하기</span>
+						</a>
 					</c:if>		
 					<a id="workCheck2" class="d-none btn btn-sm btn-primary shadow-sm p-3">
 						<span style="font-size:18px;">퇴근 체크하기</span>
 					</a>	
 					<c:if test="${clockIn != null}">			
-						<button type="button" class ="btn btn-sm btn-primary shadow-sm p-3" data-toggle="modal" data-target="#myModal">
+						<a id="workCheck3" class="d-none d-sm-inline-block d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3">
 							<span style="font-size:18px;">퇴근 체크하기</span>
-						</button>
-						<!-- The Modal -->
-						<div class="modal fade" id="myModal">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<!-- Modal body -->
-									<div class="modal-body">
-										<span>이미 출석했습니다.</span>
-									</div>
-									<!-- Modal footer -->
-									<div class="modal-footer">
-										<button type="button" class="btn btn-sm btn-primary shadow-sm p-3" data-dismiss="modal">확인</button>
-									</div>
-								</div>
-							</div>
-						</div>
+						</a>
 					</c:if>	
-                  </div>
+			   </div>
                <!-- 출퇴근 표시 -->
                <div class="row">
                   <div class="container-fluid">
