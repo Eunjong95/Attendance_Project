@@ -46,6 +46,26 @@
       <property name="defaultErrorView" value="error/default"/>
    </bean>
    
+   <!-- jdbc properties 암호화 -->
+   <!-- <bean id="propertyConfigurer" class="org.jasypt.spring31.properties.EncryptablePreferencesPlaceholderConfigurer">
+       <constructor-arg ref="configurationEncryptor"/>
+       <property name="locations">
+           <list>
+               <value>classpath:/database/jdbc.properties</value> 
+           </list>
+       </property>
+   </bean>
+   
+   <bean id="environmentVariablesConfiguration" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+       <property name="algorithm" value="PBEWithMD5AndDES"/>
+       <property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD"/>
+   </bean>
+   
+   <bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+       <property name="config" value="environmentVariablesConfiguration"/>
+       <property name="password" value="rktwlsrud"/>
+   </bean> -->
+   
    <mybatis-spring:scan base-package="com.team5.myapp.board.dao"/>
    <context:component-scan base-package="com.team5.myapp.board.service"/>
    <context:component-scan base-package="com.team5.myapp.board.controller"/>
