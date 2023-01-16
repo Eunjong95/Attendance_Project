@@ -40,7 +40,7 @@
 					if(result.length!=0){
 						result.forEach((value)=>{
 							$("#member"+lectureId+" tbody").append(
-									"<tr>"+
+									"<tr onclick='location.href=\"/myapp/admin/attendance/view/"+value.userId+"\"'>"+
 									"	<td>"+value.userId+"</td>"+
 									"	<td>"+value.userName+"</td>"+
 									"	<td>"+value.phone+"</td>"+
@@ -69,7 +69,7 @@ function showMemberListMore(lectureId,page){
 				if(result.length!=0){
 					result.forEach((value)=>{
 						$("#member"+lectureId+" tbody").append(
-								"<tr>"+
+								"<tr onclick='location.href=\"/myapp/admin/attendance/view/"+value.userId+"\"'>"+
 								"	<td>"+value.userId+"</td>"+
 								"	<td>"+value.userName+"</td>"+
 								"	<td>"+value.phone+"</td>"+

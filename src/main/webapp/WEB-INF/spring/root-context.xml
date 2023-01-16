@@ -47,7 +47,7 @@
    </bean>
    
    <!-- jdbc properties 암호화 -->
-   <bean id="propertyConfigurer" class="org.jasypt.spring31.properties.EncryptablePreferencesPlaceholderConfigurer">
+   <!-- <bean id="propertyConfigurer" class="org.jasypt.spring31.properties.EncryptablePreferencesPlaceholderConfigurer">
        <constructor-arg ref="configurationEncryptor"/>
        <property name="locations">
            <list>
@@ -64,7 +64,7 @@
    <bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
        <property name="config" value="environmentVariablesConfiguration"/>
        <property name="password" value="rktwlsrud"/>
-   </bean>
+   </bean> -->
    
    <mybatis-spring:scan base-package="com.team5.myapp.board.dao"/>
    <context:component-scan base-package="com.team5.myapp.board.service"/>

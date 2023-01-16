@@ -101,7 +101,7 @@
 				                                    </thead>
 				                                    <tbody id="memberCursor"> 
 				                                    	<c:forEach var="member" items="${memberList}"  varStatus="status">
-				                                    		<tr style="cursor:pointer;">
+				                                    		<tr style="cursor:pointer;" onclick='location.href="/myapp/admin/attendance/view/${member.userId}"'>
 				                                    			<td>${status.count}</td>
 				                                    			<c:if test="${member.lectureId==1}">
 								                                	<td class="font-weight-bold">JAVA</td>
