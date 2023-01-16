@@ -2,6 +2,7 @@ package com.team5.myapp.attendance.controller;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class AttendanceController {
 		session.setAttribute("page", page);
 		String userId = (String) session.getAttribute("userId");
 		
-		//출퇴근 값이 null일 경우 status 1(결근으로 수정)
+		//퇴근 값이 null일 경우 status 1(결근으로 수정)
 		attendanceService.noCheckAttendance(userId);
 		
 		List<Attendance> attendanceList = attendanceService.selectAttendanceList(userId, page);
@@ -143,10 +144,11 @@ public class AttendanceController {
 		model.addAttribute("totalPageCount",totalPage);
 		model.addAttribute("page",page);
 
-		
-		Attendance attendance = attendanceService.selectAttendance(userId);
-		Date attendanceDate = attendance.getAttendanceDate();
-		model.addAttribute("attendanceDate",attendanceDate);
+		Calendar date = Calendar.getInstance();
+		date.add(Calendar.DATE, -1);
+		SimpleDateFormat format = new SimpleDateFormat("MM");
+		String month = format.format(date.getTime());
+		model.addAttribute("month",month);
 		
 		return "attendance/list";
 	}
@@ -157,6 +159,65 @@ public class AttendanceController {
 		return getAttendanceList(1,session,model);
 	}
 	
+	//출결현황(관리자)
+	@RequestMapping(value="/admin/attendance/view/{page}/{userId}")
+	public String getMemberAttendanceList(@PathVariable int page,@PathVariable String userId ,HttpSession session, Model model) {
+		session.setAttribute("page", page);
+		
+		//퇴근 값이 null일 경우 status 1(결근으로 수정)
+		attendanceService.noCheckAttendance(userId);
+		
+		List<Attendance> attendanceList = attendanceService.selectAttendanceList(userId, page);
+		List<Attendance> calendarList = attendanceService.selectCalendarList(userId);
+		//출근 횟수
+		int attendanceCount = attendanceService.selectAttendanceCount(userId);
+		model.addAttribute("attendanceCount",attendanceCount);
+		//지각 횟수
+		int lateCount = attendanceService.selectLateCount(userId);
+		model.addAttribute("lateCount",lateCount);
+		//조퇴 횟수
+		int leaveCount = attendanceService.selectLeaveCount(userId);
+		model.addAttribute("leaveCount",leaveCount);
+		//결근 횟수
+		int absenceCount = attendanceService.selectAbsenceCount(userId);
+		model.addAttribute("absenceCount",absenceCount);
+		
+		//출석률
+		double attendancePercent = 0;
+		int chageLateCount = 0;
+		
+		if(lateCount%3==0) {
+			chageLateCount = (lateCount/3);
+			attendancePercent = ((attendanceCount+(double)lateCount-chageLateCount)/(attendanceCount+lateCount+leaveCount+absenceCount))*100;
+		}else {
+			attendancePercent =  ((attendanceCount+(double)lateCount)/(attendanceCount+lateCount+leaveCount+absenceCount))*100;
+		}
+		model.addAttribute("attendancePercent",attendancePercent);
+		
+		//paging start
+		int myAttendanceListCount = attendanceService.selectTotalAttendancePage(userId);
+		int totalPage = 0;
+		if(myAttendanceListCount>0) {
+			totalPage = (int)Math.ceil(myAttendanceListCount/5.0);
+		}
+		model.addAttribute("attendanceList",attendanceList);
+		model.addAttribute("calendarList",calendarList);
+		model.addAttribute("totalPageCount",totalPage);
+		model.addAttribute("page",page);
+		model.addAttribute("userId",userId);
+		Calendar date = Calendar.getInstance();
+		date.add(Calendar.DATE, -1);
+		SimpleDateFormat format = new SimpleDateFormat("MM");
+		String month = format.format(date.getTime());
+		model.addAttribute("month",month);
+		
+		return "admin/member/memberAttendance";
+	}
 	
+	@RequestMapping(value="/admin/attendance/view/{userId}")
+	public String getMemberAttendanceList(@PathVariable String userId,HttpSession session, Model model) {
+		
+		return getMemberAttendanceList(1,userId,session,model);
+	}
 	
 }

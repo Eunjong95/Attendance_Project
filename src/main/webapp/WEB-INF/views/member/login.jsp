@@ -16,13 +16,11 @@
     <title>Login</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="<c:url value='/vendor/fontawesome-free/css/all.min.css'/>" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<c:url value='/css/sb-admin-2.min.css'/>" rel="stylesheet">
 
 </head>
 
@@ -43,10 +41,10 @@
                                 <img src="https://picsum.photos/468/578" alt="">
                             </div>
                             <div class="col-lg-6">
+                            	<div class="text-center p-5">
+                                    <h1 class="h4 text-gray-900">OTI LMS</h1>
+                                </div>
                                 <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome to OTI LMS !</h1>
-                                    </div>
                                     <form action="<c:url value='/member/login'/>" method="post" class="user">
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
@@ -58,21 +56,20 @@
                                                 id="password" name="password" placeholder="Password">
                                         </div>
                                         <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
+                                            <div class="custom-control custom-checkbox small mb-5">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
+                                                <label class="custom-control-label" for="customCheck">Remember Me</label>
                                             </div>
                                         </div>
                                         <input type="submit" class="btn btn-primary btn-user btn-block" value="Login"> 
                                         
-                                        <hr>
+                                       <!--  <hr>
                                         <a href="index.html" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google
                                         </a>
                                         <a href="index.html" class="btn btn-facebook btn-user btn-block">
                                             <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a>
+                                        </a> -->
                                     </form>
                                     <hr>
                                     <div class="text-center">

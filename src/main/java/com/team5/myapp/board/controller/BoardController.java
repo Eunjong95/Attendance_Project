@@ -43,11 +43,11 @@ public class BoardController {
 		BoardFile file = boardService.getFile(fileId);
 		logger.info("getFile " + file.toString());
 		final HttpHeaders headers = new HttpHeaders();
-		String[] mtypes = file.getbFileContentType().split("/");
+		String[] mtypes = file.getBoardFileContentType().split("/");
 		headers.setContentType(new MediaType(mtypes[0], mtypes[1]));
-		headers.setContentLength(file.getbFileSize());
-		headers.setContentDispositionFormData("attachment", file.getbFileName(), Charset.forName("UTF-8"));
-		return new ResponseEntity<byte[]>(file.getbFileData(), headers, HttpStatus.OK);
+		headers.setContentLength(file.getBoardFileSize());
+		headers.setContentDispositionFormData("attachment", file.getBoardFileName(), Charset.forName("UTF-8"));
+		return new ResponseEntity<byte[]>(file.getBoardFileData(), headers, HttpStatus.OK);
 	}
 	
 	//게시글 작성
@@ -59,7 +59,6 @@ public class BoardController {
 	
 	@RequestMapping(value="/board/write", method=RequestMethod.POST)
 	public String writeBoard(Board board, BindingResult result, RedirectAttributes redirectAttrs) {
-		System.out.println("writeBoard");
 		logger.info("/board/write : " + board.toString());
 		try{
 			board.setBoardContent(board.getBoardContent().replace("\r\n", "<br>"));
@@ -69,10 +68,10 @@ public class BoardController {
 			if(mfile!=null && !mfile.isEmpty()) {
 				logger.info("/board/write : " + mfile.getOriginalFilename());
 				BoardFile file = new BoardFile();
-				file.setbFileName(mfile.getOriginalFilename());
-				file.setbFileSize(mfile.getSize());
-				file.setbFileContentType(mfile.getContentType());
-				file.setbFileData(mfile.getBytes());
+				file.setBoardFileName(mfile.getOriginalFilename());
+				file.setBoardFileSize(mfile.getSize());
+				file.setBoardFileContentType(mfile.getContentType());
+				file.setBoardFileData(mfile.getBytes());
 				logger.info("/board/write : " + file.toString());
 				boardService.insertBoard(board, file);
 			} else {
@@ -82,8 +81,8 @@ public class BoardController {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
-		//return "redirect:/board/cat/" + board.getBoardCategoryId();
-		return "home";
+		return "redirect:/board/cat/" + board.getBoardCategoryId();
+		//return "board/list";
 	}
 	
 	//게시글 수정
@@ -112,10 +111,10 @@ public class BoardController {
 			if(mfile!=null&& !mfile.isEmpty()) {
 				logger.info("/board/update : " + mfile.getOriginalFilename());
 				BoardFile file=new BoardFile();
-				file.setbFileName(mfile.getOriginalFilename());
-				file.setbFileSize(mfile.getSize());
-				file.setbFileContentType(mfile.getContentType());
-				file.setbFileData(mfile.getBytes());
+				file.setBoardFileName(mfile.getOriginalFilename());
+				file.setBoardFileSize(mfile.getSize());
+				file.setBoardFileContentType(mfile.getContentType());
+				file.setBoardFileData(mfile.getBytes());
 				file.setBoardId(board.getBoardId());
 				boardService.updateBoard(board, file);
 			}else {

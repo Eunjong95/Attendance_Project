@@ -1,6 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ tag body-content="empty"%>
-<%@ attribute name="attendanceId" type="java.lang.Integer" required="true"%>
 <%@ attribute name="totalPageCount" type="java.lang.Integer" required="true"%>
 <%@ attribute name="nowPage" type="java.lang.Integer" required="true"%>
 <%
@@ -23,7 +22,7 @@
 	
 	if(nowPageBlock>1){
 		out.print("<li>");
-		out.print("<a href=\""+contextPath+"/attendance/list/"+attendanceId+"/"+(startPage-1)+"\"aria-label=\"Previous\">");
+		out.print("<a href=\""+contextPath+"/attendance/list/"+(startPage-1)+"\"aria-label=\"Previous\">");
 		out.print("<button class='btn btn-sm btn-primary' style='color:white'>");
 		out.print("Previous ");
 		out.print("</button>");
@@ -37,7 +36,7 @@
 		}else{
 			out.print("<li>");
 		}
-		out.print("<a href=\""+contextPath+"/attendance/list/"+attendanceId+"/"+(i)+"\">");
+		out.print("<a href=\""+contextPath+"/attendance/list/"+(i)+"\">");
 		out.print("<button class='btn btn-sm'>");
 		out.print(i);
 		out.print("</button>");
@@ -46,7 +45,7 @@
 	}
 	if(nowPageBlock < totalPageBlock) {
 		out.print("<li>");
-		out.print("<a href=\""+contextPath+ "/attendance/list/"+attendanceId+"/"+(endPage+1)+"\" aria-label=\"Next\">");
+		out.print("<a href=\""+contextPath+ "/attendance/list/"+(endPage+1)+"\" aria-label=\"Next\">");
 		out.print("<button class='btn btn-sm btn-primary'style='color:white'>");
 		out.print("Next");
 		out.print("</button>");

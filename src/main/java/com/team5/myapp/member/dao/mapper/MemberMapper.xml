@@ -32,13 +32,14 @@
 		]]>
 	</select>
 
-	<select id="selectMemberCountByLecutreId" parameterType="int" resultType="int">
-		<![CDATA[
+	<select id="selectMemberCountByLectureId" parameterType="int" resultType="int">
 			SELECT COUNT(user_id) as "count" 
-			FROM MEMBERS 
+			FROM MEMBERS
+			<if test="lectureId != 0">
 			WHERE lecture_id=#{lectureId}
-		]]>
+			</if>
 	</select>
+	
 	<select id="selectAttendMemberCountByLectureId" parameterType="int" resultType="int">
 		<![CDATA[
 			select
@@ -120,32 +121,79 @@
 		]]>
 	</select>
 
-	<select id="selectMemberCountByStatus" parameterType="int" resultType="int">
+	<select id="selectMemberCount" parameterType="int" resultType="int">
+		<![CDATA[
+			select
+				count(m.user_id) as "count"
+			from
+				members m, 
+				(
+	            	select 
+	            		user_id, 
+	            		attendance_date ,
+	            		status
+	            	from 
+	            		attendance 
+	            	where 
+	            		to_char(attendance_date,'YY/MM/DD') = to_char(sysdate,'YY/MM/DD')
+	            ) a
+			where
+				a.user_id(+)=m.user_id and
+	            (
+		            to_char(a.attendance_date,'YY/MM/DD') =to_char(sysdate,'YY/MM/DD') or
+		            a.attendance_date is null
+	            )
+	            and m.role!=1
+		]]>
+    </select>
+    
+    <select id="selectMemberListByStatus" parameterType="map" resultType="com.team5.myapp.member.model.Member">
 		select
-			count(m.user_id) as "count"
+			user_name as "userName",
+			clock_in as "clockIn",
+			rownum
 		from
-			members m, 
+		(
+			select
+				*
+			from
 			(
-            	select 
-            		user_id, 
-            		attendance_date ,
-            		status
-            	from 
-            		attendance 
-            	where 
-            		to_char(attendance_date,'YY/MM/DD') = to_char(sysdate,'YY/MM/DD')
-            ) a
-		where
-			a.user_id(+)=m.user_id and
-            (
-	            to_char(a.attendance_date,'YY/MM/DD') =to_char(sysdate,'YY/MM/DD') or
-	            a.attendance_date is null
-            )
-            and m.role!=1
-		<if test="attendanceStatus != null">
-			and a.status = #{attendanceStatus}
-		</if>
-			
+				select
+					m.user_name ,
+					a.clock_in,
+					status
+				from
+					members m, 
+					(
+		            	select 
+		            		user_id, 
+		            		attendance_date ,
+		            		status,
+		            		clock_in
+		            	from 
+		            		attendance 
+		            	where 
+		            		to_char(attendance_date,'YY/MM/DD') = to_char(sysdate,'YY/MM/DD')
+		            ) a
+				where
+					a.user_id(+)=m.user_id and
+		            (
+			            to_char(a.attendance_date,'YY/MM/DD') =to_char(sysdate,'YY/MM/DD') or
+			            a.attendance_date is null
+		            )
+		            and m.role!=1
+			)
+			where
+				status = #{attendanceStatus}
+			<if test="attendanceStatus == 2">
+				or (
+					to_char(clock_in,'HH24') between '09' and '16'
+					and status != 3 
+					and status != 1
+				)
+			</if>
+		)
+		where rownum between #{start} and #{end}
 	</select>
 	
 	<select id="selectMemberListByLectureId" parameterType="map" resultType="com.team5.myapp.member.model.Member">
@@ -173,5 +221,39 @@
 				rnum>=#{start}
 			
 		]]>
+	</select>
+	
+	<select id="selectMemberAttendanceByLectureId" parameterType="map" resultType="com.team5.myapp.member.model.Member">
+		SELECT
+		    m.user_id as "userId",
+		    lecture_id as "lectureId",
+		    user_name as "userName",
+		    attendance_date as "attendanceDate",
+		    status as "todayStatus",
+		    clock_in as "clockIn",
+		    clock_out as "clockOut"
+		FROM members m left outer join 
+		    (SELECT 
+		        user_id, 
+		        attendance_id, 
+		        attendance_date,
+		        clock_in,
+		        clock_out,
+		        status
+		    FROM 
+		        attendance 
+		    WHERE 
+		        to_char(attendance_date,'YY/MM/DD') = to_char(sysdate,'YY/MM/DD')
+		    ) a
+		    on m.user_id=a.user_id
+		WHERE (to_char(a.attendance_date,'YY/MM/DD')=to_char(sysdate,'YY/MM/DD') 
+		        or a.attendance_date is null)
+		        and role != 1
+		        <if test="lectureId != 0">
+		        	and lecture_id = #{lectureId}
+		        </if>
+		ORDER BY lecture_id
+		OFFSET #{start} ROWS
+		FETCH FIRST #{end} ROWS ONLY
 	</select>
 </mapper>
