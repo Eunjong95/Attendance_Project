@@ -36,7 +36,7 @@
    <!-- Nav Item - User Information -->
    <li class="nav-item dropdown no-arrow">
       <c:if test="${empty userId}">
-           <a href="<c:url value="/member/login"/>">Login</a>
+           <a href="<c:url value="/"/>">Login</a>
         </c:if>
         <c:if test="${!empty userId}">
          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 

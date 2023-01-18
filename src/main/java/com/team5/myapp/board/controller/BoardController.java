@@ -72,7 +72,7 @@ public class BoardController {
 				file.setBoardFileSize(mfile.getSize());
 				file.setBoardFileContentType(mfile.getContentType());
 				file.setBoardFileData(mfile.getBytes());
-				logger.info("/board/write : " + file.toString());
+				logger.info("/board/write/file : " + file.toString());
 				boardService.insertBoard(board, file);
 			} else {
 				boardService.insertBoard(board);

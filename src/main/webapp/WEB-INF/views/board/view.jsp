@@ -114,7 +114,7 @@
 							</div>
 							<hr />
 							<div class="d-flex justify-content-center">
-								<c:if test="${board.userId eq userId}">
+								<c:if test="${board.userId eq userId && role eq 0}">
                            			<a href='<c:url value="/board/update/${board.boardId}"/>' class="btn btn-primary btn-sm mr-1 text-center" >수정</a>
                            			<form id="deleteBoard" action="<c:url value='/board/delete'/>" method="POST">
                                			<input type="hidden" name="boardId" value="${board.boardId}">

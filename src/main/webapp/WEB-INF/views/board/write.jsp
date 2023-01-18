@@ -87,8 +87,8 @@
 									</div>
                                     	<div class="row my-3 bottonbox d-flex">         
                                           <div>
-	                                          <label for="files">파일 첨부</label>
-	                                          <input type="file" class="form-control" id="s" name="files">
+	                                          <label for="file">파일 첨부</label>
+	                                          <input type="file" class="form-control" id="file" name="file">
 	                                          <span id="droparea" class="help-block">파일 용량은 50MB 이하로만 업로드 가능합니다.</span>      
                                           </div>
                                        	</div>

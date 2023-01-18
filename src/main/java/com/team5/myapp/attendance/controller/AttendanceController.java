@@ -81,8 +81,8 @@ public class AttendanceController {
 					attendanceStatus = 2; //지각
 				}else if((calIn.get(Calendar.HOUR_OF_DAY)==8)&&(calOut.get(Calendar.HOUR_OF_DAY)<=20)&& hour>=10) {
 					attendanceStatus = 0; // 정상출근
-				}else if(hour<8 && hour>=4) {
-					attendanceStatus = 4; // 조퇴
+				}else if(hour<9 && hour>=4) {
+		            attendanceStatus = 4; // 조퇴
 				}else {
 					attendanceStatus = 1; //결근
 				}

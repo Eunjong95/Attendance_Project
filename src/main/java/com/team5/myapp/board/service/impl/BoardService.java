@@ -45,9 +45,12 @@ public class BoardService implements IBoardService {
 		boardRepository.updateBoard(board);
 		if(file!=null&&file.getBoardFileName()!=null&&!file.getBoardFileName().equals("")) {
 			if(file.getBoardFileId()>0) {
-				boardRepository.updateFileData(file);
+				//System.out.println(file);
+	            file.setBoardFileId(board.getBoardFileId());
+	            boardRepository.updateFileData(file);
 			}else {
-				
+				file.setBoardId(board.getBoardId());
+	            file.setBoardFileId(boardRepository.selectMaxFileId()+1);
 				boardRepository.insertFileData(file);
 			}
 		}

@@ -158,8 +158,7 @@
 												value="${fn:toUpperCase(fn:substring(reason.reasonFileName, len-4, len))}" />
 											<c:if
 												test="${(filetype eq '.JPG') or (filetype eq 'JPEG') or (filetype eq '.PNG') or (filetype eq '.GIF')}">
-												<img src='<c:url value="/rfile/${reason.reasonId}"/>'
-													class="img-thumbnail">
+												<img src='<c:url value="/rfile/${reason.reasonId}"/>' class="img-thumbnail" width="400px">
 												<br>
 											</c:if>
 											<a href='<c:url value="/rfile/${reason.reasonId}"/>'>${reason.reasonFileName}(${reason.reasonFileSize}byte)</a>

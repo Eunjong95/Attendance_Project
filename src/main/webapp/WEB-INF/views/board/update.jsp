@@ -25,7 +25,9 @@
 		<!-- page Wrapper -->
 		<div id= "wrapper">
 			
-			<!-- 사이드바 -->
+			<!-- Sidebar -->
+	        <jsp:include page="/WEB-INF/views/include/sidebar.jsp"/>
+	        <!-- End of Sidebar -->
 			
 				<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 					
@@ -166,8 +168,8 @@
 									</div>
 									<div class="row mx-2 bottonbox d-flex justify-content-left mt-3">
 										<div>
-											<input type="hidden" name="bFileId" value="${board.bFileId}">
-        									<input type="file" id="i_file" name="file">${board.bFileName}<br/>
+											<input type="hidden" name="boardFileId" value="${board.boardFileId}">
+        									<input type="file" id="i_file" name="file">${board.boardFileName}<br/>
 						    				<span id="droparea" class="help-block">파일 용량은 50MB 이하로만 업로드 가능합니다.</span>
 										</div>
 									</div>

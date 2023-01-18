@@ -64,7 +64,7 @@
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-3">
-									<div class="card border-left-warning shadow h-100 py-2" onclick="location.href='<c:url value='/admin/reason/list/0/1'/>'">
+									<div class="card border-left-warning shadow h-100 py-2" onclick="location.href='<c:url value='/admin/reason/list/0/0'/>'">
 										<div class="card-body">
 											<div class="row no-gutters align-items-center">
 												<div class="col mr-2">
@@ -155,11 +155,11 @@
 											</div>
 										</div>
 										<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-											aria-labelledby="vactionDropdown" >
-											<c:forEach var="vaction" items="${vactionList}" varStatus="vactionStatus">
+											aria-labelledby="vacationDropdown" >
+											<c:forEach var="vacation" items="${vacationList}" varStatus="vacationStatus">
 												<div class="dropdown-item"> 
-													<span>${vactionStatus.count} </span>
-													<span>${vaction.userName} </span>
+													<span>${vacationStatus.count} </span>
+													<span>${vacation.userName} </span>
 												</div> 
 											</c:forEach>
 										</div>
