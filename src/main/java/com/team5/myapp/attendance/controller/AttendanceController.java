@@ -77,17 +77,17 @@ public class AttendanceController {
 			
 			System.out.println("금일 근무시간 : "+hour);
 			if(!attendanceClockOut.equals(null)) {
-				if((calIn.get(Calendar.HOUR_OF_DAY)>=9)&&(calIn.get(Calendar.HOUR_OF_DAY)<10)&&(calOut.get(Calendar.HOUR_OF_DAY)<=20)&&(hour>=9)) {
+				if((calIn.get(Calendar.HOUR_OF_DAY)>=9)&&(calIn.get(Calendar.HOUR_OF_DAY)<10)&&(hour>=9)) {
 					attendanceStatus = 2; //지각
-				}else if((calIn.get(Calendar.HOUR_OF_DAY)==8)&&(calOut.get(Calendar.HOUR_OF_DAY)<=20)&& hour>=10) {
+				}else if((calIn.get(Calendar.HOUR_OF_DAY)==8)&& hour>=10) {
 					attendanceStatus = 0; // 정상출근
-				}else if(hour<9 && hour>=4) {
+				}else if(hour<=9 && hour>=4) {
 		            attendanceStatus = 4; // 조퇴
 				}else {
 					attendanceStatus = 1; //결근
 				}
 			}
-			System.out.println("출결상태 확인 :"+attendanceStatus);
+			System.out.println("출결상태 확인2 :"+attendanceStatus);
 			attendanceService.updateAttendanceStatus(attendanceStatus,userId);
 		}else {
 			System.out.println("이미 퇴근 체크 했습니다.");
@@ -102,9 +102,6 @@ public class AttendanceController {
 	public String getAttendanceList(@PathVariable int page, HttpSession session, Model model) {
 		session.setAttribute("page", page);
 		String userId = (String) session.getAttribute("userId");
-		
-		//퇴근 값이 null일 경우 status 1(결근으로 수정)
-		attendanceService.noCheckAttendance(userId);
 		
 		List<Attendance> attendanceList = attendanceService.selectAttendanceList(userId, page);
 		List<Attendance> calendarList = attendanceService.selectCalendarList(userId);
@@ -163,9 +160,6 @@ public class AttendanceController {
 	@RequestMapping(value="/admin/attendance/view/{page}/{userId}")
 	public String getMemberAttendanceList(@PathVariable int page,@PathVariable String userId ,HttpSession session, Model model) {
 		session.setAttribute("page", page);
-		
-		//퇴근 값이 null일 경우 status 1(결근으로 수정)
-		attendanceService.noCheckAttendance(userId);
 		
 		List<Attendance> attendanceList = attendanceService.selectAttendanceList(userId, page);
 		List<Attendance> calendarList = attendanceService.selectCalendarList(userId);

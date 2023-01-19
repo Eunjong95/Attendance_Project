@@ -118,8 +118,8 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public List<Comments> selectCommentsListByCommentId(int boardId, int cPage) {
-		int start = (cPage - 1) * 10 + 1;
-		return boardRepository.selectCommentsListByCommentId(boardId, start, start + 9);
+		int start = (cPage - 1) * 5 + 1;
+		return boardRepository.selectCommentsListByCommentId(boardId, start, start + 4);
 	}
 
 	@Override

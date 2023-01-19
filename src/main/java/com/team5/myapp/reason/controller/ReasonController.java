@@ -223,7 +223,7 @@ public class ReasonController {
 	public String approveReason(Reason reason, HttpSession session) {
 		//System.out.println("Controller.approveReason.reasonDate: "+ reason.getReasonDate());
 		int attendanceId = reasonService.selectAttendanceDate(reason);
-		//System.out.println("attendace Id: " + attendanceId);
+		System.out.println("attendace Id: " + attendanceId);
 		
 		if(attendanceId == 0) { //attendance 가 존재하지않음
 			reasonService.insertAttendanceStatus(reason);
@@ -247,7 +247,7 @@ public class ReasonController {
 	public String cancelReason(Reason reason, HttpSession session) {
 		int attendanceId = reasonService.selectAttendanceDate(reason);
 		reasonService.deleteAttendanceStatus(attendanceId, reason);
-		//reasonService.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
+		reasonService.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
 		
 		return "redirect:/admin/reason/list/1/0";
 	}

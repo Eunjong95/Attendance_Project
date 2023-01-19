@@ -169,7 +169,7 @@
 		]]>
 	</update>
 	
-	<update id="updateAttendanceStatus" parameterType="map">
+	<update id="updateAttendanceStatus" parameterType="int">
 		<![CDATA[
 			UPDATE attendance
 			SET status=3

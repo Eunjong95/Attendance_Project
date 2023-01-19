@@ -7,7 +7,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+	<script>
+		function commentWrite(){ 
+		    var result = true;
+		    
+		   //댓글 유효성 검사
+		    var commentContent = $("#commentContent");
+		      var commentContentValue = commentContent.val();
+		      var commentContentPattern = /.{1,}/g;
+		      var commentContentTest = commentContentPattern.test(commentContentValue);
+		      if(commentContentTest){
+		         commentContent.removeClass("bg-danger");
+		      }else{
+		         alert("댓글을 입력해주세요");
+		         result = false;
+		      }
+		   return result;
+		}   
+	</script>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -173,7 +190,9 @@
 											</div>
 											<c:if test="${comments.userId eq userId}">
 												<div id="commentForm" class="d-flex col-2 justify-content-end">
-													<button id="commentUpdateBtn${comments.commentId}" onclick="updateComment(${comments.commentId})" class="btn btn-primary btn-sm text-center mr-1" >수정</button>
+													<div>
+														<button id="commentUpdateBtn${comments.commentId}" onclick="updateComment(${comments.commentId})" class="btn btn-primary btn-sm text-center mr-1" >수정</button>
+													</div>
 													
 													<form id="commentdeleteForm" name="commentForm" method="post" action="<c:url value='/board/comment/delete'/>">
 														<input type="hidden" name="commentId" value="${comments.commentId}">
@@ -193,8 +212,7 @@
 								<!-- 댓글 페이징 -->
 								<div class="row">
 									<div class="col-sm-12 col-md-5">
-										<div class="dataTables_info" id="dataTable_info" role="status"
-											aria-live="polite"></div>
+										<div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite"></div>
 									</div>
 									<div class="col-sm-12 col-md-1">
 										<div class="d-flex justify-content-center">
@@ -203,7 +221,8 @@
 													<td align="center"><commentPaging:commentPaging
 															boardId="${board.boardId}"
 															totalCommentPage="${totalCommentPage}"
-															boardPage="${page}" nowPage="${cPage}" /></td>
+															boardPage="${page}" nowPage="${cPage}" />
+													</td>
 												</tr>
 											</table>
 										</div>

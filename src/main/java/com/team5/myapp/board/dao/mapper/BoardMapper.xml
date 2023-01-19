@@ -207,7 +207,7 @@
             where c.board_id=#{boardId}
 			order by comment_id desc
 			OFFSET #{start}-1 ROWS
-			FETCH FIRST 10 ROWS ONLY	
+			FETCH FIRST 5 ROWS ONLY	
 		]]>
 	</select>
 	
