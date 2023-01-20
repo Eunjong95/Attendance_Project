@@ -4,9 +4,9 @@ function updateComment(commentId){
 	$("#commentContent"+commentId).empty();
 	$("#commentContent"+commentId).append(
 			"<form id=\"commentUpdateForm"+commentId+"\" name=\"commentForm\" >" +
-			"	<input type=\"hidden\" name=\"commentId\" value=\""+commentId+"\">" +
-			"	<input type='text' id='content' name='commentContent' value='"+content+"'>" +
-			"</form>"
+	        "   <input type=\"hidden\" name=\"commentId\" value=\""+commentId+"\">" +
+	        "   <textarea id='content' name='commentContent' style='width:100%' >"+content+"</textarea>" +
+	        "</form>"
 	);
 	$("#commentUpdateBtn"+commentId).removeAttr();
 	$("#commentUpdateBtn"+commentId).attr("onclick","updateConfilm("+commentId+")");

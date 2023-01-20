@@ -91,6 +91,7 @@ public class ReasonService implements IReasonService {
 
 	@Transactional
 	public void updateAttendanceStatus(int attendanceId, Reason reason) {
+		System.out.println("reasonService.updateAttendanceStatus.attendanceId: " + attendanceId);
 		reasonRepository.updateAttendanceStatus(attendanceId);
 		reasonRepository.updateReasonStatus(reason.getReasonId(), reason.getReasonStatus());
 	}

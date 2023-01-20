@@ -2,7 +2,9 @@ package com.team5.myapp.scheduler;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -46,10 +48,15 @@ public class attendanceScheduler {
 				}
 			}
 		}
+		String noInsertUser ="";
+		Set<String> user = new HashSet<String>();
 		for(int z=0;z<memberList.size();z++) {
-			String noInsertUser = memberList.get(z).getUserId();
-			attendanceService.noInsertAttendance(noInsertUser);
-			
+			noInsertUser = memberList.get(z).getUserId();
+			user.add(noInsertUser);		
+		}
+		//System.out.println(user.toString());
+		for(String noUser : user) {			
+			attendanceService.noInsertAttendance(noUser);
 		}
 	}
 }

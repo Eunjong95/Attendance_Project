@@ -55,7 +55,7 @@
 
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="mb-0 ml-2 text-gray-800"><strong>어서오세요 ${userId}님</strong></h1>
+						<h1 class="mb-0 ml-2 text-gray-800"><strong>어서오세요. ${userName}님</strong></h1>
 						<!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm p-3"><span style="font-size:18px;">출석 체크하기<i class="fa-solid fa-check ml-2"></i></span></a> -->
 					</div>
 					

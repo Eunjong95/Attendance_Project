@@ -177,7 +177,7 @@ public class BoardController {
 		int commentCount = boardService.selectTotalCommentsPageByCommentId(boardId);
 		int totalCommentPage = 0;
 		if (commentCount > 0) {
-			totalCommentPage = (int) Math.ceil(commentCount / 10.0);
+			totalCommentPage = (int) Math.ceil(commentCount / 5.0);
 		}
 
 		model.addAttribute("totalCommentPage", totalCommentPage);
