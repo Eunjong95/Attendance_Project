@@ -41,19 +41,21 @@
 						$("#MreasonContent").html(result.reasonContent);
 						//파일 이미지 경로 받아와서 넣어주기
 						if (result.reasonFileName != null) {
-							$("#MreasonFile")
-									.html(
+							$("#MreasonFile").html(
 											"<a href='/myapp/rfile/"+result.reasonId+"'><img src='/myapp/rfile/"+result.reasonId+"'></a>");
 						} else {
 							$("#MreasonFile").empty();
 						}
 
+						var setVacationDate = new Date(result.reasonDate);
+		                var today = new Date();
+		                  
 						// reasonStatus 값에 따라 버튼 만듣어주기
 						// 저장된 값 비우고 시작
 						$("#updateBtn").empty();
 						$("#deleteBtn").empty();
 
-						if (result.reasonStatus == 1) {
+						if (result.reasonStatus == 1 && setVacationDate>today) {
 							// reasonId와 reasonStatus hidden으로 전달
 							let param1 = '<input type="hidden" name="reasonId" value="'+ result.reasonId +'">';
 							param1 += '<input type="hidden" name="reasonStatus" value="3">';						

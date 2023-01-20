@@ -36,7 +36,7 @@
 			board_file 
 				(board_file_id, board_id, board_file_name, board_file_size, board_file_content_type, board_file_data) 
 			VALUES 
-				(#boardFileId}, #{boardId}, #{boardFileName}, #{boardFileSize}, #{boardFileContentType}, #{boardFileData})
+				(#{boardFileId}, #{boardId}, #{boardFileName}, #{boardFileSize}, #{boardFileContentType}, #{boardFileData})
 		]]>
 	</insert>
 	<!-- 게시글 수정 -->
@@ -56,7 +56,7 @@
 			SET
 				BOARD_FILE_NAME=#{boardFileName},
 				BOARD_FILE_SIZE=#{boardFileSize},
-				BOARD_FILE_CONTENT_TYPE=#{bFileContentType},
+				BOARD_FILE_CONTENT_TYPE=#{boardFileContentType},
 				BOARD_FILE_DATA=#{boardFileData}
 			WHERE BOARD_FILE_ID=#{boardFileId}
 		]]>
@@ -120,7 +120,7 @@
 			board_date as "boardDate",
 			user_id as "userId",
 			read_count as "readCount",
-			board_file_id as "bFileId",
+			board_file_id as "boardFileId",
 			board_file_name as "boardFileName",
 			board_file_size as "boardFileSize",
 			board_file_content_type as "boardFileContentType"
@@ -207,7 +207,7 @@
             where c.board_id=#{boardId}
 			order by comment_id desc
 			OFFSET #{start}-1 ROWS
-			FETCH FIRST 10 ROWS ONLY	
+			FETCH FIRST 5 ROWS ONLY	
 		]]>
 	</select>
 	

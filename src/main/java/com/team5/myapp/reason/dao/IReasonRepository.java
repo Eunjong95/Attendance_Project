@@ -37,8 +37,8 @@ public interface IReasonRepository {
 	Reason getFile(int reasonId);
 	
 	//(관리자)강의, 사유 카테고리 별 요청 목록
-	int selectTotalReasonPageByLecture(int lectureId);
-	List<Reason> selectReasonListByLecture(@Param("lectureId") int lectureId, @Param("start") int start, @Param("end") int end);
+//	int selectTotalReasonPageByLecture(int lectureId);
+//	List<Reason> selectReasonListByLecture(@Param("lectureId") int lectureId, @Param("start") int start, @Param("end") int end);
 	
 	//사유 요청 알림
 	int selectReasonCount();

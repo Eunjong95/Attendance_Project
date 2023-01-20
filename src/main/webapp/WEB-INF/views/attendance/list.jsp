@@ -192,7 +192,7 @@
 										<tfoot class="d-flex justify-content-center">
 											<tr>
 												<td align="left">
-													<attendancePaging:attendancePaging attendanceId="${attendanceId}" totalPageCount="${totalPageCount}" nowPage="${page}"/>
+													<attendancePaging:attendancePaging totalPageCount="${totalPageCount}" nowPage="${page}"/>
 												</td>
 											</tr>
 										</tfoot>

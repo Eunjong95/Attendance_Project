@@ -72,7 +72,7 @@ public class BoardController {
 				file.setBoardFileSize(mfile.getSize());
 				file.setBoardFileContentType(mfile.getContentType());
 				file.setBoardFileData(mfile.getBytes());
-				logger.info("/board/write : " + file.toString());
+				logger.info("/board/write/file : " + file.toString());
 				boardService.insertBoard(board, file);
 			} else {
 				boardService.insertBoard(board);
@@ -177,7 +177,7 @@ public class BoardController {
 		int commentCount = boardService.selectTotalCommentsPageByCommentId(boardId);
 		int totalCommentPage = 0;
 		if (commentCount > 0) {
-			totalCommentPage = (int) Math.ceil(commentCount / 10.0);
+			totalCommentPage = (int) Math.ceil(commentCount / 5.0);
 		}
 
 		model.addAttribute("totalCommentPage", totalCommentPage);

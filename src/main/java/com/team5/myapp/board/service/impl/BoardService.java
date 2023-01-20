@@ -45,9 +45,12 @@ public class BoardService implements IBoardService {
 		boardRepository.updateBoard(board);
 		if(file!=null&&file.getBoardFileName()!=null&&!file.getBoardFileName().equals("")) {
 			if(file.getBoardFileId()>0) {
-				boardRepository.updateFileData(file);
+				//System.out.println(file);
+	            file.setBoardFileId(board.getBoardFileId());
+	            boardRepository.updateFileData(file);
 			}else {
-				
+				file.setBoardId(board.getBoardId());
+	            file.setBoardFileId(boardRepository.selectMaxFileId()+1);
 				boardRepository.insertFileData(file);
 			}
 		}
@@ -115,8 +118,8 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public List<Comments> selectCommentsListByCommentId(int boardId, int cPage) {
-		int start = (cPage - 1) * 10 + 1;
-		return boardRepository.selectCommentsListByCommentId(boardId, start, start + 9);
+		int start = (cPage - 1) * 5 + 1;
+		return boardRepository.selectCommentsListByCommentId(boardId, start, start + 4);
 	}
 
 	@Override

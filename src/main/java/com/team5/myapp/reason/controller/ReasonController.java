@@ -149,7 +149,6 @@ public class ReasonController {
 		return "redirect:/reason/list/" + session.getAttribute("page");
 	}
 	
-	
 	// 사유서 삭제 (미승인 사유서면 삭제 가능)
 	@RequestMapping(value="/reason/delete", method=RequestMethod.POST)
 	public String deleteReason(Reason reason, BindingResult result, HttpSession session, RedirectAttributes redirectAttrs) {	
@@ -222,7 +221,7 @@ public class ReasonController {
 	//사유서 승인
 	@RequestMapping(value="/admin/reason/approve", method=RequestMethod.POST)
 	public String approveReason(Reason reason, HttpSession session) {
-		System.out.println("Controller.approveReason.reasonDate: "+ reason.getReasonDate());
+		//System.out.println("Controller.approveReason.reasonDate: "+ reason.getReasonDate());
 		int attendanceId = reasonService.selectAttendanceDate(reason);
 		System.out.println("attendace Id: " + attendanceId);
 		

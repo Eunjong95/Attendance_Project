@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -36,7 +36,7 @@
    <!-- Nav Item - User Information -->
    <li class="nav-item dropdown no-arrow">
       <c:if test="${empty userId}">
-           <a href="<c:url value="/member/login"/>">Login</a>
+           <a href="<c:url value="/"/>">Login</a>
         </c:if>
         <c:if test="${!empty userId}">
          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 

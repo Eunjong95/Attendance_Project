@@ -29,7 +29,11 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
 <!-- fullcalendar 언어 CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
-		
+<style>
+#reasonCursor>tr:hover {
+   background-color: #e1e2e4;
+}
+</style>
 </head>
 	<body id="page-top">
 		
@@ -94,7 +98,7 @@
 				                                        	<th style="width: 20%;">휴가 날짜</th>
 				                                        </tr>
 				                                    </thead>
-				                                    <tbody> 
+				                                    <tbody id="reasonCursor"> 
 				                                    	<c:forEach var="reason" items="${reasonList}">
 				                                    		<tr onclick="location.href='<c:url value='/admin/reason/view/${reason.reasonId}/${page}'/>'" style="cursor:pointer;">
 				                                    			<td>${reason.reasonId}</td>

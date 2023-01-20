@@ -14,7 +14,7 @@ import lombok.ToString;
 public class Reason {
 	private int reasonId;
 	private String reasonContent;
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd",timezone="Asia/Seoul")
 	private Date reasonDate;
 	private String userId;
 	private String userName;
@@ -28,6 +28,6 @@ public class Reason {
 	private MultipartFile files;
 	private int lectureId;
 	private String reasonCategoryName;
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd",timezone="Asia/Seoul")
 	private Date reasonWriteDate;
 }

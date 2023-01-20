@@ -24,14 +24,9 @@
    
    <view-controller path="/" view-name="/member/login"/>
    
-   <resources location="/WEB-INF/resources/" mapping="/**"/>
-   <resources location="/WEB-INF/resources/js/" mapping="/js/**"/>
-   <resources location="/WEB-INF/resources/css/" mapping="/css/**"/>
-   <resources location="/WEB-INF/resources/scss/" mapping="/scss/**"/>
-   <resources location="/WEB-INF/resources/vendor/" mapping="/vendor/**"/>
-   <resources location="/WEB-INF/resources/img/" mapping="/img/**"/>
-   
-   <resources location="/WEB-INF/resources/calendar/" mapping="/calendar/**"></resources>
+   <resources location="/resources/" mapping="/**"/>
+
+   <resources location="/resources/calendar/" mapping="/calendar/**"></resources>
    
    <resources location="/calendar/resources/" mapping="/WEB-INF/resources/calendar/**"></resources>
    <!-- <resources location="/WEB-INF/resources/font-awesome/" mapping="/font-awesome/**"/>
