@@ -161,7 +161,7 @@
 								<hr />
 
 								<!-- 댓글 작성부 -->
-								<form id="commentForm" name="commentForm" method="post" action="<c:url value='/board/comment/write'/>">
+								<form id="commentForm" name="commentForm" method="post" action="<c:url value='/board/comment/write'/>" onsubmit="return commentWrite()" novalidate>
 									<div class="row pl-4">
 										<div class="col-8">
 											<textarea class="form-control" rows="1" id="commentContent" name="commentContent"></textarea>
